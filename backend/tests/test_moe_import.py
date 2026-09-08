@@ -120,3 +120,52 @@ def test_parse_cards_reads_the_real_markup() -> None:
     # العنوان بيجمع المادة والصف والترم والنوع
     assert "العلوم باللغة الفرنسية" in title
     assert "الصف الخامس الإبتدائى" in title
+
+
+# --------------------------------------------------------------------------
+# عيّنات من المراحل الأربعة (رياض أطفال · ابتدائي · إعدادي · ثانوي)
+# --------------------------------------------------------------------------
+
+
+def load_all_stages() -> list[dict]:
+    return json.loads(
+        (FIXTURES / "moe_all_stages.json").read_text(encoding="utf-8")
+    )
+
+
+@pytest.mark.parametrize(
+    "book", load_all_stages(), ids=lambda b: b["url"].split("/")[-1]
+)
+def test_all_stages_parse(book: dict) -> None:
+    """عيّنات حقيقية من كل مرحلة، بمساراتها وأسمائها زي ما هي."""
+    ref = parse_url(book["url"], book["title"])
+    assert ref is not None, "لم يُتعرّف على الكتاب"
+    assert ref.grade_level == book["grade"]
+    assert ref.subject_name_ar == book["subject"]
+    assert ref.language == book["language"]
+    assert ref.kind == book["kind"]
+
+
+def test_misspelled_stage_paths() -> None:
+    """الموقع كاتب أسماء المراحل غلط في المسار — لازم نتعرّف عليها."""
+    base = "https://x/2026_2027"
+    title = "اللغة العربية - الفصل الدراسى الأول"
+
+    # Prepratory بدل Preparatory
+    prep = parse_url(f"{base}/Prepratory/Prepratory1/Term1/SB/Arabic_p.pdf", title)
+    assert prep is not None and prep.grade_level == 7
+
+    # Secondry بدل Secondary
+    sec = parse_url(f"{base}/Secondry/Secondry2/Term1/SB/Arabic_s.pdf", title)
+    assert sec is not None and sec.grade_level == 11
+
+
+def test_kindergarten_levels() -> None:
+    """رياض الأطفال بتترقّم -1 و 0 عشان الابتدائي يفضل من 1."""
+    assert detect_grade("مستوى أول")[0] == -1
+    assert detect_grade("مستوى ثان")[0] == 0
+    assert detect_grade("الصف الأول الإبتدائى")[0] == 1
+
+
+def test_workbook_kind() -> None:
+    assert detect_kind("كراسة التدريبات") == "workbook"

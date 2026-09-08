@@ -25,9 +25,14 @@ _STAGES: dict[str, tuple[int, int]] = {
     "primary": (1, 6),
     "prim": (1, 6),
     "preparatory": (7, 3),
+    # الموقع نفسه كاتبها غلط: Prepratory (ناقصة حرف)
+    "prepratory": (7, 3),
     "prep": (7, 3),
+    "prp": (7, 3),
     "middle": (7, 3),
     "secondary": (10, 3),
+    # الموقع كاتبها غلط برضه: Secondry
+    "secondry": (10, 3),
     "sec": (10, 3),
 }
 
@@ -184,7 +189,8 @@ def parse_url(url: str, title: str = "") -> BookRef | None:
             break
 
     # ---- المرحلة والصف ----
-    grade_level = 0
+    # None تعني "لم نتعرّف"، مش صفر — لأن صفر ده رياض أطفال المستوى الثاني.
+    grade_level: int | None = None
     stage = ""
     for segment in lowered:
         match = re.match(r"^([a-z]+?)\s*(\d{1,2})$", segment)
@@ -204,12 +210,12 @@ def parse_url(url: str, title: str = "") -> BookRef | None:
                 break
 
     # لو المسار ما وضّحش الصف، نجرّب العنوان العربي
-    if grade_level == 0 and title:
+    if grade_level is None and title:
         detected = moe_patterns.detect_grade(title)
         if detected:
             grade_level, stage = detected
 
-    if grade_level == 0:
+    if grade_level is None:
         return None
 
     # ---- الترم ----
@@ -229,15 +235,18 @@ def parse_url(url: str, title: str = "") -> BookRef | None:
         term = 1
 
     # ---- النوع ----
-    kind = "textbook"
-    for segment in lowered:
-        candidate = _KINDS.get(segment.replace(" ", ""))
-        if candidate:
-            kind = candidate
-            break
-    else:
-        if title:
-            kind = moe_patterns.detect_kind(title)
+    #
+    # العنوان أدق من المسار: مجلد "StudentBook" بيضم كتاب الطالب وكراسة
+    # التدريبات والقصة مع بعض، والعنوان هو اللي بيفرّق بينهم.
+    kind = moe_patterns.detect_kind(title) if title else "textbook"
+
+    if kind == "textbook":
+        # العنوان مقالش حاجة مميزة — نرجع للمجلد في المسار
+        for segment in lowered:
+            candidate = _KINDS.get(segment.replace(" ", ""))
+            if candidate:
+                kind = candidate
+                break
 
     # ---- المادة ----
     #
