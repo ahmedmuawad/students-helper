@@ -51,9 +51,10 @@ class LessonsScreen extends StatelessWidget {
     AppStrings s,
     int weekday,
   ) {
-    final dayLessons =
-        state.lessons.where((l) => l.isWeekly && l.weekday == weekday).toList()
-          ..sort((a, b) => a.startMinutes.compareTo(b.startMinutes));
+    final dayLessons = state.lessons
+        .where((l) => l.isWeekly && l.weekday == weekday)
+        .toList()
+      ..sort((a, b) => a.startMinutes.compareTo(b.startMinutes));
 
     if (dayLessons.isEmpty) return const [];
 

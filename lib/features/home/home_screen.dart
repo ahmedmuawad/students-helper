@@ -77,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               _Greeting(now: now),
               const SizedBox(height: 16),
-
               if (profile != null && profile.isBirthdayToday) ...[
                 _BirthdayCard(
                   name: profile.name,
@@ -85,9 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 12),
               ],
-
               _NowCard(state: state, strings: s, now: now),
-
               SectionHeader(
                 schedule.isTomorrow
                     ? s.get('timetable_tomorrow')
@@ -98,7 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               _TimetableShortcut(schedule: schedule, strings: s),
-
               SectionHeader(
                 s.get('next_lesson'),
                 trailing: TextButton(
@@ -107,7 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               _NextLessonCard(state: state, strings: s),
-
               SectionHeader(
                 s.get('tasks'),
                 trailing: TextButton(
@@ -116,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               _TasksShortcut(state: state, strings: s),
-
               const SizedBox(height: 24),
               _QuickActions(strings: s),
             ],
@@ -145,8 +139,8 @@ class _Greeting extends StatelessWidget {
     final gradeLabel = profile == null
         ? ''
         : (state.isArabic
-              ? DefaultData.gradeNameAr(profile.gradeLevel)
-              : DefaultData.gradeNameEn(profile.gradeLevel));
+            ? DefaultData.gradeNameAr(profile.gradeLevel)
+            : DefaultData.gradeNameEn(profile.gradeLevel));
 
     return Row(
       children: [

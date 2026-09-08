@@ -9,9 +9,9 @@ enum AngleMode {
   String get id => name;
 
   static AngleMode fromId(String? id) => AngleMode.values.firstWhere(
-    (e) => e.name == id,
-    orElse: () => AngleMode.degree,
-  );
+        (e) => e.name == id,
+        orElse: () => AngleMode.degree,
+      );
 
   String get shortLabel {
     switch (this) {
@@ -62,9 +62,9 @@ enum NumberBase {
   const NumberBase(this.radix, this.label);
 
   static NumberBase fromRadix(int radix) => NumberBase.values.firstWhere(
-    (e) => e.radix == radix,
-    orElse: () => NumberBase.decimal,
-  );
+        (e) => e.radix == radix,
+        orElse: () => NumberBase.decimal,
+      );
 }
 
 /// حالة الآلة الحاسبة أثناء التقييم: الزوايا، الأساس، الذاكرة، والمتغيرات.
@@ -82,19 +82,18 @@ class EvalContext {
     this.numberBase = NumberBase.decimal,
     Map<String, double>? variables,
     math.Random? random,
-  }) : variables =
-           variables ??
-           <String, double>{
-             'A': 0,
-             'B': 0,
-             'C': 0,
-             'D': 0,
-             'X': 0,
-             'Y': 0,
-             'M': 0,
-             'Ans': 0,
-           },
-       random = random ?? math.Random();
+  })  : variables = variables ??
+            <String, double>{
+              'A': 0,
+              'B': 0,
+              'C': 0,
+              'D': 0,
+              'X': 0,
+              'Y': 0,
+              'M': 0,
+              'Ans': 0,
+            },
+        random = random ?? math.Random();
 
   double get ans => variables['Ans'] ?? 0;
 
@@ -119,9 +118,9 @@ class EvalContext {
   }
 
   EvalContext copy() => EvalContext(
-    angleMode: angleMode,
-    numberBase: numberBase,
-    variables: Map<String, double>.from(variables),
-    random: random,
-  );
+        angleMode: angleMode,
+        numberBase: numberBase,
+        variables: Map<String, double>.from(variables),
+        random: random,
+      );
 }

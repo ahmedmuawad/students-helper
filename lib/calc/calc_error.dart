@@ -12,7 +12,7 @@ class CalcError implements Exception {
   const CalcError(this.kind, this.message, [this.position]);
 
   const CalcError.syntax(String message, [int? position])
-    : this('syntax', message, position);
+      : this('syntax', message, position);
 
   const CalcError.math(String message) : this('math', message);
 

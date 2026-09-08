@@ -32,6 +32,10 @@ class AppState extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   bool _onboardingDone = false;
 
+  /// موافقة المستخدم على الإعلانات المخصّصة. القيمة الفعلية بتتقيّد كمان
+  /// بسن الطالب — تحت 13 سنة الإعلانات المخصّصة ممنوعة مهما كان الاختيار.
+  bool _personalizedAdsOptIn = true;
+
   AppState(this._store);
 
   // ----- قراءات -----
@@ -48,6 +52,19 @@ class AppState extends ChangeNotifier {
   String get languageCode => _languageCode;
   ThemeMode get themeMode => _themeMode;
   bool get onboardingDone => _onboardingDone;
+
+  /// هل نعرض إعلانات مخصّصة؟ بيجمع بين موافقة المستخدم وسنه.
+  ///
+  /// قانون COPPA وسياسة Google Play للعائلات بيمنعوا تخصيص الإعلانات لمن
+  /// هم دون 13 سنة، والسن غير المعروف بنتعامل معاه على إنه طفل احتياطًا.
+  bool get personalizedAdsAllowed {
+    if (!_personalizedAdsOptIn) return false;
+    final age = _profile?.age;
+    if (age == null) return false;
+    return age >= 13;
+  }
+
+  bool get personalizedAdsOptIn => _personalizedAdsOptIn;
   bool get isArabic => _languageCode != 'en';
 
   /// ولي الأمر المرتبط بأكتر من طالب بيختار مين يتابع.
@@ -75,6 +92,8 @@ class AppState extends ChangeNotifier {
     _languageCode = _store.readString(StoreKeys.languageCode) ?? 'ar';
     _themeMode = _themeFromId(_store.readString(StoreKeys.themeMode));
     _onboardingDone = _store.readBool(StoreKeys.onboardingDone);
+    _personalizedAdsOptIn =
+        _store.readBool(StoreKeys.personalizedAds, fallback: true);
 
     notifyListeners();
   }
@@ -90,6 +109,12 @@ class AppState extends ChangeNotifier {
   Future<void> setThemeMode(ThemeMode mode) async {
     _themeMode = mode;
     await _store.writeString(StoreKeys.themeMode, mode.name);
+    notifyListeners();
+  }
+
+  Future<void> setPersonalizedAds(bool allowed) async {
+    _personalizedAdsOptIn = allowed;
+    await _store.writeBool(StoreKeys.personalizedAds, allowed);
     notifyListeners();
   }
 

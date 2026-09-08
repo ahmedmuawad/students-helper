@@ -34,10 +34,10 @@ class CalcHistoryEntry {
   });
 
   Map<String, dynamic> toJson() => {
-    'expression': expression,
-    'result': result,
-    'at': at.toIso8601String(),
-  };
+        'expression': expression,
+        'result': result,
+        'at': at.toIso8601String(),
+      };
 
   factory CalcHistoryEntry.fromJson(Map<String, dynamic> json) =>
       CalcHistoryEntry(

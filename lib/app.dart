@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'core/l10n/app_strings.dart';
 import 'core/theme/app_theme.dart';
 import 'features/home/app_shell.dart';
-import 'features/onboarding/profile_setup_screen.dart';
+import 'features/guardian/children_screen.dart';
+import 'features/onboarding/welcome_screen.dart';
+import 'models/account.dart';
 import 'state/app_state.dart';
 
 class StudentsHelperApp extends StatelessWidget {
@@ -29,10 +31,17 @@ class StudentsHelperApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: state.onboardingDone && state.profile != null
-          ? const AppShell()
-          : const ProfileSetupScreen(),
+      home: _homeFor(state),
     );
+  }
+
+  /// الشاشة الأولى حسب حالة المستخدم ودوره.
+  Widget _homeFor(AppState state) {
+    if (!state.onboardingDone) return const WelcomeScreen();
+    // ولي الأمر مالوش ملف دراسي — شاشته الرئيسية هي متابعة أبنائه.
+    if (state.role == AccountRole.guardian) return const ChildrenScreen();
+    if (state.profile == null) return const WelcomeScreen();
+    return const AppShell();
   }
 }
 

@@ -165,8 +165,8 @@ class Lexer {
   }
 
   void _skipSpaces() {
-    while (_pos < source.length &&
-        (source[_pos] == ' ' || source[_pos] == '\t')) {
+    while (
+        _pos < source.length && (source[_pos] == ' ' || source[_pos] == '\t')) {
       _pos++;
     }
   }

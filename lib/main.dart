@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'app.dart';
 import 'data/local_store.dart';
+import 'services/api_client.dart';
 import 'services/notification_service.dart';
 import 'state/app_state.dart';
 import 'state/calculator_state.dart';
@@ -20,6 +21,10 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider<ApiClient>(
+          create: (_) => ApiClient(),
+          dispose: (_, client) => client.dispose(),
+        ),
         ChangeNotifierProvider<AppState>.value(value: appState),
         ChangeNotifierProvider<CalculatorState>(
           create: (_) => CalculatorState(store)..load(),

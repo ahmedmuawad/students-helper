@@ -168,14 +168,12 @@ class AppStrings {
 
   static const Map<String, String> _en = {
     'app_name': 'Student Helper',
-
     'nav_home': 'Home',
     'nav_timetable': 'Timetable',
     'nav_lessons': 'Lessons',
     'nav_tasks': 'Tasks',
     'nav_calculator': 'Calculator',
     'nav_more': 'More',
-
     'save': 'Save',
     'cancel': 'Cancel',
     'delete': 'Delete',
@@ -195,7 +193,6 @@ class AppStrings {
     'to': 'To',
     'minutes': 'min',
     'hours': 'h',
-
     'profile': 'Profile',
     'student_name': 'Student name',
     'birth_date': 'Date of birth',
@@ -213,7 +210,6 @@ class AppStrings {
     'lang_international': 'International',
     'subjects': 'Subjects',
     'my_subjects': 'My subjects',
-
     'sys_egyptGeneral': 'Thanaweya Amma (old system)',
     'sys_egyptBaccalaureate': 'Egyptian Baccalaureate',
     'sys_azhar': 'Al-Azhar education',
@@ -221,7 +217,6 @@ class AppStrings {
     'sys_ib': 'International Baccalaureate',
     'sys_american': 'American Diploma',
     'sys_other': 'Other system',
-
     'timetable': 'Timetable',
     'timetable_today': "Today's timetable",
     'timetable_tomorrow': "Tomorrow's timetable",
@@ -234,7 +229,6 @@ class AppStrings {
     'next_period': 'Next class',
     'current_period': 'Current class',
     'switches_at_four': "Switches to tomorrow's schedule at 4 PM",
-
     'lessons': 'Lessons',
     'private_lesson': 'Private lesson',
     'session_title': 'Session title',
@@ -246,7 +240,6 @@ class AppStrings {
     'cost': 'Cost',
     'next_lesson': 'Next lesson',
     'no_lessons': 'No lessons yet',
-
     'tasks': 'Tasks',
     'task': 'Task',
     'task_title': 'Task title',
@@ -265,7 +258,6 @@ class AppStrings {
     'no_tasks': 'No tasks 👌',
     'tasks_for_lesson': 'Tasks for this lesson',
     'confirm_done_prompt': 'Did you finish the tasks linked to this class?',
-
     'type_homework': 'Homework',
     'type_study': 'Study',
     'type_revision': 'Revision',
@@ -273,11 +265,9 @@ class AppStrings {
     'type_reading': 'Reading',
     'type_submission': 'Submission',
     'type_other': 'Other',
-
     'priority_low': 'Low',
     'priority_normal': 'Normal',
     'priority_high': 'High',
-
     'calculator': 'Calculator',
     'calc_history': 'History',
     'calc_clear_history': 'Clear history',
@@ -285,7 +275,6 @@ class AppStrings {
     'calc_angle_mode': 'Angle unit',
     'calc_base_mode': 'Number base',
     'calc_copied': 'Copied',
-
     'settings': 'Settings',
     'language': 'Language',
     'theme': 'Theme',
@@ -296,7 +285,6 @@ class AppStrings {
     'wake_time': 'Wake up',
     'daily_break': 'Daily break time',
     'max_daily_study': 'Max daily study',
-
     'greeting_morning': 'Good morning',
     'greeting_afternoon': 'Good afternoon',
     'greeting_evening': 'Good evening',

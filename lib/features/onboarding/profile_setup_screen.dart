@@ -102,8 +102,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               final now = DateTime.now();
               final picked = await showDatePicker(
                 context: context,
-                initialDate:
-                    _profile.birthDate ??
+                initialDate: _profile.birthDate ??
                     DateTime(now.year - 14, now.month, now.day),
                 firstDate: DateTime(now.year - 30),
                 lastDate: now,

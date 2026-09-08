@@ -111,5 +111,6 @@ class StoreKeys {
   static const themeMode = 'theme_mode';
   static const onboardingDone = 'onboarding_done';
   static const accountRole = 'account_role';
+  static const personalizedAds = 'personalized_ads';
   static const lastSyncAt = 'last_sync_at';
 }

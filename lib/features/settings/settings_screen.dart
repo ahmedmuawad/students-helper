@@ -7,6 +7,8 @@ import '../../models/student_profile.dart';
 import '../../services/notification_service.dart';
 import '../../state/app_state.dart';
 import '../common/ui_helpers.dart';
+import '../guardian/link_code_screen.dart';
+import '../guardian/link_requests_screen.dart';
 import '../onboarding/profile_setup_screen.dart';
 
 /// إعدادات التطبيق: اللغة، المظهر، أوقات المذاكرة، والإشعارات.
@@ -38,7 +40,35 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
           ),
-
+          SectionHeader('ولي الأمر'),
+          Card(
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.vpn_key_outlined),
+                  title: const Text('ولّد كود ربط'),
+                  subtitle: const Text('عشان ولي أمرك يتابع مذاكرتك'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LinkCodeScreen()),
+                  ),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.family_restroom_outlined),
+                  title: const Text('أولياء الأمور المرتبطين'),
+                  subtitle: const Text('الطلبات والصلاحيات'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const LinkRequestsScreen()),
+                  ),
+                ),
+              ],
+            ),
+          ),
           SectionHeader(s.get('language')),
           Card(
             child: RadioGroup<String>(
@@ -60,7 +90,6 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
           ),
-
           SectionHeader(s.get('theme')),
           Card(
             child: RadioGroup<ThemeMode>(
@@ -79,7 +108,6 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
           ),
-
           SectionHeader(s.get('study_availability')),
           Card(
             child: Column(
@@ -135,7 +163,6 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
           ),
-
           SectionHeader(s.get('notifications')),
           Card(
             child: ListTile(
@@ -148,8 +175,8 @@ class SettingsScreen extends StatelessWidget {
               subtitle: const Text('تذكير الدروس والمهام قبل موعدها'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () async {
-                final granted = await NotificationService.instance
-                    .requestPermissions();
+                final granted =
+                    await NotificationService.instance.requestPermissions();
                 if (!context.mounted) return;
                 showSnack(
                   context,
@@ -160,7 +187,6 @@ class SettingsScreen extends StatelessWidget {
               },
             ),
           ),
-
           const SizedBox(height: 28),
           Card(
             child: ListTile(

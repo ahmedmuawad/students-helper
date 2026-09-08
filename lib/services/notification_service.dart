@@ -26,12 +26,12 @@ class NotificationService {
 
   static const AndroidNotificationDetails _androidDetails =
       AndroidNotificationDetails(
-        'students_helper_reminders',
-        'تذكيرات المذاكرة',
-        channelDescription: 'تذكيرات الحصص والدروس والمهام والامتحانات',
-        importance: Importance.high,
-        priority: Priority.high,
-      );
+    'students_helper_reminders',
+    'تذكيرات المذاكرة',
+    channelDescription: 'تذكيرات الحصص والدروس والمهام والامتحانات',
+    importance: Importance.high,
+    priority: Priority.high,
+  );
 
   static const NotificationDetails _details = NotificationDetails(
     android: _androidDetails,
@@ -63,18 +63,14 @@ class NotificationService {
   Future<bool> requestPermissions() async {
     if (!_ready) return false;
     try {
-      final android = _plugin
-          .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin
-          >();
+      final android = _plugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
       if (android != null) {
         final granted = await android.requestNotificationsPermission();
         return granted ?? false;
       }
-      final ios = _plugin
-          .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin
-          >();
+      final ios = _plugin.resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>();
       if (ios != null) {
         final granted = await ios.requestPermissions(
           alert: true,
