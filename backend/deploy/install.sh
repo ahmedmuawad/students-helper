@@ -29,7 +29,19 @@ fail() { printf '\033[1;31m  ✗ %s\033[0m\n' "$*" >&2; exit 1; }
 
 as_site() { sudo -u "$SITE_USER" "$@"; }
 
-[[ $EUID -eq 0 ]] || fail "شغّل السكربت بـ sudo"
+if [[ $EUID -ne 0 ]]; then
+  fail "السكربت محتاج صلاحيات root.
+
+  مستخدم الموقع في CloudPanel (${USER}) معندوش sudo — وده مقصود للأمان.
+  ادخل بمستخدم root وشغّله من هناك:
+
+      ssh root@SERVER_IP
+      curl -fsSLO ${RAW_URL:-https://raw.githubusercontent.com/ahmedmuawad/students-helper/main/backend/deploy/install.sh}
+      bash install.sh
+
+  (لو بتدخل بمستخدم تاني عنده sudo، استخدم: sudo bash install.sh)"
+fi
+
 id "$SITE_USER" >/dev/null 2>&1 || fail "المستخدم ${SITE_USER} مش موجود — اعمل الـ Python Site من CloudPanel الأول"
 [[ -d "$APP_DIR" ]] || fail "مجلد الموقع مش موجود: ${APP_DIR}"
 
