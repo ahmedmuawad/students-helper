@@ -2,6 +2,9 @@
 #
 # اختصار لأوامر استيراد كتب الوزارة.
 #
+#   sudo bash deploy/books.sh structure               # المناهج والصفوف والمواد
+#   sudo bash deploy/books.sh status                  # عرض اللي في قاعدة البيانات
+#   sudo bash deploy/books.sh html صفحة.html          # من صفحة محفوظة من المتصفح
 #   sudo bash deploy/books.sh crawl                   # كل المراحل من مكتبة الوزارة
 #   sudo bash deploy/books.sh crawl <رابط صفحة>       # صفحة واحدة
 #   sudo bash deploy/books.sh probe [الصفوف]          # تخمين الروابط
@@ -36,6 +39,17 @@ case "$command" in
   list)
     run list --prefix "${YEAR}/" --out "${BACKEND_DIR}/catalog.txt"
     ;;
+  structure)
+    run structure ${2:+--year "$2"}
+    ;;
+  status)
+    run status
+    ;;
+  html)
+    shift
+    [[ $# -gt 0 ]] || fail "محتاج ملف: bash deploy/books.sh html صفحة.html"
+    run html "$@" --out "${BACKEND_DIR}/catalog.txt"
+    ;;
   crawl)
     page="${2:-}"
     if [[ -n "$page" ]]; then
@@ -56,6 +70,7 @@ case "$command" in
     run import --from "$source_file" ${3:+--limit "$3"}
     ;;
   *)
-    fail "أمر غير معروف: ${command} (المتاح: crawl / probe / list / plan / import)"
+    fail "أمر غير معروف: ${command}
+  المتاح: structure / status / html / crawl / probe / list / plan / import"
     ;;
 esac

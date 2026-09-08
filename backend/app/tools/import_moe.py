@@ -43,7 +43,14 @@ from app.models import (
     Subject,
     Unit,
 )
-from app.tools.moe_crawl import DEFAULT_PAGES, crawl, crawl_all, probe
+from app.tools.moe_crawl import (
+    DEFAULT_PAGES,
+    crawl,
+    crawl_all,
+    from_html_file,
+    probe,
+)
+from app.tools import structure
 from app.tools.moe_patterns import GRADE_NAMES_AR
 from app.tools.moe_urls import BookRef, parse_url
 
@@ -417,6 +424,61 @@ def import_entries(
 # --------------------------------------------------------------------------
 
 
+def _print_status() -> None:
+    """ملخص اللي في قاعدة البيانات."""
+    from sqlalchemy import func
+
+    db = SessionLocal()
+    try:
+        log("\nالمناهج:")
+        curricula = db.query(Curriculum).order_by(Curriculum.id).all()
+        if not curricula:
+            log("  (فاضية — شغّل الأمر structure الأول)")
+
+        for curriculum in curricula:
+            grades = (
+                db.query(Grade).filter(Grade.curriculum_id == curriculum.id).all()
+            )
+            subject_count = (
+                db.query(func.count(Subject.id))
+                .join(Grade)
+                .filter(Grade.curriculum_id == curriculum.id)
+                .scalar()
+                or 0
+            )
+            book_count = (
+                db.query(func.count(Book.id))
+                .join(Subject)
+                .join(Grade)
+                .filter(Grade.curriculum_id == curriculum.id)
+                .scalar()
+                or 0
+            )
+            log(
+                f"  {curriculum.name_ar} ({curriculum.academic_year}) — "
+                f"{len(grades)} صف · {subject_count} مادة · {book_count} كتاب"
+            )
+
+        totals = {
+            "الصفوف": db.query(func.count(Grade.id)).scalar() or 0,
+            "المواد": db.query(func.count(Subject.id)).scalar() or 0,
+            "الوحدات": db.query(func.count(Unit.id)).scalar() or 0,
+            "الدروس": db.query(func.count(Lesson.id)).scalar() or 0,
+            "الكتب": db.query(func.count(Book.id)).scalar() or 0,
+        }
+        log("\nالإجمالي:")
+        for label, value in totals.items():
+            log(f"  {label}: {value}")
+
+        published = (
+            db.query(func.count(Book.id)).filter(Book.is_published.is_(True)).scalar()
+            or 0
+        )
+        log(f"  منشور للطلاب: {published}")
+    finally:
+        db.close()
+
+
 def _write_catalog(path: str, results: list[tuple[str, str]]) -> None:
     """يكتب النتايج بصيغة: سطر العنوان بعدين سطر الرابط."""
     with open(path, "w", encoding="utf-8") as handle:
@@ -451,6 +513,19 @@ def main() -> int:
     prober.add_argument("--year", default="2026_2027")
     prober.add_argument("--grades", help="مثال: 1,2,3 (الافتراضي: كل الصفوف)")
     prober.add_argument("--out", default="catalog.txt")
+
+    from_html = sub.add_parser(
+        "html", help="قراءة الكتب من صفحة HTML محفوظة من المتصفح"
+    )
+    from_html.add_argument("files", nargs="+", help="ملف أو أكتر")
+    from_html.add_argument("--out", default="catalog.txt")
+
+    struct = sub.add_parser(
+        "structure", help="إنشاء المناهج والصفوف والمواد (بدون كتب)"
+    )
+    struct.add_argument("--year", default="2026/2027")
+
+    sub.add_parser("status", help="عرض محتوى قاعدة البيانات")
 
     plan = sub.add_parser("plan", help="معاينة من غير تنزيل")
     plan.add_argument("--from", dest="source", required=True)
@@ -503,6 +578,41 @@ def main() -> int:
             return 1
         _write_catalog(args.out, results)
         log(f"✓ لقينا {len(results)} ملف — اتحفظوا في {args.out}")
+        return 0
+
+    if args.command == "html":
+        results: list[tuple[str, str]] = []
+        seen: set[str] = set()
+        for path in args.files:
+            found = from_html_file(path)
+            new_count = 0
+            for url, title in found:
+                if url not in seen:
+                    seen.add(url)
+                    results.append((url, title))
+                    new_count += 1
+            log(f"  · {path} — {new_count} كتاب")
+        if not results:
+            log("مفيش كتب في الملفات دي.")
+            return 1
+        _write_catalog(args.out, results)
+        log(f"✓ إجمالي {len(results)} كتاب — اتحفظوا في {args.out}")
+        return 0
+
+    if args.command == "structure":
+        Base.metadata.create_all(bind=engine)
+        db = SessionLocal()
+        created = structure.build(db, academic_year=args.year)
+        db.close()
+        log(
+            f"✓ اتضاف {created['curricula']} منهج · "
+            f"{created['grades']} صف · {created['subjects']} مادة"
+        )
+        return 0
+
+    if args.command == "status":
+        Base.metadata.create_all(bind=engine)
+        _print_status()
         return 0
 
     entries = read_entries(args.source)

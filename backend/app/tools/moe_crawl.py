@@ -26,12 +26,25 @@ from urllib.parse import urljoin, urlparse
 import httpx
 from bs4 import BeautifulSoup
 
+# الموقع بيرفض الطلبات اللي شكلها مش متصفح (403)، فبنبعت ترويسات
+# متصفح كاملة مش بس User-Agent.
 _HEADERS = {
     "User-Agent": (
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/122.0 Safari/537.36"
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
     ),
-    "Accept-Language": "ar,en;q=0.8",
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;q=0.9,"
+        "image/avif,image/webp,*/*;q=0.8"
+    ),
+    "Accept-Language": "ar,en-US;q=0.9,en;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+    "Cache-Control": "no-cache",
 }
 
 # صفحات المكتبة حسب المرحلة (المسارات زي ما هي على الموقع — لاحظ
@@ -313,3 +326,31 @@ def probe(
                     print(f"  ... {index}/{len(candidates)} · لقينا {len(found)}")
 
     return found
+
+
+# --------------------------------------------------------------------------
+# قراءة صفحة محفوظة من المتصفح
+# --------------------------------------------------------------------------
+
+
+def from_html_file(path: str) -> list[tuple[str, str]]:
+    """يقرا كتب من ملف HTML محفوظ.
+
+    لو الموقع رافض طلبات السيرفر (403)، افتح الصفحة في متصفحك واحفظها
+    (Ctrl+S) أو انسخ الـHTML وحطه في ملف، وشغّل الأمر ده عليه. البطاقات
+    اللي بيرسمها الجافاسكربت بتبقى موجودة في الحفظ ده.
+    """
+    from pathlib import Path
+
+    html = Path(path).read_text(encoding="utf-8", errors="ignore")
+    results = parse_cards(html)
+
+    if not results:
+        # مفيش بطاقات — ناخد أي روابط PDF في الملف
+        soup = BeautifulSoup(html, "html.parser")
+        for anchor in soup.find_all("a", href=True):
+            href = anchor["href"].split("#")[0]
+            if href.lower().endswith(".pdf"):
+                results.append((href, anchor.get_text(" ", strip=True)))
+
+    return results
