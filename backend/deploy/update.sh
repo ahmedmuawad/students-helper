@@ -42,6 +42,9 @@ log "تحديث الحزم"
 as_site "${VENV_DIR}/bin/pip" install --quiet -r "${BACKEND_DIR}/requirements.txt"
 ok "تم"
 
+log "تظبيط الجداول على آخر الموديلات"
+( cd "$BACKEND_DIR" && as_site "${VENV_DIR}/bin/python" -m app.tools.import_moe migrate )
+
 log "إعادة تشغيل الخدمة"
 systemctl restart "$SERVICE_NAME"
 sleep 4

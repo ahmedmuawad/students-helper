@@ -85,7 +85,20 @@ sudo REPO_URL=https://YOUR_TOKEN@github.com/ahmedmuawad/students-helper.git bash
 sudo bash /home/stop4web-student-helper/htdocs/student-helper.stop4web.online/backend/deploy/update.sh
 ```
 
-بيسحب آخر نسخة، يحدّث الحزم، يعيد تشغيل الخدمة، ويتأكد إنها ردّت.
+بيسحب آخر نسخة، يحدّث الحزم، **يظبّط الجداول على آخر الموديلات**، يعيد
+تشغيل الخدمة، ويتأكد إنها ردّت.
+
+### لو ظهر خطأ Data truncated بعد تحديث
+
+معناه إن جدول قديم لسه على تعريفه الأول (مثلاً `stage` من غير `kindergarten`).
+`update.sh` بيظبّطه تلقائيًا، وتقدر تشغّله لوحده في أي وقت:
+
+```bash
+sudo bash backend/deploy/books.sh migrate
+```
+
+بيوسّع أعمدة الـ ENUM ويضيف الأعمدة الناقصة بس — مش بيمسح ولا بيغيّر أي داتا،
+وتشغيله أكتر من مرة مالوش أي أثر.
 
 ## متابعة الخدمة
 

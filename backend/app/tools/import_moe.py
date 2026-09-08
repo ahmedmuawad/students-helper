@@ -32,6 +32,7 @@ import httpx
 from sqlalchemy.orm import Session
 
 from app.core.database import Base, SessionLocal, engine
+from app.core.schema_sync import sync_schema
 from app.core import media
 from app.models import (
     Book,
@@ -66,6 +67,21 @@ _STAGE_ENUM = {
 
 def log(message: str) -> None:
     print(message, flush=True)
+
+
+def ensure_schema() -> list[str]:
+    """ينشئ الجداول الناقصة ويظبّط القديمة على الموديلات."""
+    Base.metadata.create_all(bind=engine)
+    return sync_schema(engine)
+
+
+def log_schema_changes(changes: list[str]) -> None:
+    if not changes:
+        return
+    log("تعديلات على الجداول القديمة:")
+    for change in changes:
+        log(f"  {change}")
+
 
 
 # --------------------------------------------------------------------------
@@ -292,7 +308,7 @@ def import_entries(
     delay: float = 0.5,
     limit: int | None = None,
 ) -> None:
-    Base.metadata.create_all(bind=engine)
+    log_schema_changes(ensure_schema())
     db = SessionLocal()
 
     parsed: list[tuple[Entry, BookRef]] = []
@@ -527,6 +543,10 @@ def main() -> int:
 
     sub.add_parser("status", help="عرض محتوى قاعدة البيانات")
 
+    sub.add_parser(
+        "migrate", help="تظبيط الجداول القديمة على الموديلات (Enum وأعمدة ناقصة)"
+    )
+
     plan = sub.add_parser("plan", help="معاينة من غير تنزيل")
     plan.add_argument("--from", dest="source", required=True)
     plan.add_argument("--limit", type=int)
@@ -599,8 +619,17 @@ def main() -> int:
         log(f"✓ إجمالي {len(results)} كتاب — اتحفظوا في {args.out}")
         return 0
 
+    if args.command == "migrate":
+        changes = ensure_schema()
+        if changes:
+            log_schema_changes(changes)
+            log(f"✓ اتظبط {len(changes)} تعديل")
+        else:
+            log("✓ الجداول متطابقة مع الموديلات — مفيش حاجة تتعمل")
+        return 0
+
     if args.command == "structure":
-        Base.metadata.create_all(bind=engine)
+        log_schema_changes(ensure_schema())
         db = SessionLocal()
         created = structure.build(db, academic_year=args.year)
         db.close()
@@ -611,7 +640,7 @@ def main() -> int:
         return 0
 
     if args.command == "status":
-        Base.metadata.create_all(bind=engine)
+        ensure_schema()
         _print_status()
         return 0
 

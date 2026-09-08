@@ -13,6 +13,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from app.api import admin, mobile
 from app.core.config import get_settings
 from app.core.database import Base, engine
+from app.core.schema_sync import sync_schema
 
 # استيراد الموديلات مهم عشان SQLAlchemy يعرف الجداول قبل create_all
 from app.models import settings_store  # noqa: F401
@@ -57,8 +58,10 @@ app.mount(
 
 @app.on_event("startup")
 def on_startup() -> None:
-    """ينشئ الجداول لو مش موجودة (للتطوير — في الإنتاج استخدم Alembic)."""
+    """ينشئ الجداول لو مش موجودة ويظبّط القديمة على الموديلات."""
     Base.metadata.create_all(bind=engine)
+    for change in sync_schema(engine):
+        print(f"[schema] {change}", flush=True)
 
 
 @app.get("/health")

@@ -2,6 +2,7 @@
 #
 # اختصار لأوامر استيراد كتب الوزارة.
 #
+#   sudo bash deploy/books.sh migrate                 # تظبيط الجداول القديمة
 #   sudo bash deploy/books.sh structure               # المناهج والصفوف والمواد
 #   sudo bash deploy/books.sh status                  # عرض اللي في قاعدة البيانات
 #   sudo bash deploy/books.sh html صفحة.html          # من صفحة محفوظة من المتصفح
@@ -39,6 +40,9 @@ case "$command" in
   list)
     run list --prefix "${YEAR}/" --out "${BACKEND_DIR}/catalog.txt"
     ;;
+  migrate)
+    run migrate
+    ;;
   structure)
     run structure ${2:+--year "$2"}
     ;;
@@ -71,6 +75,6 @@ case "$command" in
     ;;
   *)
     fail "أمر غير معروف: ${command}
-  المتاح: structure / status / html / crawl / probe / list / plan / import"
+  المتاح: migrate / structure / status / html / crawl / probe / list / plan / import"
     ;;
 esac
