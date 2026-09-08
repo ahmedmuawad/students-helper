@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}الرئيسية{% endblock %}
+{% block content %}
+<header class="page"><h1>نظرة عامة</h1></header>
+
+<div class="stats">
+  <div class="stat brand"><div class="n">{{ stats.curricula }}</div><div class="l">منهج</div></div>
+  <div class="stat"><div class="n">{{ stats.subjects }}</div><div class="l">مادة دراسية</div></div>
+  <div class="stat"><div class="n">{{ stats.lessons }}</div><div class="l">درس في الفهارس</div></div>
+  <div class="stat ok"><div class="n">{{ stats.books_published }}</div><div class="l">ملف منشور</div></div>
+  <div class="stat accent"><div class="n">{{ stats.books_draft }}</div><div class="l">مسودّة</div></div>
+  <div class="stat"><div class="n">{{ stats.students }}</div><div class="l">طالب</div></div>
+  <div class="stat"><div class="n">{{ stats.guardians }}</div><div class="l">ولي أمر</div></div>
+  <div class="stat danger"><div class="n">{{ stats.pending_links }}</div><div class="l">طلب ربط معلّق</div></div>
+</div>
+
+<div class="card">
+  <h2>آخر الملفات المرفوعة</h2>
+  {% if recent_books %}
+  <table>
+    <thead><tr><th>العنوان</th><th>النوع</th><th>الصف / المادة</th><th>الصفحات</th><th>الحجم</th><th>الحالة</th></tr></thead>
+    <tbody>
+      {% for b in recent_books %}
+      <tr>
+        <td><a href="/admin/books?subject_id={{ b.subject.id }}">{{ b.title_ar }}</a></td>
+        <td><span class="pill kind">{{ kind_label(b.kind) }}</span></td>
+        <td>{{ b.subject.grade.name_ar }} · {{ b.subject.name_ar }}</td>
+        <td class="num">{{ b.page_count or '—' }}</td>
+        <td class="num">{{ size_label(b.file_size) }}</td>
+        <td>{% if b.is_published %}<span class="pill ok">منشور</span>{% else %}<span class="pill draft">مسودّة</span>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty"><div class="big">📚</div>مفيش ملفات مرفوعة لسه — ابدأ من صفحة الكتب والملازم</div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -37,20 +37,20 @@ class Subject {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'nameAr': nameAr,
-    'nameEn': nameEn,
-    'countsTowardTotal': countsTowardTotal,
-    'colorValue': colorValue,
-  };
+        'id': id,
+        'nameAr': nameAr,
+        'nameEn': nameEn,
+        'countsTowardTotal': countsTowardTotal,
+        'colorValue': colorValue,
+      };
 
   factory Subject.fromJson(Map<String, dynamic> json) => Subject(
-    id: json['id'] as String,
-    nameAr: json['nameAr'] as String? ?? '',
-    nameEn: json['nameEn'] as String? ?? '',
-    countsTowardTotal: json['countsTowardTotal'] as bool? ?? true,
-    colorValue: json['colorValue'] as int? ?? 0xFF2E7D91,
-  );
+        id: json['id'] as String,
+        nameAr: json['nameAr'] as String? ?? '',
+        nameEn: json['nameEn'] as String? ?? '',
+        countsTowardTotal: json['countsTowardTotal'] as bool? ?? true,
+        colorValue: json['colorValue'] as int? ?? 0xFF2E7D91,
+      );
 
   @override
   bool operator ==(Object other) => other is Subject && other.id == id;
@@ -80,16 +80,16 @@ class AcademicTrack {
       languageCode == 'en' ? nameEn : nameAr;
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'nameAr': nameAr,
-    'nameEn': nameEn,
-    'systemId': systemId,
-  };
+        'id': id,
+        'nameAr': nameAr,
+        'nameEn': nameEn,
+        'systemId': systemId,
+      };
 
   factory AcademicTrack.fromJson(Map<String, dynamic> json) => AcademicTrack(
-    id: json['id'] as String,
-    nameAr: json['nameAr'] as String? ?? '',
-    nameEn: json['nameEn'] as String? ?? '',
-    systemId: json['systemId'] as String? ?? '',
-  );
+        id: json['id'] as String,
+        nameAr: json['nameAr'] as String? ?? '',
+        nameEn: json['nameEn'] as String? ?? '',
+        systemId: json['systemId'] as String? ?? '',
+      );
 }

@@ -231,14 +231,14 @@ class DefaultData {
 
   /// أوقات الحصص الافتراضية في المدرسة المصرية (٧ حصص).
   static List<({int start, int end})> defaultPeriodTimes() => const [
-    (start: 8 * 60, end: 8 * 60 + 45),
-    (start: 8 * 60 + 50, end: 9 * 60 + 35),
-    (start: 9 * 60 + 40, end: 10 * 60 + 25),
-    (start: 10 * 60 + 45, end: 11 * 60 + 30),
-    (start: 11 * 60 + 35, end: 12 * 60 + 20),
-    (start: 12 * 60 + 25, end: 13 * 60 + 10),
-    (start: 13 * 60 + 15, end: 14 * 60),
-  ];
+        (start: 8 * 60, end: 8 * 60 + 45),
+        (start: 8 * 60 + 50, end: 9 * 60 + 35),
+        (start: 9 * 60 + 40, end: 10 * 60 + 25),
+        (start: 10 * 60 + 45, end: 11 * 60 + 30),
+        (start: 11 * 60 + 35, end: 12 * 60 + 20),
+        (start: 12 * 60 + 25, end: 13 * 60 + 10),
+        (start: 13 * 60 + 15, end: 14 * 60),
+      ];
 
   static Subject _s(
     String id,
@@ -246,11 +246,12 @@ class DefaultData {
     String en,
     int color, {
     bool counts = true,
-  }) => Subject(
-    id: id,
-    nameAr: ar,
-    nameEn: en,
-    colorValue: color,
-    countsTowardTotal: counts,
-  );
+  }) =>
+      Subject(
+        id: id,
+        nameAr: ar,
+        nameEn: en,
+        colorValue: color,
+        countsTowardTotal: counts,
+      );
 }

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}ربط أولياء الأمور{% endblock %}
+{% block content %}
+<header class="page"><h1>ربط أولياء الأمور بالطلاب</h1></header>
+
+<div class="card">
+  <h2>كيف يتم الربط</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px">
+    <div style="background:#f7f9fa;border-radius:12px;padding:14px">
+      <div style="font-weight:800;color:#2e7d91;margin-bottom:5px">١. الطالب</div>
+      <div style="font-size:13px;color:#42525f">يولّد كود من ٦ أرقام صالح لـ ١٥ دقيقة</div>
+    </div>
+    <div style="background:#f7f9fa;border-radius:12px;padding:14px">
+      <div style="font-weight:800;color:#2e7d91;margin-bottom:5px">٢. ولي الأمر</div>
+      <div style="font-size:13px;color:#42525f">يدخّل الكود من حسابه ويطلب الربط</div>
+    </div>
+    <div style="background:#f7f9fa;border-radius:12px;padding:14px">
+      <div style="font-weight:800;color:#2e7d91;margin-bottom:5px">٣. الطالب</div>
+      <div style="font-size:13px;color:#42525f">يوافق ويحدد الصلاحيات المسموحة</div>
+    </div>
+    <div style="background:#f7f9fa;border-radius:12px;padding:14px">
+      <div style="font-weight:800;color:#2e7d91;margin-bottom:5px">٤. الربط شغّال</div>
+      <div style="font-size:13px;color:#42525f">ولي الأمر يتابع، والطالب يقدر يفك الربط أي وقت</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>الروابط ({{ links|length }})</h2>
+  {% if links %}
+  <table>
+    <thead><tr><th>ولي الأمر</th><th>الطالب</th><th>الصلة</th><th>الحالة</th><th>تاريخ الطلب</th></tr></thead>
+    <tbody>
+      {% for l in links %}
+      <tr>
+        <td><strong>{{ l.guardian.display_name or '—' }}</strong>
+          <div style="font-size:11.5px;color:#6b7b8a" dir="ltr">{{ l.guardian.email }}</div></td>
+        <td>{{ l.student.display_name or '—' }}
+          <div style="font-size:11.5px;color:#6b7b8a">{{ l.student.school_name }}</div></td>
+        <td>{{ relation_label(l.relation) }}</td>
+        <td>
+          {% if l.status.value == 'accepted' %}<span class="pill ok">مفعّل</span>
+          {% elif l.status.value == 'pending' %}<span class="pill draft">في انتظار موافقة الطالب</span>
+          {% else %}<span class="pill muted">{{ status_label(l.status) }}</span>{% endif %}
+        </td>
+        <td class="num">{{ l.created_at.strftime('%Y-%m-%d') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty"><div class="big">👨‍👩‍👦</div>مفيش طلبات ربط لسه</div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -12,9 +12,9 @@ enum AccountRole {
   String get id => name;
 
   static AccountRole fromId(String? id) => AccountRole.values.firstWhere(
-    (e) => e.name == id,
-    orElse: () => AccountRole.student,
-  );
+        (e) => e.name == id,
+        orElse: () => AccountRole.student,
+      );
 }
 
 /// صلة القرابة بين ولي الأمر والطالب.
@@ -48,9 +48,9 @@ enum LinkStatus {
   String get id => name;
 
   static LinkStatus fromId(String? id) => LinkStatus.values.firstWhere(
-    (e) => e.name == id,
-    orElse: () => LinkStatus.pending,
-  );
+        (e) => e.name == id,
+        orElse: () => LinkStatus.pending,
+      );
 }
 
 /// الصلاحيات اللي ولي الأمر يقدر يشوفها عن الطالب.
@@ -124,16 +124,16 @@ class GuardianPermissions {
   }
 
   Map<String, dynamic> toJson() => {
-    'viewTimetable': viewTimetable,
-    'viewLessons': viewLessons,
-    'viewTasks': viewTasks,
-    'viewGrades': viewGrades,
-    'viewAttendance': viewAttendance,
-    'viewStudyStats': viewStudyStats,
-    'viewLessonCosts': viewLessonCosts,
-    'receiveAlerts': receiveAlerts,
-    'canAssignTasks': canAssignTasks,
-  };
+        'viewTimetable': viewTimetable,
+        'viewLessons': viewLessons,
+        'viewTasks': viewTasks,
+        'viewGrades': viewGrades,
+        'viewAttendance': viewAttendance,
+        'viewStudyStats': viewStudyStats,
+        'viewLessonCosts': viewLessonCosts,
+        'receiveAlerts': receiveAlerts,
+        'canAssignTasks': canAssignTasks,
+      };
 
   factory GuardianPermissions.fromJson(Map<String, dynamic> json) =>
       GuardianPermissions(
@@ -212,35 +212,35 @@ class GuardianLink {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'guardianUid': guardianUid,
-    'guardianName': guardianName,
-    'studentId': studentId,
-    'studentName': studentName,
-    'relation': relation.name,
-    'status': status.name,
-    'permissions': permissions.toJson(),
-    'createdAt': createdAt.toIso8601String(),
-    'respondedAt': respondedAt?.toIso8601String(),
-  };
+        'id': id,
+        'guardianUid': guardianUid,
+        'guardianName': guardianName,
+        'studentId': studentId,
+        'studentName': studentName,
+        'relation': relation.name,
+        'status': status.name,
+        'permissions': permissions.toJson(),
+        'createdAt': createdAt.toIso8601String(),
+        'respondedAt': respondedAt?.toIso8601String(),
+      };
 
   factory GuardianLink.fromJson(Map<String, dynamic> json) => GuardianLink(
-    id: json['id'] as String,
-    guardianUid: json['guardianUid'] as String? ?? '',
-    guardianName: json['guardianName'] as String? ?? '',
-    studentId: json['studentId'] as String? ?? '',
-    studentName: json['studentName'] as String? ?? '',
-    relation: GuardianRelation.fromId(json['relation'] as String?),
-    status: LinkStatus.fromId(json['status'] as String?),
-    permissions: json['permissions'] == null
-        ? const GuardianPermissions()
-        : GuardianPermissions.fromJson(
-            Map<String, dynamic>.from(json['permissions'] as Map),
-          ),
-    createdAt:
-        DateTime.tryParse(json['createdAt'] as String? ?? '') ?? DateTime.now(),
-    respondedAt: json['respondedAt'] == null
-        ? null
-        : DateTime.tryParse(json['respondedAt'] as String),
-  );
+        id: json['id'] as String,
+        guardianUid: json['guardianUid'] as String? ?? '',
+        guardianName: json['guardianName'] as String? ?? '',
+        studentId: json['studentId'] as String? ?? '',
+        studentName: json['studentName'] as String? ?? '',
+        relation: GuardianRelation.fromId(json['relation'] as String?),
+        status: LinkStatus.fromId(json['status'] as String?),
+        permissions: json['permissions'] == null
+            ? const GuardianPermissions()
+            : GuardianPermissions.fromJson(
+                Map<String, dynamic>.from(json['permissions'] as Map),
+              ),
+        createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ??
+            DateTime.now(),
+        respondedAt: json['respondedAt'] == null
+            ? null
+            : DateTime.tryParse(json['respondedAt'] as String),
+      );
 }

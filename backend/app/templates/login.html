@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block bare %}
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#1b5464">
+  <form method="post" action="/admin/login"
+        style="background:#fff;padding:34px;border-radius:16px;width:360px;box-shadow:0 12px 40px rgba(0,0,0,.22)">
+    <div style="font-size:22px;font-weight:800;margin-bottom:4px">مساعد الطالب</div>
+    <div style="font-size:13px;color:#6b7b8a;margin-bottom:24px">تسجيل دخول لوحة التحكم</div>
+    {% if error %}<div class="flash err">{{ error }}</div>{% endif %}
+    <div class="field">
+      <label>البريد الإلكتروني</label>
+      <input type="email" name="email" required autofocus dir="ltr">
+    </div>
+    <div class="field">
+      <label>كلمة المرور</label>
+      <input type="password" name="password" required dir="ltr">
+    </div>
+    <button class="btn" style="width:100%;justify-content:center;margin-top:6px">دخول</button>
+  </form>
+</div>
+{% endblock %}

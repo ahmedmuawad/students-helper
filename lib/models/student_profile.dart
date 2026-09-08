@@ -51,14 +51,14 @@ class StudyAvailability {
   }
 
   Map<String, dynamic> toJson() => {
-    'sleepStartMinutes': sleepStartMinutes,
-    'wakeUpMinutes': wakeUpMinutes,
-    'dailyBreakMinutes': dailyBreakMinutes,
-    'maxDailyStudyMinutes': maxDailyStudyMinutes,
-    'weekdayOverrides': weekdayOverrides.map(
-      (key, value) => MapEntry(key.toString(), value),
-    ),
-  };
+        'sleepStartMinutes': sleepStartMinutes,
+        'wakeUpMinutes': wakeUpMinutes,
+        'dailyBreakMinutes': dailyBreakMinutes,
+        'maxDailyStudyMinutes': maxDailyStudyMinutes,
+        'weekdayOverrides': weekdayOverrides.map(
+          (key, value) => MapEntry(key.toString(), value),
+        ),
+      };
 
   factory StudyAvailability.fromJson(Map<String, dynamic> json) {
     final raw = (json['weekdayOverrides'] as Map?) ?? const {};
@@ -139,8 +139,7 @@ class StudentProfile {
     if (birth == null) return null;
     final now = DateTime.now();
     var years = now.year - birth.year;
-    final hadBirthdayThisYear =
-        now.month > birth.month ||
+    final hadBirthdayThisYear = now.month > birth.month ||
         (now.month == birth.month && now.day >= birth.day);
     if (!hadBirthdayThisYear) years -= 1;
     return years < 0 ? null : years;
@@ -188,44 +187,45 @@ class StudentProfile {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'birthDate': birthDate?.toIso8601String(),
-    'countryCode': countryCode,
-    'schoolName': schoolName,
-    'gradeLevel': gradeLevel,
-    'educationSystem': educationSystem.name,
-    'schoolLanguage': schoolLanguage.name,
-    'currentTerm': currentTerm.name,
-    'trackId': trackId,
-    'avatarPath': avatarPath,
-    'subjectIds': subjectIds,
-    'availability': availability.toJson(),
-    'authUid': authUid,
-  };
+        'id': id,
+        'name': name,
+        'birthDate': birthDate?.toIso8601String(),
+        'countryCode': countryCode,
+        'schoolName': schoolName,
+        'gradeLevel': gradeLevel,
+        'educationSystem': educationSystem.name,
+        'schoolLanguage': schoolLanguage.name,
+        'currentTerm': currentTerm.name,
+        'trackId': trackId,
+        'avatarPath': avatarPath,
+        'subjectIds': subjectIds,
+        'availability': availability.toJson(),
+        'authUid': authUid,
+      };
 
   factory StudentProfile.fromJson(Map<String, dynamic> json) => StudentProfile(
-    id: json['id'] as String,
-    name: json['name'] as String? ?? '',
-    birthDate: json['birthDate'] == null
-        ? null
-        : DateTime.tryParse(json['birthDate'] as String),
-    countryCode: json['countryCode'] as String? ?? 'EG',
-    schoolName: json['schoolName'] as String? ?? '',
-    gradeLevel: json['gradeLevel'] as int? ?? 7,
-    educationSystem: EducationSystemX.fromId(
-      json['educationSystem'] as String?,
-    ),
-    schoolLanguage: SchoolLanguageX.fromId(json['schoolLanguage'] as String?),
-    currentTerm: Term.fromId(json['currentTerm'] as String?),
-    trackId: json['trackId'] as String? ?? '',
-    avatarPath: json['avatarPath'] as String?,
-    subjectIds: (json['subjectIds'] as List?)?.cast<String>() ?? const [],
-    availability: json['availability'] == null
-        ? const StudyAvailability()
-        : StudyAvailability.fromJson(
-            Map<String, dynamic>.from(json['availability'] as Map),
-          ),
-    authUid: json['authUid'] as String?,
-  );
+        id: json['id'] as String,
+        name: json['name'] as String? ?? '',
+        birthDate: json['birthDate'] == null
+            ? null
+            : DateTime.tryParse(json['birthDate'] as String),
+        countryCode: json['countryCode'] as String? ?? 'EG',
+        schoolName: json['schoolName'] as String? ?? '',
+        gradeLevel: json['gradeLevel'] as int? ?? 7,
+        educationSystem: EducationSystemX.fromId(
+          json['educationSystem'] as String?,
+        ),
+        schoolLanguage:
+            SchoolLanguageX.fromId(json['schoolLanguage'] as String?),
+        currentTerm: Term.fromId(json['currentTerm'] as String?),
+        trackId: json['trackId'] as String? ?? '',
+        avatarPath: json['avatarPath'] as String?,
+        subjectIds: (json['subjectIds'] as List?)?.cast<String>() ?? const [],
+        availability: json['availability'] == null
+            ? const StudyAvailability()
+            : StudyAvailability.fromJson(
+                Map<String, dynamic>.from(json['availability'] as Map),
+              ),
+        authUid: json['authUid'] as String?,
+      );
 }

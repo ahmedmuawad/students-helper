@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}الحسابات{% endblock %}
+{% block content %}
+<header class="page"><h1>الحسابات</h1></header>
+
+<div class="stats">
+  <div class="stat brand"><div class="n">{{ counts.total }}</div><div class="l">إجمالي الحسابات</div></div>
+  <div class="stat"><div class="n">{{ counts.students }}</div><div class="l">طلاب</div></div>
+  <div class="stat"><div class="n">{{ counts.guardians }}</div><div class="l">أولياء أمور</div></div>
+  <div class="stat ok"><div class="n">{{ counts.subscribed }}</div><div class="l">مشترك مدفوع</div></div>
+</div>
+
+<div class="card">
+  <h2>قائمة الحسابات</h2>
+  {% if accounts %}
+  <table>
+    <thead><tr><th>الاسم</th><th>الدور</th><th>الصف</th><th>المدرسة</th><th>الباقة</th><th>آخر ظهور</th></tr></thead>
+    <tbody>
+      {% for a in accounts %}
+      <tr>
+        <td><strong>{{ a.display_name or '—' }}</strong>
+          <div style="font-size:11.5px;color:#6b7b8a" dir="ltr">{{ a.email or a.firebase_uid[:16] }}</div></td>
+        <td><span class="pill {{ 'kind' if a.role.value == 'student' else 'muted' }}">{{ role_label(a.role) }}</span></td>
+        <td class="num">{{ a.grade_level or '—' }}</td>
+        <td>{{ a.school_name or '—' }}</td>
+        <td>{% set t = tier_of(a) %}
+          <span class="pill {{ 'ok' if t != 'free' else 'muted' }}">{{ tier_label(t) }}</span></td>
+        <td class="num">{{ a.last_seen_at.strftime('%Y-%m-%d') if a.last_seen_at else '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty"><div class="big">👥</div>مفيش حسابات مسجّلة لسه</div>
+  {% endif %}
+</div>
+{% endblock %}

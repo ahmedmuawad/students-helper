@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}لوحة التحكم{% endblock %} · مساعد الطالب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f4f6f8; --card:#fff; --ink:#16202a; --muted:#6b7b8a;
+      --line:#e3e8ee; --brand:#2e7d91; --brand-dark:#1b5464;
+      --accent:#f5a623; --danger:#e53935; --ok:#2e9e5b;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Tajawal,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+    a{color:var(--brand);text-decoration:none}
+    .layout{display:flex;min-height:100vh}
+
+    /* الشريط الجانبي */
+    aside{width:250px;background:var(--brand-dark);color:#fff;padding:22px 16px;flex-shrink:0}
+    aside .brand{font-size:19px;font-weight:800;margin-bottom:4px}
+    aside .sub{font-size:12px;opacity:.6;margin-bottom:26px}
+    aside nav a{display:flex;align-items:center;gap:10px;color:#cfe0e6;padding:11px 13px;
+      border-radius:10px;margin-bottom:4px;font-size:14.5px;font-weight:500}
+    aside nav a:hover{background:rgba(255,255,255,.08);color:#fff}
+    aside nav a.active{background:var(--brand);color:#fff;font-weight:700}
+    aside nav .group{font-size:11px;opacity:.45;margin:18px 0 7px 0;padding-right:13px;letter-spacing:.4px}
+
+    /* المحتوى */
+    main{flex:1;padding:26px 30px;min-width:0}
+    header.page{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+    header.page h1{margin:0;font-size:23px;font-weight:800}
+    header.page .spacer{flex:1}
+
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:18px}
+    .card h2{margin:0 0 14px;font-size:16px;font-weight:700}
+
+    /* الإحصائيات */
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-bottom:20px}
+    .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+    .stat .n{font-size:29px;font-weight:800;line-height:1.1}
+    .stat .l{font-size:12.5px;color:var(--muted);margin-top:3px}
+    .stat.brand .n{color:var(--brand)} .stat.accent .n{color:var(--accent)}
+    .stat.ok .n{color:var(--ok)} .stat.danger .n{color:var(--danger)}
+
+    /* الجداول */
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:11px 12px;text-align:right;border-bottom:1px solid var(--line);vertical-align:middle}
+    th{font-size:12px;color:var(--muted);font-weight:700;background:#fafbfc}
+    tbody tr:hover{background:#fafbfc}
+    td.num{font-variant-numeric:tabular-nums;color:var(--muted)}
+
+    /* عناصر */
+    .btn{display:inline-flex;align-items:center;gap:7px;background:var(--brand);color:#fff;border:0;
+      padding:10px 17px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer}
+    .btn:hover{background:var(--brand-dark)}
+    .btn.ghost{background:transparent;color:var(--brand);border:1px solid var(--line)}
+    .btn.ghost:hover{background:#eef4f6}
+    .btn.danger{background:var(--danger)}
+    .btn.sm{padding:6px 12px;font-size:13px}
+
+    .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:700}
+    .pill.ok{background:#e4f4ea;color:var(--ok)}
+    .pill.draft{background:#fdf0dd;color:#a9700f}
+    .pill.kind{background:#eaf2f5;color:var(--brand-dark)}
+    .pill.muted{background:#eef1f4;color:var(--muted)}
+
+    label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#42525f}
+    input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;
+      font-family:inherit;font-size:14px;background:#fff;color:var(--ink)}
+    input:focus,select:focus,textarea:focus{outline:2px solid rgba(46,125,145,.25);border-color:var(--brand)}
+    .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:14px}
+    .field{margin-bottom:14px}
+    .hint{font-size:11.5px;color:var(--muted);margin-top:5px}
+
+    .empty{text-align:center;padding:44px 20px;color:var(--muted)}
+    .empty .big{font-size:40px;margin-bottom:10px}
+    .flash{padding:12px 15px;border-radius:10px;margin-bottom:16px;font-size:14px;font-weight:600}
+    .flash.ok{background:#e4f4ea;color:#1d6b3c}
+    .flash.err{background:#fdeaea;color:#a92020}
+    .crumbs{font-size:12.5px;color:var(--muted);margin-bottom:6px}
+    .crumbs a{color:var(--muted)}
+  </style>
+</head>
+<body>
+{% if hide_nav %}
+  {% block bare %}{% endblock %}
+{% else %}
+<div class="layout">
+  <aside>
+    <div class="brand">مساعد الطالب</div>
+    <div class="sub">لوحة التحكم</div>
+    <nav>
+      <a href="/admin" class="{{ 'active' if active == 'dashboard' }}">الرئيسية</a>
+      <div class="group">المحتوى التعليمي</div>
+      <a href="/admin/curricula" class="{{ 'active' if active == 'curricula' }}">المناهج</a>
+      <a href="/admin/books" class="{{ 'active' if active == 'books' }}">الكتب والملازم</a>
+      <div class="group">المستخدمون</div>
+      <a href="/admin/accounts" class="{{ 'active' if active == 'accounts' }}">الحسابات</a>
+      <a href="/admin/links" class="{{ 'active' if active == 'links' }}">ربط أولياء الأمور</a>
+      <div class="group">النظام</div>
+      <a href="/admin/settings" class="{{ 'active' if active == 'settings' }}">إعدادات التكامل</a>
+      <a href="/admin/logout">تسجيل الخروج</a>
+    </nav>
+  </aside>
+  <main>
+    {% if flash %}<div class="flash {{ flash_kind or 'ok' }}">{{ flash }}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+{% endif %}
+</body>
+</html>

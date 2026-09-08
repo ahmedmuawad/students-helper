@@ -2,6 +2,12 @@
 class PrivateLesson {
   final String id;
   final String subjectId;
+
+  /// معرّف المدرس أو السنتر في دفتر جهات الاتصال — بيانات التواصل والعنوان
+  /// محفوظة هناك مرة واحدة وبتترّبط بكل دروسه.
+  final String instructorId;
+
+  /// اسم المدرس المكتوب مباشرة — بيتستخدم لو الدرس مش مربوط بجهة محفوظة.
   final String teacherName;
 
   /// المكان: سنتر، بيت المدرس، أونلاين ...
@@ -36,6 +42,7 @@ class PrivateLesson {
   const PrivateLesson({
     required this.id,
     required this.subjectId,
+    this.instructorId = '',
     this.teacherName = '',
     this.place = '',
     this.sessionTitle = '',
@@ -64,6 +71,7 @@ class PrivateLesson {
 
   PrivateLesson copyWith({
     String? subjectId,
+    String? instructorId,
     String? teacherName,
     String? place,
     String? sessionTitle,
@@ -80,6 +88,7 @@ class PrivateLesson {
     return PrivateLesson(
       id: id,
       subjectId: subjectId ?? this.subjectId,
+      instructorId: instructorId ?? this.instructorId,
       teacherName: teacherName ?? this.teacherName,
       place: place ?? this.place,
       sessionTitle: sessionTitle ?? this.sessionTitle,
@@ -96,38 +105,38 @@ class PrivateLesson {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'subjectId': subjectId,
-    'teacherName': teacherName,
-    'place': place,
-    'sessionTitle': sessionTitle,
-    'isWeekly': isWeekly,
-    'weekday': weekday,
-    'specificDate': specificDate?.toIso8601String(),
-    'startMinutes': startMinutes,
-    'endMinutes': endMinutes,
-    'remindDayBefore': remindDayBefore,
-    'remindBeforeMinutes': remindBeforeMinutes,
-    'cost': cost,
-    'note': note,
-  };
+        'id': id,
+        'subjectId': subjectId,
+        'teacherName': teacherName,
+        'place': place,
+        'sessionTitle': sessionTitle,
+        'isWeekly': isWeekly,
+        'weekday': weekday,
+        'specificDate': specificDate?.toIso8601String(),
+        'startMinutes': startMinutes,
+        'endMinutes': endMinutes,
+        'remindDayBefore': remindDayBefore,
+        'remindBeforeMinutes': remindBeforeMinutes,
+        'cost': cost,
+        'note': note,
+      };
 
   factory PrivateLesson.fromJson(Map<String, dynamic> json) => PrivateLesson(
-    id: json['id'] as String,
-    subjectId: json['subjectId'] as String? ?? '',
-    teacherName: json['teacherName'] as String? ?? '',
-    place: json['place'] as String? ?? '',
-    sessionTitle: json['sessionTitle'] as String? ?? '',
-    isWeekly: json['isWeekly'] as bool? ?? true,
-    weekday: json['weekday'] as int? ?? DateTime.saturday,
-    specificDate: json['specificDate'] == null
-        ? null
-        : DateTime.tryParse(json['specificDate'] as String),
-    startMinutes: json['startMinutes'] as int? ?? 16 * 60,
-    endMinutes: json['endMinutes'] as int? ?? 17 * 60 + 30,
-    remindDayBefore: json['remindDayBefore'] as bool? ?? true,
-    remindBeforeMinutes: json['remindBeforeMinutes'] as int? ?? 60,
-    cost: (json['cost'] as num?)?.toDouble() ?? 0,
-    note: json['note'] as String? ?? '',
-  );
+        id: json['id'] as String,
+        subjectId: json['subjectId'] as String? ?? '',
+        teacherName: json['teacherName'] as String? ?? '',
+        place: json['place'] as String? ?? '',
+        sessionTitle: json['sessionTitle'] as String? ?? '',
+        isWeekly: json['isWeekly'] as bool? ?? true,
+        weekday: json['weekday'] as int? ?? DateTime.saturday,
+        specificDate: json['specificDate'] == null
+            ? null
+            : DateTime.tryParse(json['specificDate'] as String),
+        startMinutes: json['startMinutes'] as int? ?? 16 * 60,
+        endMinutes: json['endMinutes'] as int? ?? 17 * 60 + 30,
+        remindDayBefore: json['remindDayBefore'] as bool? ?? true,
+        remindBeforeMinutes: json['remindBeforeMinutes'] as int? ?? 60,
+        cost: (json['cost'] as num?)?.toDouble() ?? 0,
+        note: json['note'] as String? ?? '',
+      );
 }

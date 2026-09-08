@@ -170,8 +170,10 @@ class _LessonCard extends StatelessWidget {
                     Text(
                       [
                         '${TimeUtils.formatMinutes(lesson.startMinutes)} - ${TimeUtils.formatMinutes(lesson.endMinutes)}',
-                        if (lesson.teacherName.isNotEmpty) lesson.teacherName,
-                        if (lesson.place.isNotEmpty) lesson.place,
+                        if (state.lessonTeacherName(lesson).isNotEmpty)
+                          state.lessonTeacherName(lesson),
+                        if (state.lessonPlace(lesson).isNotEmpty)
+                          state.lessonPlace(lesson),
                         if (!lesson.isWeekly && lesson.specificDate != null)
                           TimeUtils.formatDate(lesson.specificDate!),
                       ].join(' · '),

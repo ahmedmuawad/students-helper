@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}إعدادات التكامل{% endblock %}
+{% block content %}
+<header class="page"><h1>إعدادات التكامل</h1></header>
+
+<div class="card" style="border-right:4px solid #f5a623">
+  <div style="font-size:13.5px;color:#42525f;line-height:1.75">
+    المفاتيح دي مش مكتوبة في كود التطبيق ولا في ملفاته — بتتخزّن هنا على سيرفرك
+    وبيقراها التطبيق وقت التشغيل. يعني تقدر تغيّر أي مفتاح وتشوف أثره فورًا
+    <strong>من غير ما تنزّل نسخة جديدة على المتجر</strong>.<br>
+    المفاتيح المعلّمة بـ <span class="pill muted">سرّي</span> بتفضل على السيرفر
+    ومبتوصلش للتطبيق نهائيًا.
+  </div>
+</div>
+
+<form method="post" action="/admin/settings">
+{% for group, items in groups.items() %}
+  <div class="card">
+    <h2>{{ group }}</h2>
+    {% for item in items %}
+      <div class="field">
+        <label>
+          {{ item.label }}
+          {% if item.secret %}<span class="pill muted" style="margin-right:6px">سرّي</span>{% endif %}
+        </label>
+        {% if item.kind == 'bool' %}
+          <label style="display:flex;align-items:center;gap:9px;font-weight:500;margin:0">
+            <input type="checkbox" name="{{ item.key }}" value="1" style="width:auto"
+                   {% if values.get(item.key) == '1' %}checked{% endif %}>
+            مفعّل
+          </label>
+        {% elif item.kind == 'secret' %}
+          <input type="password" name="{{ item.key }}" dir="ltr" autocomplete="off"
+                 placeholder="{{ '•••••••• (محفوظ)' if values.get(item.key) else 'غير مضبوط' }}">
+        {% elif item.kind == 'secret_text' %}
+          <textarea name="{{ item.key }}" rows="4" dir="ltr"
+                    placeholder="{{ '•••••••• (محفوظ)' if values.get(item.key) else 'الصق محتوى ملف JSON هنا' }}"></textarea>
+        {% else %}
+          <input name="{{ item.key }}" dir="ltr" value="{{ values.get(item.key, '') }}"
+                 placeholder="{{ item.hint }}">
+        {% endif %}
+        {% if item.hint and item.kind != 'text' %}<div class="hint">{{ item.hint }}</div>
+        {% elif item.hint %}<div class="hint">{{ item.hint }}</div>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}
+  <button class="btn">حفظ الإعدادات</button>
+</form>
+
+<div class="card" style="margin-top:18px">
+  <h2>الباقات والأسعار الحالية</h2>
+  <table>
+    <thead><tr><th>الباقة</th><th>شهري</th><th>سنوي</th><th>إعلانات</th><th>رصيد AI شهريًا</th></tr></thead>
+    <tbody>
+      {% for tier, price in prices.items() %}
+      <tr>
+        <td><strong>{{ tier_label(tier.value) }}</strong></td>
+        <td class="num">{{ price.monthly }} ج.م</td>
+        <td class="num">{{ price.annual }} ج.م</td>
+        <td>{% if limits[tier].ads %}<span class="pill draft">بإعلانات</span>{% else %}<span class="pill ok">بدون</span>{% endif %}</td>
+        <td class="num">{{ limits[tier].ai_credits_per_month or '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="hint" style="margin-top:10px">
+    الأسعار معرّفة في <code dir="ltr">app/core/plans.py</code> — التطبيق بيقراها من السيرفر.
+  </div>
+</div>
+{% endblock %}

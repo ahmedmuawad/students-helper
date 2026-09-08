@@ -1,0 +1,7 @@
+.venv/
+media/
+*.db
+.env
+__pycache__/
+*.pyc
+seed_demo.py

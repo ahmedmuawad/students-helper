@@ -99,6 +99,7 @@ class StoreKeys {
   static const subjects = 'subjects';
   static const periods = 'school_periods';
   static const lessons = 'private_lessons';
+  static const instructors = 'instructors';
   static const tasks = 'study_tasks';
   static const exams = 'exams';
   static const guardianLinks = 'guardian_links';

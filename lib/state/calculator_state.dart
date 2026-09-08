@@ -53,9 +53,8 @@ class CalculatorState extends ChangeNotifier {
     final vars = _store.readObject(StoreKeys.calcVariables);
     if (vars != null) {
       vars.forEach((key, value) {
-        final number = value is num
-            ? value.toDouble()
-            : double.tryParse('$value');
+        final number =
+            value is num ? value.toDouble() : double.tryParse('$value');
         if (number != null) engine.context.write(key, number);
       });
     }
@@ -217,10 +216,10 @@ class CalculatorState extends ChangeNotifier {
   }
 
   Future<void> _persistHistory() => _store.writeList(
-    StoreKeys.calcHistory,
-    engine.history,
-    (entry) => entry.toJson(),
-  );
+        StoreKeys.calcHistory,
+        engine.history,
+        (entry) => entry.toJson(),
+      );
 
   Future<void> _persistVariables() =>
       _store.writeObject(StoreKeys.calcVariables, engine.context.variables);

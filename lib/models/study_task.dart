@@ -79,12 +79,10 @@ class StudyTask {
       priority: priority ?? this.priority,
       subjectId: subjectId ?? this.subjectId,
       dueDate: clearDueDate ? null : (dueDate ?? this.dueDate),
-      linkedPeriodId: clearLinks
-          ? null
-          : (linkedPeriodId ?? this.linkedPeriodId),
-      linkedLessonId: clearLinks
-          ? null
-          : (linkedLessonId ?? this.linkedLessonId),
+      linkedPeriodId:
+          clearLinks ? null : (linkedPeriodId ?? this.linkedPeriodId),
+      linkedLessonId:
+          clearLinks ? null : (linkedLessonId ?? this.linkedLessonId),
       isDone: isDone ?? this.isDone,
       completedAt: completedAt ?? this.completedAt,
       estimatedMinutes: estimatedMinutes ?? this.estimatedMinutes,
@@ -94,41 +92,41 @@ class StudyTask {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'title': title,
-    'details': details,
-    'type': type.name,
-    'priority': priority.name,
-    'subjectId': subjectId,
-    'dueDate': dueDate?.toIso8601String(),
-    'linkedPeriodId': linkedPeriodId,
-    'linkedLessonId': linkedLessonId,
-    'isDone': isDone,
-    'completedAt': completedAt?.toIso8601String(),
-    'estimatedMinutes': estimatedMinutes,
-    'spentMinutes': spentMinutes,
-    'createdAt': createdAt.toIso8601String(),
-  };
+        'id': id,
+        'title': title,
+        'details': details,
+        'type': type.name,
+        'priority': priority.name,
+        'subjectId': subjectId,
+        'dueDate': dueDate?.toIso8601String(),
+        'linkedPeriodId': linkedPeriodId,
+        'linkedLessonId': linkedLessonId,
+        'isDone': isDone,
+        'completedAt': completedAt?.toIso8601String(),
+        'estimatedMinutes': estimatedMinutes,
+        'spentMinutes': spentMinutes,
+        'createdAt': createdAt.toIso8601String(),
+      };
 
   factory StudyTask.fromJson(Map<String, dynamic> json) => StudyTask(
-    id: json['id'] as String,
-    title: json['title'] as String? ?? '',
-    details: json['details'] as String? ?? '',
-    type: TaskType.fromId(json['type'] as String?),
-    priority: TaskPriority.fromId(json['priority'] as String?),
-    subjectId: json['subjectId'] as String? ?? '',
-    dueDate: json['dueDate'] == null
-        ? null
-        : DateTime.tryParse(json['dueDate'] as String),
-    linkedPeriodId: json['linkedPeriodId'] as String?,
-    linkedLessonId: json['linkedLessonId'] as String?,
-    isDone: json['isDone'] as bool? ?? false,
-    completedAt: json['completedAt'] == null
-        ? null
-        : DateTime.tryParse(json['completedAt'] as String),
-    estimatedMinutes: json['estimatedMinutes'] as int? ?? 30,
-    spentMinutes: json['spentMinutes'] as int? ?? 0,
-    createdAt:
-        DateTime.tryParse(json['createdAt'] as String? ?? '') ?? DateTime.now(),
-  );
+        id: json['id'] as String,
+        title: json['title'] as String? ?? '',
+        details: json['details'] as String? ?? '',
+        type: TaskType.fromId(json['type'] as String?),
+        priority: TaskPriority.fromId(json['priority'] as String?),
+        subjectId: json['subjectId'] as String? ?? '',
+        dueDate: json['dueDate'] == null
+            ? null
+            : DateTime.tryParse(json['dueDate'] as String),
+        linkedPeriodId: json['linkedPeriodId'] as String?,
+        linkedLessonId: json['linkedLessonId'] as String?,
+        isDone: json['isDone'] as bool? ?? false,
+        completedAt: json['completedAt'] == null
+            ? null
+            : DateTime.tryParse(json['completedAt'] as String),
+        estimatedMinutes: json['estimatedMinutes'] as int? ?? 30,
+        spentMinutes: json['spentMinutes'] as int? ?? 0,
+        createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ??
+            DateTime.now(),
+      );
 }

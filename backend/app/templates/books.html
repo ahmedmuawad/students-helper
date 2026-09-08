@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}الكتب والملازم{% endblock %}
+{% block content %}
+<header class="page">
+  <h1>الكتب والملازم</h1><div class="spacer"></div>
+</header>
+
+<div class="card">
+  <h2>رفع ملف جديد</h2>
+  <form method="post" action="/admin/books" enctype="multipart/form-data">
+    <div class="row">
+      <div><label>المنهج والصف والمادة</label>
+        <select name="subject_id" required>
+          <option value="">— اختار —</option>
+          {% for opt in subject_options %}
+            <option value="{{ opt.id }}" {% if selected_subject == opt.id %}selected{% endif %}>
+              {{ opt.label }}
+            </option>
+          {% endfor %}
+        </select></div>
+      <div><label>التصنيف</label>
+        <select name="kind">
+          <option value="textbook">كتاب الوزارة</option>
+          <option value="workbook">كتاب الأنشطة</option>
+          <option value="booklet">ملزمة</option>
+          <option value="revision">مراجعة نهائية</option>
+          <option value="exam">نماذج امتحانات</option>
+          <option value="teacher_guide">دليل المعلم</option>
+          <option value="other">أخرى</option>
+        </select></div>
+      <div><label>الترم</label>
+        <select name="term"><option value="1">الترم الأول</option><option value="2">الترم الثاني</option></select></div>
+    </div>
+    <div class="row">
+      <div><label>العنوان</label><input name="title_ar" required placeholder="الرياضيات - الصف الأول الإعدادي"></div>
+      <div><label>الناشر / المصدر</label><input name="publisher" placeholder="وزارة التربية والتعليم"></div>
+    </div>
+    <div class="field">
+      <label>رابط المصدر الأصلي</label>
+      <input name="source_url" dir="ltr" placeholder="https://studentbooks.moe.gov.eg/...">
+      <div class="hint">وثّق المصدر لكل ملف — ده بيحمي المشروع قانونيًا ويسهّل التحديث كل سنة.</div>
+    </div>
+    <div class="field">
+      <label>ملاحظة الحقوق</label>
+      <input name="license_note" placeholder="منشور مجانًا من وزارة التربية والتعليم">
+    </div>
+    <div class="field">
+      <label>ملف PDF</label>
+      <input type="file" name="file" accept="application/pdf" required>
+      <div class="hint">الحد الأقصى {{ max_mb }} ميجا · هيتقرأ عدد الصفحات تلقائيًا</div>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-weight:500">
+      <input type="checkbox" name="is_published" value="1" style="width:auto" checked>
+      نشر الملف فورًا للطلاب
+    </label>
+    <button class="btn" style="margin-top:14px">رفع الملف</button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>الملفات ({{ books|length }})</h2>
+  {% if books %}
+  <table>
+    <thead><tr>
+      <th>العنوان</th><th>التصنيف</th><th>الصف / المادة</th><th>الترم</th>
+      <th>الصفحات</th><th>الحجم</th><th>التحميلات</th><th>الحالة</th><th></th>
+    </tr></thead>
+    <tbody>
+      {% for b in books %}
+      <tr>
+        <td><strong>{{ b.title_ar }}</strong>
+          {% if b.publisher %}<div style="font-size:11.5px;color:#6b7b8a">{{ b.publisher }}</div>{% endif %}</td>
+        <td><span class="pill kind">{{ kind_label(b.kind) }}</span></td>
+        <td>{{ b.subject.grade.name_ar }}<div style="font-size:11.5px;color:#6b7b8a">{{ b.subject.name_ar }}</div></td>
+        <td class="num">{{ b.term }}</td>
+        <td class="num">{{ b.page_count or '—' }}</td>
+        <td class="num">{{ size_label(b.file_size) }}</td>
+        <td class="num">{{ b.download_count }}</td>
+        <td>{% if b.is_published %}<span class="pill ok">منشور</span>{% else %}<span class="pill draft">مسودّة</span>{% endif %}</td>
+        <td style="white-space:nowrap">
+          <form method="post" action="/admin/books/{{ b.id }}/toggle" style="display:inline">
+            <button class="btn ghost sm">{{ 'إخفاء' if b.is_published else 'نشر' }}</button>
+          </form>
+          <form method="post" action="/admin/books/{{ b.id }}/delete" style="display:inline"
+                onsubmit="return confirm('تحذف الملف ده نهائيًا؟')">
+            <button class="btn danger sm">حذف</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty"><div class="big">📄</div>مفيش ملفات مرفوعة — ارفع أول كتاب من الفورم فوق</div>
+  {% endif %}
+</div>
+{% endblock %}

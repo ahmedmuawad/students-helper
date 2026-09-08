@@ -60,26 +60,26 @@ class SchoolPeriod {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'weekday': weekday,
-    'periodNumber': periodNumber,
-    'subjectId': subjectId,
-    'teacherName': teacherName,
-    'room': room,
-    'startMinutes': startMinutes,
-    'endMinutes': endMinutes,
-    'note': note,
-  };
+        'id': id,
+        'weekday': weekday,
+        'periodNumber': periodNumber,
+        'subjectId': subjectId,
+        'teacherName': teacherName,
+        'room': room,
+        'startMinutes': startMinutes,
+        'endMinutes': endMinutes,
+        'note': note,
+      };
 
   factory SchoolPeriod.fromJson(Map<String, dynamic> json) => SchoolPeriod(
-    id: json['id'] as String,
-    weekday: json['weekday'] as int? ?? DateTime.saturday,
-    periodNumber: json['periodNumber'] as int? ?? 1,
-    subjectId: json['subjectId'] as String? ?? '',
-    teacherName: json['teacherName'] as String? ?? '',
-    room: json['room'] as String? ?? '',
-    startMinutes: json['startMinutes'] as int? ?? 8 * 60,
-    endMinutes: json['endMinutes'] as int? ?? 8 * 60 + 45,
-    note: json['note'] as String? ?? '',
-  );
+        id: json['id'] as String,
+        weekday: json['weekday'] as int? ?? DateTime.saturday,
+        periodNumber: json['periodNumber'] as int? ?? 1,
+        subjectId: json['subjectId'] as String? ?? '',
+        teacherName: json['teacherName'] as String? ?? '',
+        room: json['room'] as String? ?? '',
+        startMinutes: json['startMinutes'] as int? ?? 8 * 60,
+        endMinutes: json['endMinutes'] as int? ?? 8 * 60 + 45,
+        note: json['note'] as String? ?? '',
+      );
 }

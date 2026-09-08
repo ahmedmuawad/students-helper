@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}المناهج{% endblock %}
+{% block content %}
+<header class="page">
+  <h1>المناهج</h1><div class="spacer"></div>
+</header>
+
+<div class="card">
+  <h2>إضافة منهج</h2>
+  <form method="post" action="/admin/curricula">
+    <div class="row">
+      <div><label>الدولة</label>
+        <select name="country_code">
+          <option value="EG">مصر</option><option value="SA">السعودية</option>
+          <option value="AE">الإمارات</option><option value="KW">الكويت</option>
+          <option value="QA">قطر</option><option value="JO">الأردن</option>
+        </select></div>
+      <div><label>النظام التعليمي</label>
+        <select name="system_id">
+          <option value="egyptBaccalaureate">البكالوريا المصرية</option>
+          <option value="egyptGeneral">الثانوية العامة (القديم)</option>
+          <option value="azhar">التعليم الأزهري</option>
+          <option value="igcse">كامبريدج IGCSE</option>
+          <option value="ib">البكالوريا الدولية IB</option>
+          <option value="american">الدبلومة الأمريكية</option>
+        </select></div>
+      <div><label>لغة الدراسة</label>
+        <select name="language">
+          <option value="arabic">عربي</option><option value="languages">لغات</option>
+          <option value="international">دولية</option>
+        </select></div>
+      <div><label>السنة الدراسية</label><input name="academic_year" value="2025/2026"></div>
+    </div>
+    <div class="row">
+      <div><label>الاسم بالعربية</label><input name="name_ar" required placeholder="المنهج المصري - لغات"></div>
+      <div><label>الاسم بالإنجليزية</label><input name="name_en" placeholder="Egyptian Curriculum - Languages"></div>
+    </div>
+    <button class="btn">إضافة المنهج</button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>المناهج المسجّلة ({{ curricula|length }})</h2>
+  {% if curricula %}
+  <table>
+    <thead><tr><th>المنهج</th><th>الدولة</th><th>اللغة</th><th>السنة</th><th>الصفوف</th><th>الحالة</th><th></th></tr></thead>
+    <tbody>
+      {% for c in curricula %}
+      <tr>
+        <td><strong>{{ c.name_ar }}</strong><div style="font-size:11.5px;color:#6b7b8a">{{ c.system_id }}</div></td>
+        <td>{{ c.country_code }}</td>
+        <td>{{ language_label(c.language) }}</td>
+        <td class="num">{{ c.academic_year }}</td>
+        <td class="num">{{ c.grades|length }}</td>
+        <td>{% if c.is_published %}<span class="pill ok">منشور</span>{% else %}<span class="pill draft">مسودّة</span>{% endif %}</td>
+        <td><a class="btn ghost sm" href="/admin/curricula/{{ c.id }}">فتح</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty"><div class="big">🗂️</div>مفيش مناهج — ضيف أول منهج من الفورم فوق</div>
+  {% endif %}
+</div>
+{% endblock %}

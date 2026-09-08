@@ -5,6 +5,7 @@ import '../core/utils/time_utils.dart';
 import '../data/default_data.dart';
 import '../data/local_store.dart';
 import '../models/account.dart';
+import '../models/instructor.dart';
 import '../models/private_lesson.dart';
 import '../models/school_period.dart';
 import '../models/student_profile.dart';
@@ -23,6 +24,7 @@ class AppState extends ChangeNotifier {
   List<Subject> _subjects = [];
   List<SchoolPeriod> _periods = [];
   List<PrivateLesson> _lessons = [];
+  List<Instructor> _instructors = [];
   List<StudyTask> _tasks = [];
   List<GuardianLink> _guardianLinks = [];
 
@@ -39,6 +41,7 @@ class AppState extends ChangeNotifier {
   List<Subject> get subjects => List.unmodifiable(_subjects);
   List<SchoolPeriod> get periods => List.unmodifiable(_periods);
   List<PrivateLesson> get lessons => List.unmodifiable(_lessons);
+  List<Instructor> get instructors => List.unmodifiable(_instructors);
   List<StudyTask> get tasks => List.unmodifiable(_tasks);
   List<GuardianLink> get guardianLinks => List.unmodifiable(_guardianLinks);
 
@@ -55,14 +58,14 @@ class AppState extends ChangeNotifier {
 
   Future<void> load() async {
     final profileJson = _store.readObject(StoreKeys.profile);
-    _profile = profileJson == null
-        ? null
-        : StudentProfile.fromJson(profileJson);
+    _profile =
+        profileJson == null ? null : StudentProfile.fromJson(profileJson);
 
     _role = AccountRole.fromId(_store.readString(StoreKeys.accountRole));
     _subjects = _store.readList(StoreKeys.subjects, Subject.fromJson);
     _periods = _store.readList(StoreKeys.periods, SchoolPeriod.fromJson);
     _lessons = _store.readList(StoreKeys.lessons, PrivateLesson.fromJson);
+    _instructors = _store.readList(StoreKeys.instructors, Instructor.fromJson);
     _tasks = _store.readList(StoreKeys.tasks, StudyTask.fromJson);
     _guardianLinks = _store.readList(
       StoreKeys.guardianLinks,
@@ -97,9 +100,9 @@ class AppState extends ChangeNotifier {
   }
 
   static ThemeMode _themeFromId(String? id) => ThemeMode.values.firstWhere(
-    (m) => m.name == id,
-    orElse: () => ThemeMode.system,
-  );
+        (m) => m.name == id,
+        orElse: () => ThemeMode.system,
+      );
 
   // ----- الملف الشخصي -----
 
@@ -244,6 +247,79 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ----- المدرسين والسناتر -----
+
+  Instructor? instructorById(String? id) {
+    if (id == null || id.isEmpty) return null;
+    for (final instructor in _instructors) {
+      if (instructor.id == id) return instructor;
+    }
+    return null;
+  }
+
+  /// المدرس المرتبط بالدرس، أو null لو الدرس مكتوب فيه اسم يدوي بس.
+  Instructor? instructorForLesson(PrivateLesson lesson) =>
+      instructorById(lesson.instructorId);
+
+  /// الاسم المعروض للدرس: من جهة الاتصال المحفوظة أو الاسم اليدوي.
+  String lessonTeacherName(PrivateLesson lesson) {
+    final instructor = instructorForLesson(lesson);
+    if (instructor != null && instructor.name.isNotEmpty)
+      return instructor.name;
+    return lesson.teacherName;
+  }
+
+  /// المكان المعروض للدرس: عنوان جهة الاتصال أو المكان اليدوي.
+  String lessonPlace(PrivateLesson lesson) {
+    final instructor = instructorForLesson(lesson);
+    if (instructor != null && instructor.address.isNotEmpty) {
+      return instructor.address;
+    }
+    return lesson.place;
+  }
+
+  Future<void> upsertInstructor(Instructor instructor) async {
+    final index = _instructors.indexWhere((i) => i.id == instructor.id);
+    if (index >= 0) {
+      _instructors[index] = instructor;
+    } else {
+      _instructors.add(instructor);
+    }
+    await _store.writeList(
+        StoreKeys.instructors, _instructors, (i) => i.toJson());
+    notifyListeners();
+  }
+
+  Future<void> deleteInstructor(String id) async {
+    _instructors.removeWhere((i) => i.id == id);
+    // الدروس المرتبطة بتفضل موجودة بس من غير ربط بجهة الاتصال.
+    for (var i = 0; i < _lessons.length; i++) {
+      if (_lessons[i].instructorId == id) {
+        _lessons[i] = _lessons[i].copyWith(instructorId: '');
+      }
+    }
+    await _store.writeList(
+        StoreKeys.instructors, _instructors, (i) => i.toJson());
+    await _store.writeList(StoreKeys.lessons, _lessons, (l) => l.toJson());
+    notifyListeners();
+  }
+
+  /// الدروس المرتبطة بمدرس معيّن.
+  List<PrivateLesson> lessonsForInstructor(String instructorId) => _lessons
+      .where((l) => l.instructorId == instructorId)
+      .toList(growable: false);
+
+  /// إجمالي تكلفة الدروس الأسبوعية عند مدرس معيّن.
+  double weeklyCostForInstructor(String instructorId) {
+    var total = 0.0;
+    for (final lesson in lessonsForInstructor(instructorId)) {
+      if (lesson.isWeekly) {
+        total += lesson.cost;
+      }
+    }
+    return total;
+  }
+
   List<PrivateLesson> lessonsForDay(DateTime day) =>
       ScheduleService.lessonsForDay(_lessons, day);
 
@@ -381,6 +457,7 @@ class AppState extends ChangeNotifier {
     _subjects = [];
     _periods = [];
     _lessons = [];
+    _instructors = [];
     _tasks = [];
     _guardianLinks = [];
     _onboardingDone = false;

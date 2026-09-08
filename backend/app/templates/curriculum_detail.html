@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ curriculum.name_ar }}{% endblock %}
+{% block content %}
+<div class="crumbs"><a href="/admin/curricula">المناهج</a> ← {{ curriculum.name_ar }}</div>
+<header class="page">
+  <h1>{{ curriculum.name_ar }}</h1>
+  <span class="pill kind">{{ language_label(curriculum.language) }}</span>
+  <span class="pill muted">{{ curriculum.academic_year }}</span>
+</header>
+
+<div class="card">
+  <h2>إضافة صف دراسي</h2>
+  <form method="post" action="/admin/curricula/{{ curriculum.id }}/grades">
+    <div class="row">
+      <div><label>رقم الصف (1–12)</label><input type="number" name="level" min="1" max="12" required></div>
+      <div><label>الاسم بالعربية</label><input name="name_ar" required placeholder="الأول الإعدادي"></div>
+      <div><label>الاسم بالإنجليزية</label><input name="name_en" placeholder="Grade 7"></div>
+      <div><label>المسار (للثانوي)</label><input name="track_id" placeholder="bacc_medical"></div>
+    </div>
+    <button class="btn">إضافة الصف</button>
+  </form>
+</div>
+
+{% for grade in curriculum.grades %}
+<div class="card">
+  <h2>{{ grade.name_ar }} <span class="pill muted">{{ grade.subjects|length }} مادة</span></h2>
+
+  {% if grade.subjects %}
+  <table style="margin-bottom:16px">
+    <thead><tr><th>المادة</th><th>المعرّف</th><th>تُضاف للمجموع</th><th>الوحدات</th><th>الكتب</th></tr></thead>
+    <tbody>
+      {% for s in grade.subjects %}
+      <tr>
+        <td><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:{{ s.color }};margin-left:7px"></span>
+            <strong>{{ s.name_ar }}</strong></td>
+        <td dir="ltr" style="font-size:12.5px;color:#6b7b8a">{{ s.slug }}</td>
+        <td>{% if s.counts_toward_total %}<span class="pill ok">نعم</span>{% else %}<span class="pill muted">لا</span>{% endif %}</td>
+        <td class="num">{{ s.units|length }}</td>
+        <td><a class="btn ghost sm" href="/admin/books?subject_id={{ s.id }}">الكتب</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  <form method="post" action="/admin/grades/{{ grade.id }}/subjects">
+    <div class="row">
+      <div><label>المعرّف</label><input name="slug" required placeholder="math" dir="ltr"></div>
+      <div><label>الاسم بالعربية</label><input name="name_ar" required placeholder="الرياضيات"></div>
+      <div><label>الاسم بالإنجليزية</label><input name="name_en" placeholder="Mathematics"></div>
+      <div><label>اللون</label><input type="color" name="color" value="#2E7D91" style="height:42px;padding:4px"></div>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-weight:500;margin-bottom:12px">
+      <input type="checkbox" name="counts_toward_total" value="1" style="width:auto" checked>
+      تُضاف للمجموع
+    </label>
+    <button class="btn ghost">إضافة مادة لـ {{ grade.name_ar }}</button>
+  </form>
+</div>
+{% else %}
+<div class="card"><div class="empty"><div class="big">🎓</div>مفيش صفوف — ضيف أول صف من الفورم فوق</div></div>
+{% endfor %}
+{% endblock %}
