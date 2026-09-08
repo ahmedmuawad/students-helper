@@ -149,3 +149,22 @@ def require_role(*roles: AccountRole):
         return account
 
     return guard
+
+
+async def optional_account(
+    authorization: str = Header(default=""),
+    db: Session = Depends(get_db),
+) -> Account | None:
+    """الحساب لو المستخدم مسجّل دخول، وإلا None — من غير ما يرمي خطأ.
+
+    بنستخدمها في المحتوى العام زي مكتبة الكتب: كتب الوزارة منشورة مجانًا
+    والتطبيق شغّال من غير حساب أصلاً، فمش منطقي نطلب تسجيل دخول عشان
+    الطالب يشوف كتابه. لو مسجّل بنستفيد ببياناته (صفه ونظامه) كافتراضي.
+    """
+    if not authorization.startswith("Bearer "):
+        return None
+    try:
+        return await current_account(authorization=authorization, db=db)
+    except HTTPException:
+        # توكن منتهي أو بايظ — بنكمّل كزائر بدل ما نقفل المحتوى العام
+        return None

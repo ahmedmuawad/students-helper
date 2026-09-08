@@ -6,6 +6,8 @@ import '../../core/utils/time_utils.dart';
 import '../../models/student_profile.dart';
 import '../../services/notification_service.dart';
 import '../../state/app_state.dart';
+import '../../state/auth_state.dart';
+import '../auth/sign_in_screen.dart';
 import '../common/ui_helpers.dart';
 import '../guardian/link_code_screen.dart';
 import '../guardian/link_requests_screen.dart';
@@ -27,6 +29,7 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
         children: [
+          const _AccountCard(),
           SectionHeader(s.get('profile')),
           Card(
             child: ListTile(
@@ -299,5 +302,130 @@ class _MinutesTile extends StatelessWidget {
     final rest = minutes % 60;
     if (rest == 0) return '$hours ساعة';
     return '$hours:${rest.toString().padLeft(2, '0')} ساعة';
+  }
+}
+
+
+/// بطاقة الحساب والمزامنة.
+///
+/// التطبيق شغّال من غير حساب، فالبطاقة دي بتوضّح الفرق: من غير حساب
+/// البيانات على الجهاز ده بس، وبحساب بتتزامن وولي الأمر يقدر يتابع.
+class _AccountCard extends StatelessWidget {
+  const _AccountCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = context.watch<AuthState>();
+    final user = auth.user;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SectionHeader('الحساب والمزامنة'),
+        Card(
+          child: Column(
+            children: [
+              ListTile(
+                leading: CircleAvatar(
+                  child: Icon(
+                    user == null ? Icons.cloud_off_outlined : Icons.cloud_done,
+                  ),
+                ),
+                title: Text(user?.label ?? 'من غير حساب'),
+                subtitle: Text(
+                  user == null
+                      ? 'بياناتك على الجهاز ده بس'
+                      : _syncLabel(auth),
+                ),
+                trailing: user == null ? const Icon(Icons.chevron_right) : null,
+                onTap: user != null
+                    ? null
+                    : () => Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (_) =>
+                                const SignInScreen(allowSkip: false),
+                          ),
+                        ),
+              ),
+              if (user != null) ...[
+                const Divider(height: 1),
+                ListTile(
+                  leading: auth.isBusy
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.sync),
+                  title: const Text('زامن دلوقتي'),
+                  subtitle: auth.pendingCount > 0
+                      ? Text('${auth.pendingCount} تعديل مستني')
+                      : null,
+                  onTap: () async {
+                    final result = await context.read<AuthState>().syncNow();
+                    if (!context.mounted) return;
+                    showSnack(
+                      context,
+                      result.offline
+                          ? 'مفيش نت — هنزامن أول ما يرجع'
+                          : result.ok
+                              ? 'تمت المزامنة'
+                              : result.error ?? 'المزامنة ما تمّتش',
+                    );
+                  },
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text('تسجيل خروج'),
+                  subtitle: const Text('بياناتك على الجهاز بتفضل زي ما هي'),
+                  onTap: () => _confirmSignOut(context),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  static String _syncLabel(AuthState auth) {
+    if (auth.pendingCount > 0) {
+      return '${auth.pendingCount} تعديل لسه ما اتزامنش';
+    }
+    final at = auth.lastSyncAt;
+    if (at == null) return 'متزامن';
+    final ago = DateTime.now().difference(at);
+    if (ago.inMinutes < 1) return 'اتزامن دلوقتي';
+    if (ago.inHours < 1) return 'اتزامن من ${ago.inMinutes} دقيقة';
+    if (ago.inDays < 1) return 'اتزامن من ${ago.inHours} ساعة';
+    return 'اتزامن من ${ago.inDays} يوم';
+  }
+
+  Future<void> _confirmSignOut(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('تسجيل خروج'),
+        content: const Text(
+          'بياناتك اللي على الجهاز هتفضل زي ما هي، والمزامنة هتقف لحد ما '
+          'تسجّل دخول تاني.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('إلغاء'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('اخرج'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true && context.mounted) {
+      await context.read<AuthState>().signOut();
+    }
   }
 }

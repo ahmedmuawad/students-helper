@@ -22,6 +22,7 @@ class AppStrings {
 
     // التنقل
     'nav_home': 'الرئيسية',
+    'nav_library': 'المكتبة',
     'nav_timetable': 'الجدول',
     'nav_lessons': 'الدروس',
     'nav_tasks': 'المهام',
@@ -169,6 +170,7 @@ class AppStrings {
   static const Map<String, String> _en = {
     'app_name': 'Student Helper',
     'nav_home': 'Home',
+    'nav_library': 'Library',
     'nav_timetable': 'Timetable',
     'nav_lessons': 'Lessons',
     'nav_tasks': 'Tasks',

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/l10n/app_strings.dart';
 import '../../state/app_state.dart';
+import '../books/library_screen.dart';
 import '../calculator/calculator_screen.dart';
 import '../lessons/lessons_screen.dart';
 import '../tasks/tasks_screen.dart';
@@ -35,6 +36,7 @@ class _AppShellState extends State<AppShell> {
     TimetableScreen(),
     LessonsScreen(),
     TasksScreen(),
+    LibraryScreen(),
     CalculatorScreen(),
   ];
 
@@ -67,6 +69,11 @@ class _AppShellState extends State<AppShell> {
             icon: const Icon(Icons.checklist_outlined),
             selectedIcon: const Icon(Icons.checklist),
             label: s.get('nav_tasks'),
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.menu_book_outlined),
+            selectedIcon: const Icon(Icons.menu_book),
+            label: s.get('nav_library'),
           ),
           NavigationDestination(
             icon: const Icon(Icons.calculate_outlined),

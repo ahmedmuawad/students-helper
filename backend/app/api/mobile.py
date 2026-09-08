@@ -18,7 +18,7 @@ from app.core.plans import (
     ad_personalization_allowed,
     limits_for,
 )
-from app.core.security import current_account
+from app.core.security import current_account, optional_account
 from app.models import (
     Account,
     AccountRole,
@@ -268,14 +268,19 @@ async def library(
     system_id: str | None = None,
     language: str | None = None,
     term: int | None = None,
-    account: Account = Depends(current_account),
+    account: Account | None = Depends(optional_account),
     db: Session = Depends(get_db),
 ):
-    """مكتبة الطالب: الكتب والملازم المتاحة لصفه ونظامه."""
+    """مكتبة الطالب: الكتب والملازم المتاحة لصفه ونظامه.
 
-    grade_level = grade_level or account.grade_level
-    system_id = system_id or account.system_id
-    language = language or account.school_language
+    مفتوحة من غير تسجيل دخول — دي كتب الوزارة المنشورة مجانًا، والتطبيق
+    شغّال من غير حساب. لو المستخدم مسجّل، بياناته بتبقى الافتراضي.
+    """
+
+    if account is not None:
+        grade_level = grade_level or account.grade_level
+        system_id = system_id or account.system_id
+        language = language or account.school_language
 
     query = (
         db.query(Book)

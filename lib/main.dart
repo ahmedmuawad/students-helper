@@ -6,6 +6,7 @@ import 'app.dart';
 import 'data/local_store.dart';
 import 'services/api_client.dart';
 import 'services/auth_service.dart';
+import 'services/books_service.dart';
 import 'services/notification_service.dart';
 import 'services/sync_service.dart';
 import 'state/app_state.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
   final store = await LocalStore.open();
   final api = ApiClient();
   final sync = SyncService(api, store);
+  final books = BooksService(api, store);
   final appState = AppState(store, sync: sync);
   await appState.load();
 
@@ -47,6 +49,7 @@ Future<void> main() async {
       providers: [
         Provider<ApiClient>.value(value: api),
         Provider<SyncService>.value(value: sync),
+        Provider<BooksService>.value(value: books),
         ChangeNotifierProvider<AppState>.value(value: appState),
         ChangeNotifierProvider<AuthState>(
           create: (_) => AuthState(

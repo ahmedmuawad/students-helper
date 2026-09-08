@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:students_helper/app.dart';
 import 'package:students_helper/data/local_store.dart';
 import 'package:students_helper/services/api_client.dart';
+import 'package:students_helper/services/books_service.dart';
 import 'package:students_helper/state/app_state.dart';
 import 'package:students_helper/state/calculator_state.dart';
 
@@ -18,6 +19,7 @@ Future<Widget> buildApp(Map<String, Object> initialValues) async {
   return MultiProvider(
     providers: [
       Provider<ApiClient>(create: (_) => ApiClient()),
+      Provider<BooksService>(create: (_) => BooksService(ApiClient(), store)),
       ChangeNotifierProvider<AppState>.value(value: appState),
       ChangeNotifierProvider<CalculatorState>(
         create: (_) => CalculatorState(store),
