@@ -30,6 +30,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import httpx
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.core.database import Base, SessionLocal, engine
@@ -175,6 +176,9 @@ def list_container(container_url: str, prefix: str = "") -> list[str]:
 
 _URL_RE = re.compile(r"https?://\S+\.pdf", re.IGNORECASE)
 
+# نفس طول عمود books.title_ar
+BOOK_TITLE_MAX = 240
+
 
 @dataclass
 class Entry:
@@ -183,14 +187,21 @@ class Entry:
 
 
 def read_entries(path: str) -> list[Entry]:
-    """يقرأ ملف روابط، ويربط كل رابط بالسطور العربية اللي قبله كعنوان."""
+    """يقرأ ملف روابط، ويربط كل رابط بسطور العنوان اللي قبله على طول.
+
+    السطر اللي بيبدأ بـ `#` تعليق، والسطر الفاضي بيفصل بين كتاب والتاني.
+    الاتنين بيصفّروا العنوان المتراكم — من غير كده هيدر الملف كله بيتلزق
+    في عنوان أول كتاب، وكلامه بيشوّش تحديد المادة كمان.
+    """
     entries: list[Entry] = []
     buffer: list[str] = []
 
     with open(path, encoding="utf-8") as handle:
         for raw in handle:
             line = raw.strip()
-            if not line or set(line) <= {"-", "=", "_"}:
+
+            if not line or line.startswith("#") or set(line) <= {"-", "=", "_"}:
+                buffer = []
                 continue
 
             match = _URL_RE.search(line)
@@ -381,84 +392,39 @@ def import_entries(
         db.close()
         return
 
-    downloaded = 0
-    reused = 0
-    failed = 0
-    lessons_created = 0
+    counters = {"downloaded": 0, "reused": 0, "failed": 0, "lessons": 0}
+    broken: list[tuple[BookRef, Exception]] = []
 
     with httpx.Client(timeout=180, follow_redirects=True) as client:
         for index, (entry, ref) in enumerate(parsed, start=1):
-            if limit and downloaded + reused >= limit:
+            if limit and counters["downloaded"] + counters["reused"] >= limit:
                 break
-
-            # المادة المشتركة بتتسجّل في المنهجين (عربي ولغات)
-            languages = (
-                ["arabic", "languages"] if ref.is_shared else [ref.language]
-            )
 
             try:
                 response = client.get(ref.url)
                 if response.status_code != 200:
                     log(f"  ✗ [{index}/{len(parsed)}] {response.status_code} — "
                         f"{ref.subject_name_ar} صف {ref.grade_level}")
-                    failed += 1
+                    counters["failed"] += 1
                     continue
                 content = response.content
             except httpx.HTTPError as error:
                 log(f"  ✗ [{index}/{len(parsed)}] فشل التحميل: {error}")
-                failed += 1
+                counters["failed"] += 1
                 continue
 
-            for language in languages:
-                curriculum = _curriculum_for(db, ref, language)
-                grade = _grade_for(db, curriculum, ref)
-                subject = _subject_for(db, grade, ref)
+            try:
+                _store_book(db, ref, content, counters)
+                db.commit()
+            except SQLAlchemyError as error:
+                # كتاب واحد بايظ مايوقّفش الباقي
+                db.rollback()
+                counters["failed"] += 1
+                broken.append((ref, error))
+                log(f"  ✗ [{index}/{len(parsed)}] اتخطّيناه — "
+                    f"{ref.subject_name_ar} صف {ref.grade_level}")
+                continue
 
-                existing = (
-                    db.query(Book)
-                    .filter(
-                        Book.subject_id == subject.id,
-                        Book.term == ref.term,
-                        Book.kind == BookKind(ref.kind),
-                        Book.source_url == ref.url,
-                    )
-                    .one_or_none()
-                )
-                if existing is not None:
-                    reused += 1
-                    continue
-
-                saved = media.save_book_file(
-                    content=content,
-                    original_name=ref.url.split("/")[-1],
-                    curriculum_id=curriculum.id,
-                    grade_level=ref.grade_level,
-                    subject_slug=ref.subject_slug,
-                )
-
-                title = ref.title_ar or (
-                    f"{ref.subject_name_ar} - "
-                    f"{GRADE_NAMES_AR.get(ref.grade_level, '')} - "
-                    f"الترم {'الأول' if ref.term == 1 else 'الثاني'}"
-                )
-
-                db.add(
-                    Book(
-                        subject_id=subject.id,
-                        kind=BookKind(ref.kind),
-                        term=ref.term,
-                        title_ar=title,
-                        publisher="وزارة التربية والتعليم",
-                        source_url=ref.url,
-                        license_note="منشور مجانًا من وزارة التربية والتعليم",
-                        is_published=True,
-                        **saved,
-                    )
-                )
-                lessons_created += _import_toc(db, subject, ref.term, content)
-                downloaded += 1
-
-            db.commit()
             log(
                 f"  ✓ [{index}/{len(parsed)}] {ref.subject_name_ar} · "
                 f"صف {ref.grade_level} · ترم {ref.term} · {ref.language}"
@@ -466,10 +432,81 @@ def import_entries(
             time.sleep(delay)
 
     db.close()
+
     log(
-        f"\nخلص: {downloaded} ملف جديد · {reused} موجود قبل كده · "
-        f"{failed} فشل · {lessons_created} درس من الفهارس"
+        f"\nخلص: {counters['downloaded']} ملف جديد · "
+        f"{counters['reused']} موجود قبل كده · {counters['failed']} فشل · "
+        f"{counters['lessons']} درس من الفهارس"
     )
+    if broken:
+        log("")
+        log(f"⚠ الكتب اللي اتخطّت ({len(broken)}):")
+        for ref, error in broken:
+            reason = str(getattr(error, "orig", error)).split("\n")[0]
+            log(f"  · {ref.subject_name_ar} صف {ref.grade_level} — {reason}")
+
+
+def _store_book(
+    db: Session,
+    ref: BookRef,
+    content: bytes,
+    counters: dict[str, int],
+) -> None:
+    """يحفظ كتاب واحد. أي استثناء هنا بيترجع بـ rollback بره من غير ما
+    يوقّف باقي الاستيراد."""
+    # المادة المشتركة بتتسجّل في المنهجين (عربي ولغات)
+    languages = ["arabic", "languages"] if ref.is_shared else [ref.language]
+
+    for language in languages:
+        curriculum = _curriculum_for(db, ref, language)
+        grade = _grade_for(db, curriculum, ref)
+        subject = _subject_for(db, grade, ref)
+
+        existing = (
+            db.query(Book)
+            .filter(
+                Book.subject_id == subject.id,
+                Book.term == ref.term,
+                Book.kind == BookKind(ref.kind),
+                Book.source_url == ref.url,
+            )
+            .one_or_none()
+        )
+        if existing is not None:
+            counters["reused"] += 1
+            continue
+
+        saved = media.save_book_file(
+            content=content,
+            original_name=ref.url.split("/")[-1],
+            curriculum_id=curriculum.id,
+            grade_level=ref.grade_level,
+            subject_slug=ref.subject_slug,
+        )
+
+        title = ref.title_ar or (
+            f"{ref.subject_name_ar} - "
+            f"{GRADE_NAMES_AR.get(ref.grade_level, '')} - "
+            f"الترم {'الأول' if ref.term == 1 else 'الثاني'}"
+        )
+        # عمود العنوان 240 حرف — أطول من كده MySQL بيرفض الصف كله
+        title = title[:BOOK_TITLE_MAX]
+
+        db.add(
+            Book(
+                subject_id=subject.id,
+                kind=BookKind(ref.kind),
+                term=ref.term,
+                title_ar=title,
+                publisher="وزارة التربية والتعليم",
+                source_url=ref.url,
+                license_note="منشور مجانًا من وزارة التربية والتعليم",
+                is_published=True,
+                **saved,
+            )
+        )
+        counters["lessons"] += _import_toc(db, subject, ref.term, content)
+        counters["downloaded"] += 1
 
 
 # --------------------------------------------------------------------------
