@@ -1,0 +1,194 @@
+"""التعرّف على الصف والترم والمادة من النصوص العربية.
+
+الأنماط دي بتغطي الصيغ اللي بتستخدمها المواقع التعليمية المصرية، وسهل
+تزوّد عليها لو ظهرت صيغة جديدة.
+"""
+
+from __future__ import annotations
+
+import re
+import unicodedata
+
+# ---------------------------------------------------------------- التطبيع
+
+_ARABIC_DIACRITICS = re.compile(r"[ً-ْـ]")
+
+
+def normalize(text: str) -> str:
+    """يوحّد شكل النص العربي عشان المطابقة تنجح مع اختلاف الكتابة."""
+    if not text:
+        return ""
+    text = unicodedata.normalize("NFKC", text)
+    text = _ARABIC_DIACRITICS.sub("", text)          # تشكيل وتطويل
+    text = text.replace("أ", "ا").replace("إ", "ا").replace("آ", "ا")
+    text = text.replace("ى", "ي").replace("ة", "ه")
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+# ---------------------------------------------------------------- المطابقة
+
+# العربية بتلزق البادئات بالكلمة ("للثالث"، "بالرياضيات")، فالمطابقة
+# النصية المباشرة بتفشل. بنسمح بالبادئات المعروفة قبل الكلمة، وفي نفس
+# الوقت نمنع المطابقة في وسط كلمة تانية (زي "دين" جوه "المدينة").
+# البادئات المحتملة: و + حرف جر + أداة تعريف.
+# لاحظ "لل" (زي "للثالث") — ألف "ال" بتتحذف بعد لام الجر، فلازم نسمح
+# بـ"ل" مفردة كأداة تعريف كمان.
+_PREFIX = r"(?:^|\s)(?:و)?(?:ب|ك|ف|ل)?(?:ال|ل)?"
+_SUFFIX = r"(?=\s|$|[^\u0621-\u064A])"
+
+_matcher_cache: dict[str, re.Pattern] = {}
+
+
+def _matcher(needle: str) -> re.Pattern:
+    """يبني تعبيرًا نمطيًا للكلمة مع السماح بالبادئات العربية."""
+    if needle in _matcher_cache:
+        return _matcher_cache[needle]
+
+    core = normalize(needle)
+    # نشيل "ال" من أول الكلمة عشان البادئة تتولى المطابقة
+    if core.startswith("ال") and len(core) > 3:
+        core = core[2:]
+
+    pattern = re.compile(_PREFIX + re.escape(core) + _SUFFIX, re.IGNORECASE)
+    _matcher_cache[needle] = pattern
+    return pattern
+
+
+def contains(text: str, needle: str) -> bool:
+    """هل النص بيحتوي الكلمة (مع مراعاة البادئات العربية)؟"""
+    return _matcher(needle).search(normalize(text).lower()) is not None
+
+
+# ---------------------------------------------------------------- الصفوف
+
+# ترتيب مهم: الصيغ الأطول الأول عشان "الاول الثانوي" ما تتطابقش كـ"الاول"
+_GRADE_PATTERNS: list[tuple[int, str, list[str]]] = [
+    (1,  "primary",     ["الاول الابتدائي", "اولي ابتدائي", "الصف الاول الابتدائي", "grade 1", "primary 1"]),
+    (2,  "primary",     ["الثاني الابتدائي", "تانيه ابتدائي", "grade 2", "primary 2"]),
+    (3,  "primary",     ["الثالث الابتدائي", "تالته ابتدائي", "grade 3", "primary 3"]),
+    (4,  "primary",     ["الرابع الابتدائي", "رابعه ابتدائي", "grade 4", "primary 4"]),
+    (5,  "primary",     ["الخامس الابتدائي", "خامسه ابتدائي", "grade 5", "primary 5"]),
+    (6,  "primary",     ["السادس الابتدائي", "سادسه ابتدائي", "grade 6", "primary 6"]),
+    (7,  "preparatory", ["الاول الاعدادي", "اولي اعدادي", "grade 7", "prep 1"]),
+    (8,  "preparatory", ["الثاني الاعدادي", "تانيه اعدادي", "grade 8", "prep 2"]),
+    (9,  "preparatory", ["الثالث الاعدادي", "تالته اعدادي", "grade 9", "prep 3"]),
+    (10, "secondary",   ["الاول الثانوي", "اولي ثانوي", "grade 10", "secondary 1"]),
+    (11, "secondary",   ["الثاني الثانوي", "تانيه ثانوي", "grade 11", "secondary 2"]),
+    (12, "secondary",   ["الثالث الثانوي", "تالته ثانوي", "grade 12", "secondary 3"]),
+]
+
+GRADE_NAMES_AR = {
+    1: "الأول الابتدائي", 2: "الثاني الابتدائي", 3: "الثالث الابتدائي",
+    4: "الرابع الابتدائي", 5: "الخامس الابتدائي", 6: "السادس الابتدائي",
+    7: "الأول الإعدادي", 8: "الثاني الإعدادي", 9: "الثالث الإعدادي",
+    10: "الأول الثانوي", 11: "الثاني الثانوي", 12: "الثالث الثانوي",
+}
+
+
+def detect_grade(text: str) -> tuple[int, str] | None:
+    """يرجّع (رقم الصف، المرحلة) أو None."""
+    for level, stage, needles in _GRADE_PATTERNS:
+        for needle in needles:
+            if contains(text, needle):
+                return level, stage
+    return None
+
+
+# ---------------------------------------------------------------- الترم
+
+def detect_term(text: str) -> int | None:
+    first = ["الترم الاول", "ترم اول", "الفصل الدراسي الاول", "term 1", "first term"]
+    second = ["الترم الثاني", "ترم تاني", "ترم ثاني", "الفصل الدراسي الثاني",
+              "term 2", "second term"]
+    # الترم الثاني الأول عشان "الفصل الدراسي الثاني" ما تتطابقش كـ"الأول"
+    for needle in second:
+        if contains(text, needle):
+            return 2
+    for needle in first:
+        if contains(text, needle):
+            return 1
+    return None
+
+
+# ---------------------------------------------------------------- المواد
+
+# (المعرّف، الاسم بالعربي، الاسم بالإنجليزي، اللون، صيغ البحث)
+SUBJECTS: list[tuple[str, str, str, str, list[str]]] = [
+    ("arabic", "اللغة العربية", "Arabic", "#1E88E5",
+     ["اللغه العربيه", "لغه عربيه", "عربي", "arabic"]),
+    ("math", "الرياضيات", "Mathematics", "#E53935",
+     ["الرياضيات", "رياضيات", "math", "mathematics"]),
+    ("science", "العلوم", "Science", "#8E24AA",
+     ["العلوم", "علوم", "science"]),
+    ("integrated_science", "العلوم المتكاملة", "Integrated Science", "#8E24AA",
+     ["العلوم المتكامله", "science integrated"]),
+    ("english", "اللغة الإنجليزية", "English", "#43A047",
+     ["اللغه الانجليزيه", "انجليزي", "english"]),
+    ("social", "الدراسات الاجتماعية", "Social Studies", "#F4511E",
+     ["الدراسات الاجتماعيه", "دراسات", "social studies"]),
+    ("egyptian_history", "التاريخ المصري", "Egyptian History", "#F4511E",
+     ["التاريخ المصري", "تاريخ مصر"]),
+    ("philosophy", "الفلسفة والمنطق", "Philosophy & Logic", "#6D4C41",
+     ["الفلسفه والمنطق", "فلسفه", "منطق"]),
+    ("religion", "التربية الدينية", "Religious Education", "#00897B",
+     ["التربيه الدينيه", "دين", "تربيه اسلاميه", "تربيه مسيحيه"]),
+    ("computer", "الحاسب الآلي", "ICT", "#546E7A",
+     ["الحاسب الالي", "الكمبيوتر", "تكنولوجيا المعلومات", "ict", "computer"]),
+    ("physics", "الفيزياء", "Physics", "#00ACC1",
+     ["الفيزياء", "physics"]),
+    ("chemistry", "الكيمياء", "Chemistry", "#8E24AA",
+     ["الكيمياء", "chemistry"]),
+    ("biology", "الأحياء", "Biology", "#7CB342",
+     ["الاحياء", "biology"]),
+    ("geology", "الجيولوجيا", "Geology", "#795548",
+     ["الجيولوجيا", "علوم البيئه"]),
+    ("history", "التاريخ", "History", "#F4511E", ["التاريخ", "history"]),
+    ("geography", "الجغرافيا", "Geography", "#FB8C00", ["الجغرافيا", "geography"]),
+    ("french", "اللغة الفرنسية", "French", "#3949AB", ["الفرنسيه", "french"]),
+    ("german", "اللغة الألمانية", "German", "#3949AB", ["الالمانيه", "german"]),
+    ("italian", "اللغة الإيطالية", "Italian", "#3949AB", ["الايطاليه", "italian"]),
+    ("art", "التربية الفنية", "Art", "#EC407A", ["التربيه الفنيه", "رسم"]),
+    ("music", "التربية الموسيقية", "Music", "#AB47BC", ["التربيه الموسيقيه"]),
+    ("skills", "المهارات المهنية", "Life Skills", "#546E7A",
+     ["المهارات المهنيه", "مهارات"]),
+]
+
+
+def detect_subject(text: str) -> tuple[str, str, str, str] | None:
+    """يرجّع (المعرّف، الاسم عربي، الاسم إنجليزي، اللون) أو None."""
+    # نجرّب الأطول الأول عشان "العلوم المتكاملة" ما تتطابقش كـ"العلوم"
+    ordered = sorted(
+        SUBJECTS,
+        key=lambda item: max(len(n) for n in item[4]),
+        reverse=True,
+    )
+    for slug, name_ar, name_en, color, needles in ordered:
+        for needle in needles:
+            if contains(text, needle):
+                return slug, name_ar, name_en, color
+    return None
+
+
+# ---------------------------------------------------------------- النوع
+
+def detect_kind(text: str) -> str:
+    """يخمّن نوع الملف من نصه."""
+    if any(contains(text, n) for n in ["دليل المعلم", "دليل معلم", "teacher guide"]):
+        return "teacher_guide"
+    if any(contains(text, n) for n in ["مراجعه", "مراجعات", "revision"]):
+        return "revision"
+    if any(contains(text, n) for n in ["امتحان", "امتحانات", "نماذج", "اختبار", "exam"]):
+        return "exam"
+    if any(contains(text, n) for n in ["ملزمه", "مذكره", "booklet"]):
+        return "booklet"
+    if any(contains(text, n) for n in ["انشطه", "النشاط", "workbook"]):
+        return "workbook"
+    return "textbook"
+
+
+def detect_language(text: str) -> str:
+    """يميّز نسخة اللغات عن النسخة العربية."""
+    if any(contains(text, n) for n in ["لغات", "languages", "experimental"]):
+        return "languages"
+    return "arabic"
