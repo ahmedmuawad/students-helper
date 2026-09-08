@@ -43,7 +43,7 @@ from app.models import (
     Subject,
     Unit,
 )
-from app.tools.moe_crawl import crawl, probe
+from app.tools.moe_crawl import DEFAULT_PAGES, crawl, crawl_all, probe
 from app.tools.moe_patterns import GRADE_NAMES_AR
 from app.tools.moe_urls import BookRef, parse_url
 
@@ -438,7 +438,9 @@ def main() -> int:
     listing.add_argument("--out", default="catalog.txt")
 
     crawler = sub.add_parser("crawl", help="سحب الروابط من صفحة الموقع")
-    crawler.add_argument("--url", required=True, help="رابط صفحة الكتب")
+    crawler.add_argument("--url", help="رابط صفحة كتب معيّنة")
+    crawler.add_argument("--all", action="store_true",
+                         help="الزحف على المراحل الثلاثة (ابتدائي وإعدادي وثانوي)")
     crawler.add_argument("--depth", type=int, default=1,
                          help="عدد مستويات الروابط اللي يتبعها")
     crawler.add_argument("--out", default="catalog.txt")
@@ -475,8 +477,14 @@ def main() -> int:
         return 0
 
     if args.command == "crawl":
-        log(f"جاري الزحف على {args.url} ...")
-        results = crawl(args.url, depth=args.depth)
+        if args.all or not args.url:
+            log("الزحف على مكتبة الوزارة (المراحل الثلاثة):")
+            for page in DEFAULT_PAGES:
+                log(f"  · {page}")
+            results = crawl_all(depth=args.depth)
+        else:
+            log(f"جاري الزحف على {args.url} ...")
+            results = crawl(args.url, depth=args.depth)
         if not results:
             log("مفيش روابط PDF في الصفحة دي.")
             return 1

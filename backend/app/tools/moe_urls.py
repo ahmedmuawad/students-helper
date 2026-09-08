@@ -142,13 +142,16 @@ def _language_from(filename: str, title: str, subject_slug: str) -> str:
         return "both"
 
     lowered = filename.lower()
-    if re.search(r"[_\-](en|eng|english)[_\-.]", lowered):
+    # مدارس اللغات ليها نسخ إنجليزية وفرنسية وألمانية من الرياضيات والعلوم،
+    # وكلها بتتصنّف تحت منهج "لغات" — العنوان بيفرّق بينها للطالب.
+    if re.search(r"[_\-](en|eng|english|fr|french|de|german)[_\-.]", lowered):
         return "languages"
     if re.search(r"[_\-](ar|arabic)[_\-.]", lowered):
         return "arabic"
 
-    if moe_patterns.contains(title, "باللغه الانجليزيه"):
-        return "languages"
+    for needle in ["باللغه الانجليزيه", "باللغه الفرنسيه", "باللغه الالمانيه"]:
+        if moe_patterns.contains(title, needle):
+            return "languages"
     if moe_patterns.contains(title, "باللغه العربيه"):
         return "arabic"
 

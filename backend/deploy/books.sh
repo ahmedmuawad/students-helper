@@ -2,7 +2,8 @@
 #
 # اختصار لأوامر استيراد كتب الوزارة.
 #
-#   sudo bash deploy/books.sh crawl <رابط الصفحة>     # سحب الروابط من الموقع
+#   sudo bash deploy/books.sh crawl                   # كل المراحل من مكتبة الوزارة
+#   sudo bash deploy/books.sh crawl <رابط صفحة>       # صفحة واحدة
 #   sudo bash deploy/books.sh probe [الصفوف]          # تخمين الروابط
 #   sudo bash deploy/books.sh list                    # فهرس المكتبة (لو مسموح)
 #   sudo bash deploy/books.sh plan catalog.txt        # معاينة من غير تنزيل
@@ -37,8 +38,11 @@ case "$command" in
     ;;
   crawl)
     page="${2:-}"
-    [[ -n "$page" ]] || fail "محتاج رابط الصفحة: bash deploy/books.sh crawl https://..."
-    run crawl --url "$page" --depth "${3:-1}" --out "${BACKEND_DIR}/catalog.txt"
+    if [[ -n "$page" ]]; then
+      run crawl --url "$page" --depth "${3:-1}" --out "${BACKEND_DIR}/catalog.txt"
+    else
+      run crawl --all --depth "${3:-1}" --out "${BACKEND_DIR}/catalog.txt"
+    fi
     ;;
   probe)
     run probe --year "$YEAR" ${2:+--grades "$2"} --out "${BACKEND_DIR}/catalog.txt"

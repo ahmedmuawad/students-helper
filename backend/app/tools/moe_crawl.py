@@ -1,23 +1,30 @@
-"""اكتشاف روابط كتب الوزارة بطريقتين.
+"""اكتشاف روابط كتب الوزارة من مكتبتها الإلكترونية.
 
-١. الزحف (crawl): بيجيب صفحة الكتب من الموقع ويستخرج روابط الـPDF
-   والعناوين اللي جنبها. دي الطريقة المفضّلة — بتجيب الأسماء الصحيحة.
+المكتبة على studentbooks.moe.gov.eg بتعرض الكتب في بطاقات بالشكل ده:
 
-٢. التخمين (probe): بيولّد روابط محتملة من نمط الملفات المعروف ويتأكد
-   من وجود كل واحد بطلب HEAD. بنستخدمها لو الصفحة مش متاحة.
+    <article class="book-card">
+      <h3>الرياضيات باللغة الإنجليزية</h3>   ← المادة
+      <p>الصف الأول الإبتدائى</p>            ← الصف
+      <p>الفصل الدراسى الأول</p>             ← الترم
+      <p>كتاب الطالب</p>                      ← النوع
+      <a class="book-link" href="....pdf">
+
+⚠️ البطاقات دي **بتتحقن بجافاسكربت**، يعني تحميل الصفحة بـHTTP عادي
+بيرجّع حاوية فاضية. عشان كده بنجرّب على ترتيب:
+
+  ١. نقرا البطاقات من الـHTML (لو الصفحة متولّدة من السيرفر)
+  ٢. لو فاضية، نقرا ملفات الجافاسكربت المرتبطة ونستخرج البيانات منها
+  ٣. لو فشل ده كمان، نخمّن الروابط ونتأكد منها بطلبات HEAD
 """
 
 from __future__ import annotations
 
+import json
 import re
 from urllib.parse import urljoin, urlparse
 
 import httpx
 from bs4 import BeautifulSoup
-
-# --------------------------------------------------------------------------
-# ١. الزحف على صفحة الموقع
-# --------------------------------------------------------------------------
 
 _HEADERS = {
     "User-Agent": (
@@ -27,33 +34,131 @@ _HEADERS = {
     "Accept-Language": "ar,en;q=0.8",
 }
 
+# صفحات المكتبة حسب المرحلة
+DEFAULT_PAGES = [
+    "https://studentbooks.moe.gov.eg/Books/Books-Primary/",
+    "https://studentbooks.moe.gov.eg/Books/Books-Preparatory/",
+    "https://studentbooks.moe.gov.eg/Books/Books-Secondary/",
+]
 
-def _title_near(anchor) -> str:
-    """يجمع النص الوصفي حوالين الرابط.
+_PDF_RE = re.compile(r"https?://[^\s\"'<>()]+\.pdf", re.IGNORECASE)
 
-    صفحات الوزارة بتحط اسم المادة والصف والترم في عناصر قبل الرابط، مش
-    في نص الرابط نفسه، فبنقرا نص الصف/الخلية اللي الرابط جواها.
-    """
-    parts: list[str] = []
 
-    text = anchor.get_text(" ", strip=True)
-    if text:
-        parts.append(text)
+# --------------------------------------------------------------------------
+# ١. قراءة البطاقات من الـHTML
+# --------------------------------------------------------------------------
 
-    # نطلع لفوق لحد ما نلاقي حاوية فيها نص كفاية
-    node = anchor.parent
-    for _ in range(4):
-        if node is None:
-            break
-        container_text = node.get_text(" ", strip=True)
-        if container_text and len(container_text) > len(" ".join(parts)):
-            parts = [container_text]
-            if len(container_text) > 25:
-                break
-        node = node.parent
 
-    combined = " ".join(parts)
-    return re.sub(r"\s+", " ", combined).strip()[:300]
+def parse_cards(html: str) -> list[tuple[str, str]]:
+    """يستخرج (رابط، عنوان كامل) من بطاقات الكتب."""
+    soup = BeautifulSoup(html, "html.parser")
+    results: list[tuple[str, str]] = []
+
+    for card in soup.select("article.book-card, .book-card"):
+        anchor = card.find("a", href=True)
+        if anchor is None:
+            continue
+        href = anchor["href"].split("#")[0]
+        if not href.lower().endswith(".pdf"):
+            continue
+
+        # العنوان = اسم المادة + الصف + الترم + النوع، كل واحد في عنصر
+        parts: list[str] = []
+        heading = card.find(["h1", "h2", "h3", "h4"])
+        if heading:
+            parts.append(heading.get_text(" ", strip=True))
+        for paragraph in card.find_all("p"):
+            text = paragraph.get_text(" ", strip=True)
+            if text:
+                parts.append(text)
+
+        results.append((href, " - ".join(parts)))
+
+    return results
+
+
+# --------------------------------------------------------------------------
+# ٢. استخراج البيانات من ملفات الجافاسكربت
+# --------------------------------------------------------------------------
+
+
+def _strings_near(source: str, url: str, window: int = 500) -> str:
+    """يجمع النصوص العربية اللي حوالين الرابط في كود الجافاسكربت."""
+    index = source.find(url)
+    if index < 0:
+        return ""
+
+    chunk = source[max(0, index - window): index + len(url) + 120]
+    # أي نص عربي بين علامتي اقتباس
+    arabic = re.findall(r'["\']([^"\']*[؀-ۿ][^"\']*)["\']', chunk)
+    unique: list[str] = []
+    for item in arabic:
+        cleaned = item.strip()
+        if cleaned and cleaned not in unique:
+            unique.append(cleaned)
+    return " - ".join(unique[:6])
+
+
+def parse_scripts(page_url: str, html: str, client: httpx.Client) -> list[tuple[str, str]]:
+    """يحمّل ملفات الجافاسكربت المرتبطة بالصفحة ويستخرج الكتب منها."""
+    soup = BeautifulSoup(html, "html.parser")
+    results: dict[str, str] = {}
+
+    sources: list[str] = []
+    for script in soup.find_all("script"):
+        src = script.get("src")
+        if src:
+            sources.append(urljoin(page_url, src))
+        elif script.string and ".pdf" in script.string:
+            # بيانات مكتوبة جوّه الصفحة نفسها
+            sources.append("")
+
+    # الكود المضمّن في الصفحة
+    inline = "\n".join(
+        script.string or "" for script in soup.find_all("script") if not script.get("src")
+    )
+
+    bodies = [inline] if inline else []
+
+    for src in [s for s in sources if s]:
+        try:
+            response = client.get(src)
+        except httpx.HTTPError:
+            continue
+        if response.status_code == 200:
+            bodies.append(response.text)
+            print(f"  · قرأنا {src.split('/')[-1]} ({len(response.text)} حرف)")
+
+    for body in bodies:
+        # المحاولة الأولى: بيانات JSON منظّمة
+        for match in re.finditer(r"\{[^{}]*\.pdf[^{}]*\}", body):
+            try:
+                record = json.loads(match.group(0))
+            except json.JSONDecodeError:
+                continue
+            url = next(
+                (v for v in record.values()
+                 if isinstance(v, str) and v.lower().endswith(".pdf")),
+                None,
+            )
+            if not url:
+                continue
+            title = " - ".join(
+                str(v) for v in record.values()
+                if isinstance(v, str) and not v.lower().endswith(".pdf")
+            )
+            results.setdefault(url, title)
+
+        # المحاولة التانية: أي رابط PDF مع النصوص العربية اللي حواليه
+        for url in _PDF_RE.findall(body):
+            results.setdefault(url, _strings_near(body, url))
+
+    return sorted(results.items())
+
+
+# --------------------------------------------------------------------------
+# الزحف
+# --------------------------------------------------------------------------
 
 
 def crawl(
@@ -62,21 +167,19 @@ def crawl(
     depth: int = 1,
     timeout: int = 60,
 ) -> list[tuple[str, str]]:
-    """يرجّع قائمة (رابط PDF، العنوان) من صفحة وما يتفرّع عنها."""
+    """يجمع كتب صفحة (أو مجموعة صفحات) من مكتبة الوزارة."""
 
-    seen_pages: set[str] = set()
+    seen: set[str] = set()
     found: dict[str, str] = {}
     queue: list[tuple[str, int]] = [(start_url, 0)]
     origin = urlparse(start_url).netloc
 
-    with httpx.Client(
-        timeout=timeout, follow_redirects=True, headers=_HEADERS
-    ) as client:
+    with httpx.Client(timeout=timeout, follow_redirects=True, headers=_HEADERS) as client:
         while queue:
             url, level = queue.pop(0)
-            if url in seen_pages:
+            if url in seen:
                 continue
-            seen_pages.add(url)
+            seen.add(url)
 
             try:
                 response = client.get(url)
@@ -88,30 +191,49 @@ def crawl(
                 print(f"  ✗ {response.status_code} — {url}")
                 continue
 
-            soup = BeautifulSoup(response.text, "html.parser")
+            html = response.text
+            before = len(found)
 
+            # ١) البطاقات في الـHTML
+            for book_url, title in parse_cards(html):
+                found.setdefault(urljoin(url, book_url), title)
+
+            # ٢) لو مفيش، نبص في الجافاسكربت
+            if len(found) == before:
+                for book_url, title in parse_scripts(url, html, client):
+                    found.setdefault(book_url, title)
+
+            # ٣) أي روابط PDF مباشرة في الصفحة
+            soup = BeautifulSoup(html, "html.parser")
             for anchor in soup.find_all("a", href=True):
-                href = urljoin(url, anchor["href"])
-                clean = href.split("#")[0]
+                href = urljoin(url, anchor["href"]).split("#")[0]
+                if href.lower().endswith(".pdf"):
+                    found.setdefault(href, anchor.get_text(" ", strip=True))
+                elif level < depth and urlparse(href).netloc == origin:
+                    queue.append((href, level + 1))
 
-                if clean.lower().endswith(".pdf"):
-                    found.setdefault(clean, _title_near(anchor))
-                elif level < depth and urlparse(clean).netloc == origin:
-                    queue.append((clean, level + 1))
-
-            print(f"  ✓ {url} — إجمالي {len(found)} ملف لحد دلوقتي")
+            print(f"  ✓ {url} — {len(found) - before} كتاب جديد "
+                  f"(الإجمالي {len(found)})")
 
     return sorted(found.items())
 
 
+def crawl_all(pages: list[str] | None = None, *, depth: int = 1) -> list[tuple[str, str]]:
+    """يزحف على صفحات المراحل الثلاثة."""
+    combined: dict[str, str] = {}
+    for page in pages or DEFAULT_PAGES:
+        print(f"\n▶ {page}")
+        for url, title in crawl(page, depth=depth):
+            combined.setdefault(url, title)
+    return sorted(combined.items())
+
+
 # --------------------------------------------------------------------------
-# ٢. تخمين الروابط والتأكد منها
+# التخمين (احتياطي)
 # --------------------------------------------------------------------------
 
-# صيغ اسم الملف اللي شفناها في مكتبة الوزارة. الأسماء مش موحّدة تمامًا
-# (Math_Ar_prim1_t1 مقابل Math_EN_P1_T1)، فبنجرّب الصيغ المعروفة.
 _SUBJECT_TOKENS: list[str] = [
-    "Arabic_language", "English_language", "Math_Ar", "Math_EN",
+    "Arabic_language", "English_language", "Math_Ar", "Math_EN", "Math_FR",
     "Science_Ar", "Science_EN", "Islamic_religion", "Cristian_religion",
     "Christian_religion", "Social_studies", "Social_Studies",
     "Multi_disciplinary", "Professional_skills", "Art_education",
@@ -122,7 +244,6 @@ _SUBJECT_TOKENS: list[str] = [
 ]
 
 _STAGE_PATHS: list[tuple[str, str, int, int]] = [
-    # (اسم المرحلة في المسار، بادئة الصف في اسم الملف، أول صف، عدد الصفوف)
     ("Primary", "prim", 1, 6),
     ("Preparatory", "prep", 7, 3),
     ("Secondary", "sec", 10, 3),
@@ -132,7 +253,6 @@ _KIND_PATHS = ["StudentBook", "TeacherGuide", "ActivityBook"]
 
 
 def _candidate_names(prefix: str, number: int, term: int) -> list[str]:
-    """صيغ اسم الملف المحتملة لصف وترم معيّنين."""
     initial = prefix[0].upper()
     return [
         f"{prefix}{number}_t{term}",
@@ -152,7 +272,6 @@ def probe(
     max_workers: int = 12,
 ) -> list[tuple[str, str]]:
     """يجرّب الروابط المحتملة ويرجّع اللي موجود فعلاً."""
-
     from concurrent.futures import ThreadPoolExecutor
 
     candidates: list[str] = []
@@ -175,14 +294,11 @@ def probe(
     print(f"جاري التأكد من {len(candidates)} رابط محتمل ...")
     found: list[tuple[str, str]] = []
 
-    with httpx.Client(
-        timeout=timeout, follow_redirects=True, headers=_HEADERS
-    ) as client:
+    with httpx.Client(timeout=timeout, follow_redirects=True, headers=_HEADERS) as client:
 
         def check(url: str) -> str | None:
             try:
-                response = client.head(url)
-                return url if response.status_code == 200 else None
+                return url if client.head(url).status_code == 200 else None
             except httpx.HTTPError:
                 return None
 
