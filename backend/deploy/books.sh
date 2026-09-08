@@ -2,7 +2,9 @@
 #
 # اختصار لأوامر استيراد كتب الوزارة.
 #
-#   sudo bash deploy/books.sh list                    # جلب فهرس المكتبة
+#   sudo bash deploy/books.sh crawl <رابط الصفحة>     # سحب الروابط من الموقع
+#   sudo bash deploy/books.sh probe [الصفوف]          # تخمين الروابط
+#   sudo bash deploy/books.sh list                    # فهرس المكتبة (لو مسموح)
 #   sudo bash deploy/books.sh plan catalog.txt        # معاينة من غير تنزيل
 #   sudo bash deploy/books.sh import catalog.txt      # التنزيل والاستيراد
 #   sudo bash deploy/books.sh import catalog.txt 10   # تجربة على 10 كتب بس
@@ -33,6 +35,14 @@ case "$command" in
   list)
     run list --prefix "${YEAR}/" --out "${BACKEND_DIR}/catalog.txt"
     ;;
+  crawl)
+    page="${2:-}"
+    [[ -n "$page" ]] || fail "محتاج رابط الصفحة: bash deploy/books.sh crawl https://..."
+    run crawl --url "$page" --depth "${3:-1}" --out "${BACKEND_DIR}/catalog.txt"
+    ;;
+  probe)
+    run probe --year "$YEAR" ${2:+--grades "$2"} --out "${BACKEND_DIR}/catalog.txt"
+    ;;
   plan)
     source_file="${2:-catalog.txt}"
     run plan --from "$source_file" ${3:+--limit "$3"}
@@ -42,6 +52,6 @@ case "$command" in
     run import --from "$source_file" ${3:+--limit "$3"}
     ;;
   *)
-    fail "أمر غير معروف: ${command} (المتاح: list / plan / import)"
+    fail "أمر غير معروف: ${command} (المتاح: crawl / probe / list / plan / import)"
     ;;
 esac

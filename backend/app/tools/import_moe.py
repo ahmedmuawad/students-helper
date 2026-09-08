@@ -43,6 +43,7 @@ from app.models import (
     Subject,
     Unit,
 )
+from app.tools.moe_crawl import crawl, probe
 from app.tools.moe_patterns import GRADE_NAMES_AR
 from app.tools.moe_urls import BookRef, parse_url
 
@@ -415,6 +416,16 @@ def import_entries(
 # --------------------------------------------------------------------------
 
 
+def _write_catalog(path: str, results: list[tuple[str, str]]) -> None:
+    """يكتب النتايج بصيغة: سطر العنوان بعدين سطر الرابط."""
+    with open(path, "w", encoding="utf-8") as handle:
+        for url, title in results:
+            if title:
+                handle.write(f"{title}\n")
+            handle.write(f"{url}\n")
+            handle.write("-" * 30 + "\n")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="استيراد كتب الوزارة مباشرة من مكتبتها الإلكترونية"
@@ -425,6 +436,18 @@ def main() -> int:
     listing.add_argument("--container", default=DEFAULT_CONTAINER)
     listing.add_argument("--prefix", default="", help="مثال: 2026_2027/Primary/")
     listing.add_argument("--out", default="catalog.txt")
+
+    crawler = sub.add_parser("crawl", help="سحب الروابط من صفحة الموقع")
+    crawler.add_argument("--url", required=True, help="رابط صفحة الكتب")
+    crawler.add_argument("--depth", type=int, default=1,
+                         help="عدد مستويات الروابط اللي يتبعها")
+    crawler.add_argument("--out", default="catalog.txt")
+
+    prober = sub.add_parser("probe", help="تخمين الروابط والتأكد منها")
+    prober.add_argument("--container", default=DEFAULT_CONTAINER)
+    prober.add_argument("--year", default="2026_2027")
+    prober.add_argument("--grades", help="مثال: 1,2,3 (الافتراضي: كل الصفوف)")
+    prober.add_argument("--out", default="catalog.txt")
 
     plan = sub.add_parser("plan", help="معاينة من غير تنزيل")
     plan.add_argument("--from", dest="source", required=True)
@@ -449,6 +472,28 @@ def main() -> int:
         with open(args.out, "w", encoding="utf-8") as handle:
             handle.write("\n".join(urls))
         log(f"✓ لقينا {len(urls)} ملف — اتحفظوا في {args.out}")
+        return 0
+
+    if args.command == "crawl":
+        log(f"جاري الزحف على {args.url} ...")
+        results = crawl(args.url, depth=args.depth)
+        if not results:
+            log("مفيش روابط PDF في الصفحة دي.")
+            return 1
+        _write_catalog(args.out, results)
+        log(f"✓ لقينا {len(results)} ملف — اتحفظوا في {args.out}")
+        return 0
+
+    if args.command == "probe":
+        grades = None
+        if args.grades:
+            grades = [int(part) for part in args.grades.split(",") if part.strip()]
+        results = probe(args.container, args.year, grades=grades)
+        if not results:
+            log("مفيش روابط اشتغلت — راجع السنة أو صيغة المسار.")
+            return 1
+        _write_catalog(args.out, results)
+        log(f"✓ لقينا {len(results)} ملف — اتحفظوا في {args.out}")
         return 0
 
     entries = read_entries(args.source)
