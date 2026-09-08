@@ -26,6 +26,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
+from pathlib import Path
 from urllib.parse import urlparse
 
 import httpx
@@ -81,6 +82,42 @@ def log_schema_changes(changes: list[str]) -> None:
     log("تعديلات على الجداول القديمة:")
     for change in changes:
         log(f"  {change}")
+
+
+def expand_html_paths(paths: list[str]) -> list[str]:
+    """يوسّع أي مجلد للملفات اللي جواه، ويرتّبهم."""
+    found: list[str] = []
+    for raw in paths:
+        candidate = Path(raw).expanduser()
+        if candidate.is_dir():
+            pages = sorted(
+                item for item in candidate.iterdir()
+                if item.suffix.lower() in {".html", ".htm"}
+            )
+            if not pages:
+                log(f"✗ مفيش ملفات HTML في {candidate}")
+                return []
+            found.extend(str(item) for item in pages)
+        else:
+            found.append(str(candidate))
+    return found
+
+
+def explain_read_error(path: str, error: OSError) -> None:
+    """رسالة مفهومة بدل traceback."""
+    resolved = Path(path).expanduser()
+    log(f"✗ مش قادر أقرا: {resolved}")
+    if isinstance(error, FileNotFoundError):
+        log("  الملف ده مش موجود. المسار لازم يكون مسار حقيقي على السيرفر،")
+        log(f"  والمجلد الحالي دلوقتي: {Path.cwd()}")
+    elif isinstance(error, PermissionError):
+        log("  الملف موجود بس الصلاحيات مش سامحة. الأمر بيشتغل بمستخدم الموقع،")
+        log("  فحطّ الملفات في مكان يقدر يقراه (مش /root) أو شغّل:")
+        log("    sudo bash deploy/books.sh html <ملفاتك>")
+        log("  السكربت بينسخهم لمكان مناسب لوحده.")
+    else:
+        log(f"  ({error.strerror})")
+
 
 
 
@@ -601,10 +638,17 @@ def main() -> int:
         return 0
 
     if args.command == "html":
+        paths = expand_html_paths(args.files)
+        if not paths:
+            return 1
         results: list[tuple[str, str]] = []
         seen: set[str] = set()
-        for path in args.files:
-            found = from_html_file(path)
+        for path in paths:
+            try:
+                found = from_html_file(path)
+            except OSError as error:
+                explain_read_error(path, error)
+                return 1
             new_count = 0
             for url, title in found:
                 if url not in seen:
@@ -644,7 +688,19 @@ def main() -> int:
         _print_status()
         return 0
 
-    entries = read_entries(args.source)
+    try:
+        entries = read_entries(args.source)
+    except OSError as error:
+        explain_read_error(args.source, error)
+        log("")
+        log("حضّر ملف الروابط الأول:")
+        log("  bash deploy/books.sh crawl                 # من موقع الوزارة مباشرة")
+        log("  bash deploy/books.sh html <صفحاتك.html>    # من صفحات محفوظة")
+        return 1
+
+    if not entries:
+        log(f"✗ مفيش روابط في {args.source}")
+        return 1
     log(f"اتقرا {len(entries)} رابط من {args.source}")
 
     import_entries(

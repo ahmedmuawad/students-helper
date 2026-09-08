@@ -1,0 +1,258 @@
+# كتب وزارة التربية والتعليم المصرية — 2026/2027، الفصل الدراسي الأول
+# المصدر: https://studentbooks.moe.gov.eg (الملفات مستضافة على مكتبة الوزارة)
+#
+# الصيغة: سطر العنوان زي ما هو في بطاقة الموقع، وتحته رابط الـPDF.
+# العنوان هو مصدر اسم المادة والنوع واللغة — أسماء الملفات نفسها فيها
+# أخطاء إملائية (Arabic_langugae، Cristian_reliogion) فمش بنعتمد عليها.
+#
+# الاستيراد على السيرفر (بينزّل الملفات بنفسه):
+#     sudo bash deploy/books.sh import
+#
+# الإجمالي: 105 كتاب
+
+# ═══════════════ رياض الأطفال ═══════════════
+
+# ── المستوى الأول ──
+اللغة العربية - مستوى أول - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/KG/KG1/Term1/StudentBook/Arabic_langugae_kg1_t1.pdf
+اللغة الإنجليزية - مستوى أول - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/KG/KG1/Term1/StudentBook/English_language_kg1_t1.pdf
+
+# ── المستوى الثاني ──
+اللغة العربية - مستوى ثان - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/KG/KG2/Term1/StudentBook/Arabic_langugae_kg2_t1.pdf
+اللغة الإنجليزية - مستوى ثان - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/KG/KG2/Term1/StudentBook/English_language_kg2_t1.pdf
+
+# ═══════════════ الابتدائي ═══════════════
+
+# ── الأول الابتدائي ──
+اللغة العربية - الصف الأول الإبتدائى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Arabic_language_prim1_t1.pdf
+اللغة الإنجليزية-لغة أجنبية أولى - الصف الأول الإبتدائى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/English_language_prim1_t1.pdf
+الرياضيات باللغة العربية - الصف الأول الإبتدائى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Math_Ar_prim1_t1.pdf
+الرياضيات باللغة الإنجليزية - الصف الأول الإبتدائى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Math_EN_P1_T1.pdf
+الرياضيات باللغة الفرنسية - الصف الأول الإبتدائى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Math_FR_P1_T1.pdf
+التربية الدينية المسيحية - الصف الأول الإبتدائى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Cristian_religion_prim1_t1.pdf
+التربية الدينية الإسلامية - الصف الأول الإبتدائى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Islamic_religion_prim1_t1.pdf
+
+# ── الثاني الابتدائي ──
+اللغة العربية - الثاني الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Arabic_language_prim2_t1.pdf
+اللغة الإنجليزية - الثاني الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/English_language_prim2_t1.pdf
+الرياضيات - الثاني الابتدائي - عربي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Math_Ar_prim2_t1.pdf
+الرياضيات - الثاني الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Math_EN_P2_T1.pdf
+التربية الدينية المسيحية - الثاني الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Cristian_religion_prim2_t1.pdf
+التربية الدينية الإسلامية - الثاني الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Islamic_religion_prim2_t1.pdf
+
+# ── الثالث الابتدائي ──
+اللغة العربية - الثالث الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Arabic_language_prim3_t1.pdf
+اللغة الإنجليزية - الثالث الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/English_language_prim3_t1.pdf
+الرياضيات - الثالث الابتدائي - عربي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Math_Ar_prim3_t1.pdf
+الرياضيات - الثالث الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Math_EN_P3_T1.pdf
+التربية الدينية المسيحية - الثالث الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Cristian_religion_prim3_t1.pdf
+التربية الدينية الإسلامية - الثالث الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Islamic_religion_prim3_t1.pdf
+
+# ── الرابع الابتدائي ──
+اللغة العربية - الرابع الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Arabic_language_prim4_t1.pdf
+اللغة الإنجليزية - الرابع الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/English_language_prim4_t1.pdf
+تكنولوجيا المعلومات والاتصالات - الرابع الابتدائي - عربي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/ICT_ARABIC_Prim4_TR1.pdf
+الرياضيات - الرابع الابتدائي - عربي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Math_Ar_prim4_t1.pdf
+الرياضيات - الرابع الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Math_EN_P4_T1.pdf
+الرياضيات - الرابع الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Math_FR_P4_T1.pdf
+التربية الدينية المسيحية - الرابع الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Cristian_religion_prim4_t1.pdf
+التربية الدينية الإسلامية - الرابع الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Islamic_religion_prim4_t1.pdf
+العلوم - الرابع الابتدائي - عربي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Science_Ar_prim4_t1.pdf
+العلوم - الرابع الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Science_EN_PRIM4_Tr1.pdf
+العلوم - الرابع الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Science_FR_prim4_TR1.pdf
+الدراسات الاجتماعية - الرابع الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Social_studies_prim4_t1.pdf
+
+# ── الخامس الابتدائي ──
+اللغة العربية - الخامس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Arabic_langugae_prim5_t1.pdf
+اللغة الإنجليزية - الخامس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/English_language_prim5_t1.pdf
+تكنولوجيا المعلومات والاتصالات - الخامس الابتدائي - عربي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/ICT_ARABIC_Prim5_TR1.pdf
+الرياضيات - الخامس الابتدائي - عربي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Math_Ar_prim5_t1.pdf
+الرياضيات - الخامس الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Math_FR_prim5_TR1.pdf
+التربية الدينية المسيحية - الخامس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Cristian_reliogion_prim5_t1.pdf
+التربية الدينية الإسلامية - الخامس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Islamic_prim5_tr1.pdf
+العلوم - الخامس الابتدائي - عربي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Science_Ar_prim5_t1.pdf
+العلوم - الخامس الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Science_FR_prim5_TR1.pdf
+الدراسات الاجتماعية - الخامس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Social_studies_prim5_t1.pdf
+
+# ── السادس الابتدائي ──
+اللغة العربية - السادس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Arabic_Primary6_T1.pdf
+اللغة الإنجليزية - السادس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/English_Primary6_T1.pdf
+تكنولوجيا المعلومات والاتصالات - السادس الابتدائي - عربي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/ICT_ARABIC_Prim6_TR1.pdf
+الرياضيات - السادس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Math_Primary6_T1.pdf
+الرياضيات - السادس الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Math_EN_P6_T1.pdf
+الرياضيات - السادس الابتدائي - لغات
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Math_FR_P6_T1.pdf
+التربية الدينية المسيحية - السادس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Christian_Education_Primary6_T1.pdf
+التربية الدينية الإسلامية - السادس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Islamic_Education_Primary6_T1.pdf
+العلوم - السادس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Science_Primary6_T1.pdf
+الدراسات الاجتماعية - السادس الابتدائي
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Social_Studies_Primary6_T1.pdf
+
+# ═══════════════ الإعدادي ═══════════════
+
+# ── الأول الإعدادي ──
+اللغة العربية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Arabic_Prep1_T1.pdf
+اللغة الإنجليزية-لغة أجنبية أولى - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/English_Prep1_T1.pdf
+الكمبيوتر وتكنولوجيا المعلومات والاتصالات باللغة العربية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/ICT_ARABIC_Prp1_TR1.pdf
+المكتبات ومهارات البحث - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Librarie_research_skills_prep1_Tr1.pdf
+الرياضيات باللغة العربية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Math_Prep1_T1.pdf
+الرياضيات باللغة الإنجليزية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Math_EN_Prp1_T1.pdf
+الإعلام التربوي - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Educational_media_Pep1_Tr1.pdf
+التربية الدينية المسيحية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Christian_Education_Prep1_T1.pdf
+التربية الدينية الإسلامية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Islamic_Education_Prep1_T1.pdf
+العلوم باللغة العربية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Science_Prep1_T1.pdf
+العلوم باللغة الإنجليزية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Science_EN_Prp1_TR1..pdf
+العلوم باللغة الفرنسية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Science_FR_Prp1_TR1.pdf
+الدراسات الاجتماعية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Social_Studies_Prep1_T1.pdf
+التربية المسرحية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Thetar_prep1_Tr1.pdf
+
+# ── الثاني الإعدادي ──
+مهارات الزراعة وريادة الأعمال - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Agriculture_2_Preparatory_TR1.pdf
+اللغة العربية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Arabic_language_prep2_t1.pdf
+اللغة الإنجليزية-لغة أجنبية أولى - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/English_language_prep2_t1.pdf
+الكمبيوتر وتكنولوجيا المعلومات والاتصالات باللغة العربية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/ICT_ARABIC_Prp2_TR1.pdf
+الكمبيوتر وتكنولوجيا المعلومات والاتصالات باللغة الإنجليزية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/ICT_EN_Prp2_Tr1.pdf
+مهارات الصناعة وريادة الأعمال - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Industry_Prep2_T1.pdf
+المكتبات ومهارات البحث - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Libraries_2prep_tr1.pdf
+الرياضيات باللغة العربية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Math_Ar_prep2_t1.pdf
+الرياضيات باللغة الإنجليزية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Math_EN_Prp2_T1.pdf
+الرياضيات باللغة الفرنسية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Math_FR_Prp2_T1.pdf
+التربية الدينية المسيحية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Cristian_religion_prep2_t1.pdf
+التربية الدينية الإسلامية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Islamic_religion_prep2_t1.pdf
+العلوم باللغة العربية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Science_Ar_prep2_t1.pdf
+العلوم باللغة الإنجليزية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Science_EN_Pep2_T1.pdf
+العلوم باللغة الفرنسية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Science_FR_Pep2_T1.pdf
+الدراسات الاجتماعية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Social_studies_prep2_t1.pdf
+
+# ── الثالث الإعدادي ──
+اللغة العربية - الصف الثالث الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory3/Term1/StudentBook/Arabic_language_prep3_t1.pdf
+اللغة الإنجليزية-لغة أجنبية أولى - الصف الثالث الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory3/Term1/StudentBook/English_language_prep3_t1.pdf
+الكمبيوتر وتكنولوجيا المعلومات والاتصالات باللغة العربية - الصف الثالث الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory3/Term1/StudentBook/ICT_ARABIC_Prp3_TR1.pdf
+الرياضيات باللغة العربية - الصف الثالث الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory3/Term1/StudentBook/Math_Ar_prep3_t1.pdf
+التربية الدينية المسيحية - الصف الثالث الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory3/Term1/StudentBook/Cristian_Prp3_Tr1.pdf
+التربية الدينية الإسلامية - الصف الثالث الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory3/Term1/StudentBook/Islamic_religion_prep3_t1.pdf
+العلوم باللغة العربية - الصف الثالث الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory3/Term1/StudentBook/Science_AR_Prp3_Tr1.pdf
+الدراسات الاجتماعية - الصف الثالث الإعدادى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory3/Term1/StudentBook/Social_studies_prep3_t1.pdf
+
+# ═══════════════ الثانوي ═══════════════
+
+# ── الأول الثانوي ──
+البرمجة والذكاء الاصطناعي باللغة العربية - الصف الأول الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry1/Term1/StudentBook/ICT_AR__Sec1_Tr1.pdf
+اللغة العربية-القصة - الصف الأول الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry1/Term1/StudentBook/Arabic_language_STORY_Sec1_Tr1.pdf
+العلوم المتكاملة باللغة الفرنسية - الصف الأول الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry1/Term1/StudentBook/integratedscience_FR_1_Secondary_TR1.pdf
+
+# ── الثاني الثانوي ──
+المواطنة وحقوق الإنسان - الصف الثاني الثانوي - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/Citizenship_and_Human_Rights_Sec2_Tr1.pdf
+جغرافيا التنمية - الصف الثانى الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/Geography_Sec2_Tr1.pdf
+اللغة الفرنسية-لغة أجنبية أولى-كراسة التدريبات - الصف الثانى الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/Premiere_langue_francaise_WB_Sec2_Tr1.pdf
+الرياضيات البحتة باللغة الفرنسية - الصف الثانى الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/pure_Mathematics_FR_Sec2_Tr1.pdf
+
+# ── الثالث الثانوي ──
+الرياضيات التطبيقية باللغة الإنجليزية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/applied_Mathematics_ENGLISH_Sec3.pdf
+التربية الوطنية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/National_Education_Sec3_tr1.pdf
+علم النفس والاجتماع - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/Psychology_Sociology_Sec3.pdf
+اللغة الإسبانية-لغة أجنبية ثانية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/Espanol_language_Sec3.pdf
+الإحصاء باللغة الفرنسية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب
+https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/Statistics_Fr_Sec3.pdf
+

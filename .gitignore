@@ -15,3 +15,7 @@ ios/.symlinks/
 
 # أدوات محلية
 /tool/.dart-sdk/
+
+# ملفات مؤقتة على السيرفر
+backend/.incoming/
+backend/catalog.txt

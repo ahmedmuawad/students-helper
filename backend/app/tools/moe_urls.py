@@ -56,11 +56,22 @@ _KINDS: dict[str, str] = {
 # رموز أسماء الملفات ← معرّف المادة عندنا.
 # الترتيب مهم: الأطول الأول عشان "english_language" ما تتطابقش كـ"english".
 _FILE_SUBJECTS: list[tuple[str, str]] = [
+    # المطابقة بالترتيب وأول واحد بيكسب، فالأسماء المركّبة لازم تسبق البسيطة:
+    # ICT_ARABIC_Prim4 دي مادة تكنولوجيا المعلومات نسخة المدارس العربي،
+    # مش كتاب لغة عربية.
+    ("ict_", "ict"),
+    ("_ict", "ict"),
     ("integrated_science", "integrated_science"),
     ("social_studies", "social"),
     ("islamic_religion", "religion_islamic"),
     ("christian_religion", "religion_christian"),
     ("cristian_religion", "religion_christian"),   # الخطأ الإملائي موجود فعلاً
+    # في ملفات تانية بيكتبوا الدين من غير كلمة religion خالص
+    # (Islamic_prim5_tr1) أو بيغلطوا فيها (Cristian_reliogion)
+    ("christian", "religion_christian"),
+    ("cristian", "religion_christian"),
+    ("islamic", "religion_islamic"),
+    ("eslamic", "religion_islamic"),
     ("arabic_language", "arabic"),
     ("english_language", "english"),
     ("french_language", "french"),
