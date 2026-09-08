@@ -28,7 +28,13 @@ class TimeUtils {
 
   /// دمج تاريخ مع دقائق اليوم للحصول على لحظة زمنية كاملة.
   static DateTime combine(DateTime day, int minutesOfDay) {
-    return DateTime(day.year, day.month, day.day, minutesOfDay ~/ 60, minutesOfDay % 60);
+    return DateTime(
+      day.year,
+      day.month,
+      day.day,
+      minutesOfDay ~/ 60,
+      minutesOfDay % 60,
+    );
   }
 
   static DateTime dateOnly(DateTime d) => DateTime(d.year, d.month, d.day);

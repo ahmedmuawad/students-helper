@@ -12,3 +12,6 @@ android/.gradle/
 android/local.properties
 ios/Pods/
 ios/.symlinks/
+
+# أدوات محلية
+/tool/.dart-sdk/
