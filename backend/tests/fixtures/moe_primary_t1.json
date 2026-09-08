@@ -1,0 +1,410 @@
+[
+ {
+  "subject": "اللغة العربية",
+  "grade": "الصف الأول الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Arabic_language_prim1_t1.pdf",
+  "expect_grade": 1
+ },
+ {
+  "subject": "اللغة الإنجليزية-لغة أجنبية أولى",
+  "grade": "الصف الأول الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/English_language_prim1_t1.pdf",
+  "expect_grade": 1
+ },
+ {
+  "subject": "الرياضيات باللغة العربية",
+  "grade": "الصف الأول الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Math_Ar_prim1_t1.pdf",
+  "expect_grade": 1
+ },
+ {
+  "subject": "الرياضيات باللغة الإنجليزية",
+  "grade": "الصف الأول الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Math_EN_P1_T1.pdf",
+  "expect_grade": 1
+ },
+ {
+  "subject": "الرياضيات باللغة الفرنسية",
+  "grade": "الصف الأول الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Math_FR_P1_T1.pdf",
+  "expect_grade": 1
+ },
+ {
+  "subject": "التربية الدينية الإسلامية",
+  "grade": "الصف الأول الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Islamic_religion_prim1_t1.pdf",
+  "expect_grade": 1
+ },
+ {
+  "subject": "التربية الدينية المسيحية",
+  "grade": "الصف الأول الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary1/Term1/StudentBook/Cristian_religion_prim1_t1.pdf",
+  "expect_grade": 1
+ },
+ {
+  "subject": "اللغة العربية",
+  "grade": "الصف الثاني الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Arabic_language_prim2_t1.pdf",
+  "expect_grade": 2
+ },
+ {
+  "subject": "اللغة الإنجليزية-لغة أجنبية أولى",
+  "grade": "الصف الثاني الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/English_language_prim2_t1.pdf",
+  "expect_grade": 2
+ },
+ {
+  "subject": "الرياضيات باللغة العربية",
+  "grade": "الصف الثاني الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Math_Ar_prim2_t1.pdf",
+  "expect_grade": 2
+ },
+ {
+  "subject": "الرياضيات باللغة الإنجليزية",
+  "grade": "الصف الثاني الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Math_EN_P2_T1.pdf",
+  "expect_grade": 2
+ },
+ {
+  "subject": "التربية الدينية الإسلامية",
+  "grade": "الصف الثاني الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Islamic_religion_prim2_t1.pdf",
+  "expect_grade": 2
+ },
+ {
+  "subject": "التربية الدينية المسيحية",
+  "grade": "الصف الثاني الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Cristian_religion_prim2_t1.pdf",
+  "expect_grade": 2
+ },
+ {
+  "subject": "اللغة العربية",
+  "grade": "الصف الثالث الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Arabic_language_prim3_t1.pdf",
+  "expect_grade": 3
+ },
+ {
+  "subject": "اللغة الإنجليزية-لغة أجنبية أولى",
+  "grade": "الصف الثالث الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/English_language_prim3_t1.pdf",
+  "expect_grade": 3
+ },
+ {
+  "subject": "الرياضيات باللغة العربية",
+  "grade": "الصف الثالث الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Math_Ar_prim3_t1.pdf",
+  "expect_grade": 3
+ },
+ {
+  "subject": "الرياضيات باللغة الإنجليزية",
+  "grade": "الصف الثالث الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Math_EN_P3_T1.pdf",
+  "expect_grade": 3
+ },
+ {
+  "subject": "التربية الدينية الإسلامية",
+  "grade": "الصف الثالث الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Islamic_religion_prim3_t1.pdf",
+  "expect_grade": 3
+ },
+ {
+  "subject": "التربية الدينية المسيحية",
+  "grade": "الصف الثالث الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Cristian_religion_prim3_t1.pdf",
+  "expect_grade": 3
+ },
+ {
+  "subject": "اللغة العربية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Arabic_language_prim4_t1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "اللغة الإنجليزية-لغة أجنبية أولى",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/English_language_prim4_t1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "الرياضيات باللغة العربية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Math_Ar_prim4_t1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "الرياضيات باللغة الإنجليزية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Math_EN_P4_T1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "الرياضيات باللغة الفرنسية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Math_FR_P4_T1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "التربية الدينية الإسلامية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Islamic_religion_prim4_t1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "التربية الدينية المسيحية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Cristian_religion_prim4_t1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "العلوم باللغة العربية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Science_Ar_prim4_t1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "العلوم باللغة الإنجليزية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Science_EN_PRIM4_Tr1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "العلوم باللغة الفرنسية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Science_FR_prim4_TR1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "الدراسات الاجتماعية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Social_studies_prim4_t1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "تكنولوجيا المعلومات والاتصالات باللغة العربية",
+  "grade": "الصف الرابع الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/ICT_ARABIC_Prim4_TR1.pdf",
+  "expect_grade": 4
+ },
+ {
+  "subject": "اللغة العربية",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Arabic_langugae_prim5_t1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "اللغة الإنجليزية-لغة أجنبية أولى",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/English_language_prim5_t1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "الرياضيات باللغة العربية",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Math_Ar_prim5_t1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "الرياضيات باللغة الفرنسية",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Math_FR_prim5_TR1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "التربية الدينية الإسلامية",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Islamic_prim5_tr1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "التربية الدينية المسيحية",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Cristian_reliogion_prim5_t1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "العلوم باللغة العربية",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Science_Ar_prim5_t1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "العلوم باللغة الفرنسية",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Science_FR_prim5_TR1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "الدراسات الاجتماعية",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Social_studies_prim5_t1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "تكنولوجيا المعلومات والاتصالات باللغة العربية",
+  "grade": "الصف الخامس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/ICT_ARABIC_Prim5_TR1.pdf",
+  "expect_grade": 5
+ },
+ {
+  "subject": "اللغة العربية",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Arabic_Primary6_T1.pdf",
+  "expect_grade": 6
+ },
+ {
+  "subject": "اللغة الإنجليزية-لغة أجنبية أولى",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/English_Primary6_T1.pdf",
+  "expect_grade": 6
+ },
+ {
+  "subject": "الرياضيات باللغة العربية",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Math_Primary6_T1.pdf",
+  "expect_grade": 6
+ },
+ {
+  "subject": "الرياضيات باللغة الإنجليزية",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Math_EN_P6_T1.pdf",
+  "expect_grade": 6
+ },
+ {
+  "subject": "الرياضيات باللغة الفرنسية",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Math_FR_P6_T1.pdf",
+  "expect_grade": 6
+ },
+ {
+  "subject": "التربية الدينية الإسلامية",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Islamic_Education_Primary6_T1.pdf",
+  "expect_grade": 6
+ },
+ {
+  "subject": "التربية الدينية المسيحية",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Christian_Education_Primary6_T1.pdf",
+  "expect_grade": 6
+ },
+ {
+  "subject": "العلوم باللغة العربية",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Science_Primary6_T1.pdf",
+  "expect_grade": 6
+ },
+ {
+  "subject": "الدراسات الاجتماعية",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Social_Studies_Primary6_T1.pdf",
+  "expect_grade": 6
+ },
+ {
+  "subject": "تكنولوجيا المعلومات والاتصالات باللغة العربية",
+  "grade": "الصف السادس الإبتدائى",
+  "term": "الفصل الدراسى الأول",
+  "kind": "كتاب الطالب",
+  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/ICT_ARABIC_Prim6_TR1.pdf",
+  "expect_grade": 6
+ }
+]

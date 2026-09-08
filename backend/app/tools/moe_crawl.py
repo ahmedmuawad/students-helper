@@ -34,11 +34,13 @@ _HEADERS = {
     "Accept-Language": "ar,en;q=0.8",
 }
 
-# صفحات المكتبة حسب المرحلة
+# صفحات المكتبة حسب المرحلة (المسارات زي ما هي على الموقع — لاحظ
+# "Books-sec" مش "Books-Secondary")
 DEFAULT_PAGES = [
+    "https://studentbooks.moe.gov.eg/Books/Books-Kindergarten/",
     "https://studentbooks.moe.gov.eg/Books/Books-Primary/",
     "https://studentbooks.moe.gov.eg/Books/Books-Preparatory/",
-    "https://studentbooks.moe.gov.eg/Books/Books-Secondary/",
+    "https://studentbooks.moe.gov.eg/Books/Books-sec/",
 ]
 
 _PDF_RE = re.compile(r"https?://[^\s\"'<>()]+\.pdf", re.IGNORECASE)

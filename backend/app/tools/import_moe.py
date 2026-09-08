@@ -50,6 +50,7 @@ from app.tools.moe_urls import BookRef, parse_url
 DEFAULT_CONTAINER = "https://elearnningcontent.blob.core.windows.net/elearnningcontent"
 
 _STAGE_ENUM = {
+    "kindergarten": EducationStage.kindergarten,
     "primary": EducationStage.primary,
     "preparatory": EducationStage.preparatory,
     "secondary": EducationStage.secondary,

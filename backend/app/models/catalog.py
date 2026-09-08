@@ -27,6 +27,7 @@ from app.core.database import Base
 
 
 class EducationStage(str, enum.Enum):
+    kindergarten = "kindergarten"
     primary = "primary"
     preparatory = "preparatory"
     secondary = "secondary"

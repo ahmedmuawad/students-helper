@@ -19,6 +19,9 @@ from app.tools import moe_patterns
 
 # اسم المرحلة في الرابط ← (أول صف فيها، عدد صفوفها)
 _STAGES: dict[str, tuple[int, int]] = {
+    # رياض الأطفال: KG1 = -1 و KG2 = 0، عشان الابتدائي يبدأ من 1
+    "kg": (-1, 2),
+    "kindergarten": (-1, 2),
     "primary": (1, 6),
     "prim": (1, 6),
     "preparatory": (7, 3),
@@ -141,18 +144,18 @@ def _language_from(filename: str, title: str, subject_slug: str) -> str:
     if subject_slug in shared:
         return "both"
 
-    lowered = filename.lower()
-    # مدارس اللغات ليها نسخ إنجليزية وفرنسية وألمانية من الرياضيات والعلوم،
-    # وكلها بتتصنّف تحت منهج "لغات" — العنوان بيفرّق بينها للطالب.
-    if re.search(r"[_\-](en|eng|english|fr|french|de|german)[_\-.]", lowered):
-        return "languages"
-    if re.search(r"[_\-](ar|arabic)[_\-.]", lowered):
-        return "arabic"
-
+    # العنوان بيقول اللغة صراحة ("الرياضيات باللغة الفرنسية")، فهو الأدق.
     for needle in ["باللغه الانجليزيه", "باللغه الفرنسيه", "باللغه الالمانيه"]:
         if moe_patterns.contains(title, needle):
             return "languages"
     if moe_patterns.contains(title, "باللغه العربيه"):
+        return "arabic"
+
+    # اسم الملف احتياطي: Math_Ar / Math_EN / Science_FR
+    lowered = filename.lower()
+    if re.search(r"[_\-](en|eng|english|fr|french|de|german)[_\-.]", lowered):
+        return "languages"
+    if re.search(r"[_\-](ar|arabic)[_\-.]", lowered):
         return "arabic"
 
     # الإنجليزي نفسه مادة مشتركة
@@ -193,7 +196,8 @@ def parse_url(url: str, title: str = "") -> BookRef | None:
             if 1 <= number <= count:
                 grade_level = first + number - 1
                 stage = (
-                    "primary" if grade_level <= 6
+                    "kindergarten" if grade_level <= 0
+                    else "primary" if grade_level <= 6
                     else "preparatory" if grade_level <= 9
                     else "secondary"
                 )
@@ -236,29 +240,35 @@ def parse_url(url: str, title: str = "") -> BookRef | None:
             kind = moe_patterns.detect_kind(title)
 
     # ---- المادة ----
-    subject_slug = _subject_from_filename(filename)
-    name_ar = name_en = ""
+    #
+    # العنوان اللي في بطاقة الموقع هو المصدر الموثوق، مش اسم الملف:
+    # أسماء الملفات عند الوزارة مش متسقة وفيها أخطاء إملائية
+    # (Arabic_langugae، Cristian_reliogion)، بينما العنوان مكتوب صح
+    # وبيوضّح اللغة كمان ("العلوم باللغة الفرنسية").
+    subject_slug = name_ar = name_en = ""
     color = "#2E7D91"
 
-    if subject_slug and subject_slug in _EXTRA_SUBJECT_NAMES:
-        name_ar, name_en, color = _EXTRA_SUBJECT_NAMES[subject_slug]
-    elif subject_slug:
-        for slug, ar, en, subject_color, _ in moe_patterns.SUBJECTS:
-            if slug == subject_slug:
-                name_ar, name_en, color = ar, en, subject_color
-                break
-
-    # لو اسم الملف ما وضّحش المادة، نجرّب العنوان العربي
-    if not subject_slug and title:
+    if title:
         detected = moe_patterns.detect_subject(title)
         if detected:
             subject_slug, name_ar, name_en, color = detected
+
+    # اسم الملف احتياطي لو العنوان مش متاح
+    if not subject_slug:
+        subject_slug = _subject_from_filename(filename) or ""
+        if subject_slug in _EXTRA_SUBJECT_NAMES:
+            name_ar, name_en, color = _EXTRA_SUBJECT_NAMES[subject_slug]
+        elif subject_slug:
+            for slug, ar, en, subject_color, _ in moe_patterns.SUBJECTS:
+                if slug == subject_slug:
+                    name_ar, name_en, color = ar, en, subject_color
+                    break
 
     if not subject_slug:
         return None
 
     if not name_ar:
-        name_ar = subject_slug
+        name_ar = _EXTRA_SUBJECT_NAMES.get(subject_slug, (subject_slug,))[0]
 
     return BookRef(
         url=url,
