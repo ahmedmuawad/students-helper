@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../core/utils/id_gen.dart';
@@ -12,6 +14,7 @@ import '../models/student_profile.dart';
 import '../models/study_task.dart';
 import '../models/subject.dart';
 import '../services/schedule_service.dart';
+import '../services/sync_service.dart';
 
 /// الحالة المركزية للتطبيق — بيانات الطالب وجداوله ومهامه.
 ///
@@ -36,7 +39,22 @@ class AppState extends ChangeNotifier {
   /// بسن الطالب — تحت 13 سنة الإعلانات المخصّصة ممنوعة مهما كان الاختيار.
   bool _personalizedAdsOptIn = true;
 
-  AppState(this._store);
+  /// المزامنة اختيارية — التطبيق شغّال تمام من غيرها (أوفلاين أولًا).
+  SyncService? _sync;
+
+  AppState(this._store, {SyncService? sync}) : _sync = sync;
+
+  /// بتتظبط بعد تسجيل الدخول.
+  // ignore: unnecessary_getters_setters
+  set syncService(SyncService? service) => _sync = service;
+
+  // ignore: unnecessary_getters_setters
+  SyncService? get syncService => _sync;
+
+  /// بيسجّل إن السجل اتغيّر عشان يتبعت في المزامنة الجاية.
+  void _touch(RecordKind kind, String id, {bool deleted = false}) {
+    unawaited(_sync?.markChanged(kind, id, deleted: deleted) ?? Future.value());
+  }
 
   // ----- قراءات -----
 
@@ -151,8 +169,12 @@ class AppState extends ChangeNotifier {
         subjectIds: _subjects.map((s) => s.id).toList(),
       );
       await _store.writeObject(StoreKeys.profile, _profile!.toJson());
+      for (final subject in _subjects) {
+        _touch(RecordKind.subject, subject.id);
+      }
     }
 
+    _touch(RecordKind.profile, profileRecordId);
     notifyListeners();
   }
 
@@ -189,12 +211,14 @@ class AppState extends ChangeNotifier {
     } else {
       _subjects.add(subject);
     }
+    _touch(RecordKind.subject, subject.id);
     await _persistSubjects();
     notifyListeners();
   }
 
   Future<void> deleteSubject(String id) async {
     _subjects.removeWhere((s) => s.id == id);
+    _touch(RecordKind.subject, id, deleted: true);
     await _persistSubjects();
     notifyListeners();
   }
@@ -211,16 +235,19 @@ class AppState extends ChangeNotifier {
     } else {
       _periods.add(period);
     }
+    _touch(RecordKind.period, period.id);
     await _store.writeList(StoreKeys.periods, _periods, (p) => p.toJson());
     notifyListeners();
   }
 
   Future<void> deletePeriod(String id) async {
     _periods.removeWhere((p) => p.id == id);
+    _touch(RecordKind.period, id, deleted: true);
     // المهام المرتبطة بالحصة دي بتفضل موجودة بس من غير ربط.
     for (var i = 0; i < _tasks.length; i++) {
       if (_tasks[i].linkedPeriodId == id) {
         _tasks[i] = _tasks[i].copyWith(clearLinks: true);
+        _touch(RecordKind.task, _tasks[i].id);
       }
     }
     await _store.writeList(StoreKeys.periods, _periods, (p) => p.toJson());
@@ -256,15 +283,18 @@ class AppState extends ChangeNotifier {
     } else {
       _lessons.add(lesson);
     }
+    _touch(RecordKind.lesson, lesson.id);
     await _store.writeList(StoreKeys.lessons, _lessons, (l) => l.toJson());
     notifyListeners();
   }
 
   Future<void> deleteLesson(String id) async {
     _lessons.removeWhere((l) => l.id == id);
+    _touch(RecordKind.lesson, id, deleted: true);
     for (var i = 0; i < _tasks.length; i++) {
       if (_tasks[i].linkedLessonId == id) {
         _tasks[i] = _tasks[i].copyWith(clearLinks: true);
+        _touch(RecordKind.task, _tasks[i].id);
       }
     }
     await _store.writeList(StoreKeys.lessons, _lessons, (l) => l.toJson());
@@ -311,6 +341,7 @@ class AppState extends ChangeNotifier {
     } else {
       _instructors.add(instructor);
     }
+    _touch(RecordKind.instructor, instructor.id);
     await _store.writeList(
         StoreKeys.instructors, _instructors, (i) => i.toJson());
     notifyListeners();
@@ -318,10 +349,12 @@ class AppState extends ChangeNotifier {
 
   Future<void> deleteInstructor(String id) async {
     _instructors.removeWhere((i) => i.id == id);
+    _touch(RecordKind.instructor, id, deleted: true);
     // الدروس المرتبطة بتفضل موجودة بس من غير ربط بجهة الاتصال.
     for (var i = 0; i < _lessons.length; i++) {
       if (_lessons[i].instructorId == id) {
         _lessons[i] = _lessons[i].copyWith(instructorId: '');
+        _touch(RecordKind.lesson, _lessons[i].id);
       }
     }
     await _store.writeList(
@@ -369,12 +402,14 @@ class AppState extends ChangeNotifier {
     } else {
       _tasks.add(task);
     }
+    _touch(RecordKind.task, task.id);
     await _persistTasks();
     notifyListeners();
   }
 
   Future<void> deleteTask(String id) async {
     _tasks.removeWhere((t) => t.id == id);
+    _touch(RecordKind.task, id, deleted: true);
     await _persistTasks();
     notifyListeners();
   }
@@ -387,6 +422,7 @@ class AppState extends ChangeNotifier {
       isDone: !task.isDone,
       completedAt: task.isDone ? null : DateTime.now(),
     );
+    _touch(RecordKind.task, id);
     await _persistTasks();
     notifyListeners();
   }
@@ -476,6 +512,190 @@ class AppState extends ChangeNotifier {
   /// إنشاء ملف شخصي جديد بمعرّف فريد.
   StudentProfile newProfile() =>
       StudentProfile(id: IdGen.next('student'), name: '');
+
+
+  // -------------------------------------------------------------------
+  // المزامنة
+  // -------------------------------------------------------------------
+  //
+  // الملف الشخصي سجل واحد بس، فمعرّفه ثابت.
+  static const String profileRecordId = 'me';
+
+  /// بيدّي المزامنة محتوى سجل من الحالة المحلية، أو null لو مش موجود
+  /// (يعني اتمسح، والمزامنة هتبعته كمحذوف).
+  Map<String, dynamic>? collectRecord(RecordKind kind, String id) {
+    switch (kind) {
+      case RecordKind.profile:
+        return _profile?.toJson();
+      case RecordKind.subject:
+        return _firstWhereOrNull(_subjects, (s) => s.id == id)?.toJson();
+      case RecordKind.period:
+        return _firstWhereOrNull(_periods, (p) => p.id == id)?.toJson();
+      case RecordKind.lesson:
+        return _firstWhereOrNull(_lessons, (l) => l.id == id)?.toJson();
+      case RecordKind.instructor:
+        return _firstWhereOrNull(_instructors, (i) => i.id == id)?.toJson();
+      case RecordKind.task:
+        return _firstWhereOrNull(_tasks, (t) => t.id == id)?.toJson();
+    }
+  }
+
+  static T? _firstWhereOrNull<T>(List<T> items, bool Function(T) test) {
+    for (final item in items) {
+      if (test(item)) return item;
+    }
+    return null;
+  }
+
+  /// بيطبّق سجلات جاية من السيرفر على الحالة المحلية.
+  ///
+  /// مهم: التطبيق هنا **مش** بيعلّم السجلات كمتغيّرة — دي بيانات جاية من
+  /// السيرفر أصلاً، ولو علّمناها كنا هنبعتها له تاني في لفة لا نهائية.
+  Future<void> applyRemote(List<RemoteRecord> records) async {
+    if (records.isEmpty) return;
+
+    var touchedSubjects = false;
+    var touchedPeriods = false;
+    var touchedLessons = false;
+    var touchedInstructors = false;
+    var touchedTasks = false;
+    var touchedProfile = false;
+
+    for (final record in records) {
+      switch (record.kind) {
+        case RecordKind.profile:
+          if (record.deleted) {
+            _profile = null;
+          } else {
+            _profile = _tryParse(() => StudentProfile.fromJson(record.payload));
+          }
+          touchedProfile = true;
+        case RecordKind.subject:
+          touchedSubjects = _merge<Subject>(
+                _subjects, record, (id) => (s) => s.id == id,
+                parse: () => Subject.fromJson(record.payload),
+              ) ||
+              touchedSubjects;
+        case RecordKind.period:
+          touchedPeriods = _merge<SchoolPeriod>(
+                _periods, record, (id) => (p) => p.id == id,
+                parse: () => SchoolPeriod.fromJson(record.payload),
+              ) ||
+              touchedPeriods;
+        case RecordKind.lesson:
+          touchedLessons = _merge<PrivateLesson>(
+                _lessons, record, (id) => (l) => l.id == id,
+                parse: () => PrivateLesson.fromJson(record.payload),
+              ) ||
+              touchedLessons;
+        case RecordKind.instructor:
+          touchedInstructors = _merge<Instructor>(
+                _instructors, record, (id) => (i) => i.id == id,
+                parse: () => Instructor.fromJson(record.payload),
+              ) ||
+              touchedInstructors;
+        case RecordKind.task:
+          touchedTasks = _merge<StudyTask>(
+                _tasks, record, (id) => (t) => t.id == id,
+                parse: () => StudyTask.fromJson(record.payload),
+              ) ||
+              touchedTasks;
+      }
+    }
+
+    if (touchedProfile && _profile != null) {
+      await _store.writeObject(StoreKeys.profile, _profile!.toJson());
+    }
+    if (touchedSubjects) await _persistSubjects();
+    if (touchedPeriods) {
+      await _store.writeList(StoreKeys.periods, _periods, (p) => p.toJson());
+    }
+    if (touchedLessons) {
+      await _store.writeList(StoreKeys.lessons, _lessons, (l) => l.toJson());
+    }
+    if (touchedInstructors) {
+      await _store.writeList(
+          StoreKeys.instructors, _instructors, (i) => i.toJson());
+    }
+    if (touchedTasks) await _persistTasks();
+
+    notifyListeners();
+  }
+
+  /// بيدخّل سجل واحد في قائمته، ويرجّع هل حصل تغيير فعلاً.
+  bool _merge<T>(
+    List<T> items,
+    RemoteRecord record,
+    bool Function(T) Function(String id) matcher, {
+    required T Function() parse,
+  }) {
+    final match = matcher(record.id);
+    final index = items.indexWhere(match);
+
+    if (record.deleted) {
+      if (index < 0) return false;
+      items.removeAt(index);
+      return true;
+    }
+
+    final parsed = _tryParse(parse);
+    if (parsed == null) return false;      // سجل تالف — بنتجاهله
+    if (index >= 0) {
+      items[index] = parsed;
+    } else {
+      items.add(parsed);
+    }
+    return true;
+  }
+
+  static T? _tryParse<T>(T Function() parse) {
+    try {
+      return parse();
+    } catch (error) {
+      debugPrint('سجل مش مفهوم من السيرفر، اتتخطى: $error');
+      return null;
+    }
+  }
+
+  /// جولة مزامنة كاملة.
+  Future<SyncResult> syncNow() async {
+    final service = _sync;
+    if (service == null) {
+      return const SyncResult(error: 'المزامنة مش مفعّلة');
+    }
+    final result = await service.sync(
+      collect: collectRecord,
+      apply: applyRemote,
+    );
+    notifyListeners();
+    return result;
+  }
+
+  /// بيعلّم كل البيانات المحلية للرفع — بيتنادى أول مرة يسجّل فيها دخول
+  /// عشان اللي عمله قبل الحساب ما يضيعش.
+  Future<void> markEverythingForUpload() async {
+    final service = _sync;
+    if (service == null) return;
+    if (_profile != null) {
+      await service.markChanged(RecordKind.profile, profileRecordId);
+    }
+    for (final item in _subjects) {
+      await service.markChanged(RecordKind.subject, item.id);
+    }
+    for (final item in _periods) {
+      await service.markChanged(RecordKind.period, item.id);
+    }
+    for (final item in _lessons) {
+      await service.markChanged(RecordKind.lesson, item.id);
+    }
+    for (final item in _instructors) {
+      await service.markChanged(RecordKind.instructor, item.id);
+    }
+    for (final item in _tasks) {
+      await service.markChanged(RecordKind.task, item.id);
+    }
+    notifyListeners();
+  }
 
   Future<void> resetAllData() async {
     await _store.clearAll();

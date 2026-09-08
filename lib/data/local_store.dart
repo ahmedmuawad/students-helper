@@ -113,4 +113,6 @@ class StoreKeys {
   static const accountRole = 'account_role';
   static const personalizedAds = 'personalized_ads';
   static const lastSyncAt = 'last_sync_at';
+  static const syncCursor = 'sync_cursor';
+  static const syncPending = 'sync_pending';
 }
