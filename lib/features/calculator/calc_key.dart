@@ -8,6 +8,9 @@ import '../../state/calculator_state.dart';
 /// (بتظهر فوق الزر بلون مميز)، ووظيفة مع ALPHA.
 class CalcKey {
   final String label;
+
+  /// أيقونة بديلة للنص — بنستخدمها للرموز اللي مش موجودة في الخط (زي الأسهم).
+  final IconData? icon;
   final String? shiftLabel;
   final String? alphaLabel;
 
@@ -25,6 +28,7 @@ class CalcKey {
   const CalcKey({
     required this.label,
     required this.onPrimary,
+    this.icon,
     this.shiftLabel,
     this.alphaLabel,
     this.onShift,

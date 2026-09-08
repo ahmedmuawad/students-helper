@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
   provider: ^6.1.2
   shared_preferences: ^2.2.3
-  intl: ^0.19.0
+  intl: ^0.20.3
   flutter_local_notifications: ^17.2.2
   timezone: ^0.9.4
   fl_chart: ^0.68.0
@@ -27,3 +27,14 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+  fonts:
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Tajawal-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Tajawal-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Tajawal-ExtraBold.ttf
+          weight: 800

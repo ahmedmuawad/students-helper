@@ -14,41 +14,46 @@ class CalcKeypad extends StatelessWidget {
   Widget build(BuildContext context) {
     final rows = _buildRows(context);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // ارتفاع الصف يتوزّع على المساحة المتاحة مع حد أدنى مريح للإصبع.
-        final rowHeight =
-            ((constraints.maxHeight - (rows.length - 1) * 6) / rows.length)
-                .clamp(44.0, 70.0);
+    // الآلة الحاسبة تفضل من الشمال لليمين حتى في الواجهة العربية — ترتيب
+    // 7-8-9 وموضع AC و = متعارف عليه عالميًا ومينفعش ينعكس مع اللغة.
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // ارتفاع الصف يتوزّع على المساحة المتاحة مع حد أدنى مريح للإصبع.
+          final rowHeight =
+              ((constraints.maxHeight - (rows.length - 1) * 6) / rows.length)
+                  .clamp(44.0, 70.0);
 
-        return Column(
-          children: [
-            for (var i = 0; i < rows.length; i++) ...[
-              SizedBox(
-                height: rowHeight,
-                child: Row(
-                  children: [
-                    for (var j = 0; j < rows[i].length; j++) ...[
-                      Expanded(
-                        child: _KeyButton(spec: rows[i][j], state: state),
-                      ),
-                      if (j != rows[i].length - 1) const SizedBox(width: 6),
+          return Column(
+            children: [
+              for (var i = 0; i < rows.length; i++) ...[
+                SizedBox(
+                  height: rowHeight,
+                  child: Row(
+                    children: [
+                      for (var j = 0; j < rows[i].length; j++) ...[
+                        Expanded(
+                          child: _KeyButton(spec: rows[i][j], state: state),
+                        ),
+                        if (j != rows[i].length - 1) const SizedBox(width: 6),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ),
-              if (i != rows.length - 1) const SizedBox(height: 6),
+                if (i != rows.length - 1) const SizedBox(height: 6),
+              ],
             ],
-          ],
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
   List<List<CalcKey>> _buildRows(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final accent = const Color(0xFFF5A623);
-    final danger = const Color(0xFFE53935);
+    const accent = Color(0xFFF5A623);
+    const danger = Color(0xFFE53935);
 
     return [
       // ---- صف المُعدِّلات والتنقل ----
@@ -67,8 +72,18 @@ class CalcKeypad extends StatelessWidget {
           foreground: Colors.white,
           onPrimary: (s) => s.toggleAlpha(),
         ),
-        CalcKey(label: '◀', fontSize: 15, onPrimary: (s) => s.moveCursor(-1)),
-        CalcKey(label: '▶', fontSize: 15, onPrimary: (s) => s.moveCursor(1)),
+        CalcKey(
+          label: 'يسار',
+          icon: Icons.chevron_left,
+          fontSize: 15,
+          onPrimary: (s) => s.moveCursor(-1),
+        ),
+        CalcKey(
+          label: 'يمين',
+          icon: Icons.chevron_right,
+          fontSize: 15,
+          onPrimary: (s) => s.moveCursor(1),
+        ),
         CalcKey(
           label: 'MODE',
           fontSize: 12,
@@ -87,7 +102,7 @@ class CalcKeypad extends StatelessWidget {
         ),
         CalcKey.insert('Σ', 'Σ(', fontSize: 15),
         CalcKey.insert(
-          'x⁻¹',
+          '1/x',
           '^-1',
           fontSize: 13,
           shiftLabel: 'x!',
@@ -101,10 +116,10 @@ class CalcKeypad extends StatelessWidget {
           shiftText: 'nCr',
         ),
         CalcKey.insert(
-          'log□',
-          'log(',
+          'logab',
+          'logab(',
           fontSize: 12,
-          shiftLabel: '10ˣ',
+          shiftLabel: '10^x',
           shiftText: '10^',
         ),
       ],
@@ -113,9 +128,9 @@ class CalcKeypad extends StatelessWidget {
       [
         CalcKey.insert(
           '√',
-          'sqrt(',
+          '√(',
           fontSize: 17,
-          shiftLabel: '∛',
+          shiftLabel: '3√',
           shiftText: 'cbrt(',
         ),
         CalcKey.insert(
@@ -126,43 +141,43 @@ class CalcKeypad extends StatelessWidget {
           shiftText: '³',
         ),
         CalcKey.insert(
-          'xʸ',
+          'x^y',
           '^',
           fontSize: 14,
-          shiftLabel: 'ˣ√y',
+          shiftLabel: 'n√x',
           shiftText: 'root(',
         ),
         CalcKey.insert(
           'log',
           'log(',
           fontSize: 14,
-          shiftLabel: '10ˣ',
+          shiftLabel: '10^x',
           shiftText: '10^',
         ),
         CalcKey.insert(
           'ln',
           'ln(',
           fontSize: 14,
-          shiftLabel: 'eˣ',
+          shiftLabel: 'e^x',
           shiftText: 'exp(',
         ),
       ],
 
       // ---- مثلثات ----
       [
-        CalcKey.insert('(-)', '-', fontSize: 14),
+        CalcKey.insert('(-)', '−', fontSize: 14),
         CalcKey.insert(
           'hyp',
           'sinh(',
           fontSize: 12,
-          shiftLabel: 'hyp⁻¹',
+          shiftLabel: 'hyp-1',
           shiftText: 'asinh(',
         ),
         CalcKey.insert(
           'sin',
           'sin(',
           fontSize: 14,
-          shiftLabel: 'sin⁻¹',
+          shiftLabel: 'sin-1',
           shiftText: 'asin(',
           alphaLabel: 'sinh',
           alphaText: 'sinh(',
@@ -171,7 +186,7 @@ class CalcKeypad extends StatelessWidget {
           'cos',
           'cos(',
           fontSize: 14,
-          shiftLabel: 'cos⁻¹',
+          shiftLabel: 'cos-1',
           shiftText: 'acos(',
           alphaLabel: 'cosh',
           alphaText: 'cosh(',
@@ -180,7 +195,7 @@ class CalcKeypad extends StatelessWidget {
           'tan',
           'tan(',
           fontSize: 14,
-          shiftLabel: 'tan⁻¹',
+          shiftLabel: 'tan-1',
           shiftText: 'atan(',
           alphaLabel: 'tanh',
           alphaText: 'tanh(',
@@ -198,7 +213,7 @@ class CalcKeypad extends StatelessWidget {
         ),
         CalcKey.insert(
           'π',
-          'pi',
+          'π',
           fontSize: 16,
           shiftLabel: 'e',
           shiftText: 'e',
@@ -239,20 +254,20 @@ class CalcKeypad extends StatelessWidget {
         CalcKey.insert('4', '4', fontSize: 19),
         CalcKey.insert('5', '5', fontSize: 19),
         CalcKey.insert('6', '6', fontSize: 19),
-        CalcKey.insert('×', '*', fontSize: 19),
-        CalcKey.insert('÷', '/', fontSize: 19),
+        CalcKey.insert('×', '×', fontSize: 19),
+        CalcKey.insert('÷', '÷', fontSize: 19),
       ],
       [
         CalcKey.insert('1', '1', fontSize: 19),
         CalcKey.insert('2', '2', fontSize: 19),
         CalcKey.insert('3', '3', fontSize: 19),
         CalcKey.insert('+', '+', fontSize: 19),
-        CalcKey.insert('−', '-', fontSize: 19),
+        CalcKey.insert('−', '−', fontSize: 19),
       ],
       [
         CalcKey.insert('0', '0', fontSize: 19),
         CalcKey.insert('.', '.', fontSize: 19),
-        CalcKey.insert('×10ˣ', 'E', fontSize: 12),
+        CalcKey.insert('×10^x', 'E', fontSize: 12),
         CalcKey.insert(
           'Ans',
           'Ans',
@@ -433,17 +448,20 @@ class _KeyButton extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-              Text(
-                spec.displayLabel(state),
-                maxLines: 1,
-                overflow: TextOverflow.clip,
-                style: TextStyle(
-                  fontSize: spec.fontSize,
-                  height: 1.15,
-                  color: foreground,
-                  fontWeight: FontWeight.w600,
+              if (spec.icon != null)
+                Icon(spec.icon, size: spec.fontSize + 4, color: foreground)
+              else
+                Text(
+                  spec.displayLabel(state),
+                  maxLines: 1,
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(
+                    fontSize: spec.fontSize,
+                    height: 1.15,
+                    color: foreground,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
             ],
           ),
         ),

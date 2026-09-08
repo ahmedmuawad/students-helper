@@ -13,12 +13,22 @@ import 'home_screen.dart';
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
 
+  /// تنقّل لتبويب معيّن من أي شاشة جوّه الهيكل (اختصارات الشاشة الرئيسية).
+  static void goToTab(BuildContext context, int index) {
+    context.findAncestorStateOfType<_AppShellState>()?.selectTab(index);
+  }
+
   @override
   State<AppShell> createState() => _AppShellState();
 }
 
 class _AppShellState extends State<AppShell> {
   int _index = 0;
+
+  void selectTab(int index) {
+    if (index == _index) return;
+    setState(() => _index = index);
+  }
 
   static const List<Widget> _screens = [
     HomeScreen(),
@@ -66,11 +76,5 @@ class _AppShellState extends State<AppShell> {
         ],
       ),
     );
-  }
-
-  /// تنقّل من الشاشة الرئيسية لتبويب معيّن.
-  static void goToTab(BuildContext context, int index) {
-    final shell = context.findAncestorStateOfType<_AppShellState>();
-    shell?.setState(() => shell._index = index);
   }
 }

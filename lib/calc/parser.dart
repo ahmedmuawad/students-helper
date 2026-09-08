@@ -21,15 +21,6 @@ class Parser {
 
   Token _advance() => _tokens[_index++];
 
-  bool _matchOperator(Set<String> ops) {
-    final token = _current;
-    if (token.type == TokenType.operator && ops.contains(token.text)) {
-      _index++;
-      return true;
-    }
-    return false;
-  }
-
   Expr parse() {
     final expr = _parseOr();
     if (_current.type != TokenType.end) {

@@ -169,7 +169,7 @@ class _Display extends StatelessWidget {
                   textDirection: TextDirection.ltr,
                   style: TextStyle(
                     fontSize: 19,
-                    fontFamily: 'monospace',
+                    fontFeatures: const [FontFeature.tabularFigures()],
                     color: scheme.onSurface.withValues(alpha: 0.85),
                   ),
                 ),
@@ -199,7 +199,7 @@ class _Display extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w700,
-                      fontFamily: 'monospace',
+                      fontFeatures: const [FontFeature.tabularFigures()],
                       color: state.hasError ? scheme.error : scheme.onSurface,
                     ),
                   ),
@@ -254,7 +254,7 @@ class _HistoryTile extends StatelessWidget {
         textDirection: TextDirection.ltr,
         style: TextStyle(
           fontSize: 13,
-          fontFamily: 'monospace',
+          fontFeatures: const [FontFeature.tabularFigures()],
           color: Theme.of(context).colorScheme.outline,
         ),
       ),
@@ -264,7 +264,7 @@ class _HistoryTile extends StatelessWidget {
         style: const TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.w700,
-          fontFamily: 'monospace',
+          fontFeatures: [FontFeature.tabularFigures()],
         ),
       ),
       onTap: onUseResult,

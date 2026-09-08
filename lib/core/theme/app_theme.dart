@@ -9,7 +9,7 @@ class AppTheme {
   static const Color success = Color(0xFF2E9E5B);
 
   /// خط عربي واضح ومتوفر على أغلب الأجهزة.
-  static const String? fontFamily = null;
+  static const String fontFamily = 'Tajawal';
 
   static ThemeData light() => _build(Brightness.light);
 
@@ -77,7 +77,12 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          // تحديد الخط هنا ضروري: أي TextStyle صريح بيتجاهل fontFamily بتاع الثيم.
+          textStyle: const TextStyle(
+            fontFamily: fontFamily,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(

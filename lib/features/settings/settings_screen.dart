@@ -41,36 +41,42 @@ class SettingsScreen extends StatelessWidget {
 
           SectionHeader(s.get('language')),
           Card(
-            child: Column(
-              children: [
-                RadioListTile<String>(
-                  value: 'ar',
-                  groupValue: state.languageCode,
-                  title: const Text('العربية'),
-                  onChanged: (value) => state.setLanguage(value!),
-                ),
-                RadioListTile<String>(
-                  value: 'en',
-                  groupValue: state.languageCode,
-                  title: const Text('English'),
-                  onChanged: (value) => state.setLanguage(value!),
-                ),
-              ],
+            child: RadioGroup<String>(
+              groupValue: state.languageCode,
+              onChanged: (value) {
+                if (value != null) state.setLanguage(value);
+              },
+              child: const Column(
+                children: [
+                  RadioListTile<String>(
+                    value: 'ar',
+                    title: Text('العربية'),
+                  ),
+                  RadioListTile<String>(
+                    value: 'en',
+                    title: Text('English'),
+                  ),
+                ],
+              ),
             ),
           ),
 
           SectionHeader(s.get('theme')),
           Card(
-            child: Column(
-              children: [
-                for (final mode in ThemeMode.values)
-                  RadioListTile<ThemeMode>(
-                    value: mode,
-                    groupValue: state.themeMode,
-                    title: Text(_themeLabel(mode, s)),
-                    onChanged: (value) => state.setThemeMode(value!),
-                  ),
-              ],
+            child: RadioGroup<ThemeMode>(
+              groupValue: state.themeMode,
+              onChanged: (value) {
+                if (value != null) state.setThemeMode(value);
+              },
+              child: Column(
+                children: [
+                  for (final mode in ThemeMode.values)
+                    RadioListTile<ThemeMode>(
+                      value: mode,
+                      title: Text(_themeLabel(mode, s)),
+                    ),
+                ],
+              ),
             ),
           ),
 

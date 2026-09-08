@@ -5,7 +5,6 @@ import '../core/utils/time_utils.dart';
 import '../data/default_data.dart';
 import '../data/local_store.dart';
 import '../models/account.dart';
-import '../models/enums.dart';
 import '../models/private_lesson.dart';
 import '../models/school_period.dart';
 import '../models/student_profile.dart';

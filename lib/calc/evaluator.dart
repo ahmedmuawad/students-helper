@@ -136,11 +136,11 @@ class Evaluator {
     if (base == 0 && exponent < 0) {
       throw CalcError.math('صفر مرفوع لأس سالب غير معرّف');
     }
-    final result = math.pow(base, exponent);
-    if (result is! num || result.isNaN) {
+    final result = math.pow(base, exponent).toDouble();
+    if (result.isNaN) {
       throw CalcError.math('نتيجة الأس غير معرّفة');
     }
-    return result.toDouble();
+    return result;
   }
 
   int _toInt(double value) {
@@ -226,7 +226,9 @@ class Evaluator {
         return math.log(args[0] + math.sqrt(args[0] * args[0] + 1));
       case 'acosh':
         _arity(name, args, 1);
-        if (args[0] < 1) throw CalcError.math('نطاق cosh⁻¹ يبدأ من 1');
+        if (args[0] < 1) {
+          throw CalcError.math('نطاق cosh⁻¹ يبدأ من 1');
+        }
         return math.log(args[0] + math.sqrt(args[0] * args[0] - 1));
       case 'atanh':
         _arity(name, args, 1);
@@ -300,8 +302,9 @@ class Evaluator {
         _arity(name, args, 2);
         final low = args[0].round();
         final high = args[1].round();
-        if (high < low)
+        if (high < low) {
           throw CalcError.argument('RanInt: الحد الأعلى أصغر من الأدنى');
+        }
         return (low + context.random.nextInt(high - low + 1)).toDouble();
 
       // ----- قواسم -----
@@ -411,7 +414,9 @@ class Evaluator {
   }
 
   double _nthRoot(double n, double x) {
-    if (n == 0) throw CalcError.math('الجذر النوني لا يقبل n = 0');
+    if (n == 0) {
+      throw CalcError.math('الجذر النوني لا يقبل n = 0');
+    }
     if (x < 0) {
       final isOddInteger = n == n.roundToDouble() && n.round().isOdd;
       if (!isOddInteger) {
@@ -556,8 +561,9 @@ class Evaluator {
     final body = expr.args[0];
     final start = evaluate(expr.args[1]).round();
     final end = evaluate(expr.args[2]).round();
-    if (end < start)
+    if (end < start) {
       throw CalcError.argument('حد المجموع الأعلى أصغر من الأدنى');
+    }
     if (end - start > 100000) {
       throw CalcError.range('عدد حدود المجموع كبير جدًا');
     }
