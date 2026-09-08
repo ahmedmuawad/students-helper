@@ -11,13 +11,21 @@ settings = get_settings()
 
 # pool_pre_ping بيتأكد إن الاتصال لسه حي قبل الاستخدام — مهم على سيرفر
 # بيفضل شغال أيام من غير إعادة تشغيل.
-engine = create_engine(
-    settings.database_url,
-    pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20,
-    future=True,
-)
+# pool_pre_ping بيتأكد إن الاتصال لسه حي قبل الاستخدام، و pool_recycle
+# بيجدّد الاتصالات قبل ما MySQL يقفلها (wait_timeout الافتراضي 8 ساعات).
+_engine_options: dict = {
+    "pool_pre_ping": True,
+    "pool_size": 10,
+    "max_overflow": 20,
+    "future": True,
+}
+if settings.database_url.startswith("mysql"):
+    _engine_options["pool_recycle"] = 3600
+elif settings.database_url.startswith("sqlite"):
+    # SQLite للتطوير المحلي فقط — مبيدعمش تجميع الاتصالات بنفس الشكل.
+    _engine_options = {"future": True}
+
+engine = create_engine(settings.database_url, **_engine_options)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
 

@@ -12,8 +12,12 @@ class Settings(BaseSettings):
     environment: str = "development"
     debug: bool = False
 
-    # قاعدة البيانات — PostgreSQL على سيرفر Hetzner
-    database_url: str = "postgresql+psycopg://students:students@localhost:5432/students_helper"
+    # قاعدة البيانات. CloudPanel بيوفّر MySQL جاهز، فده الافتراضي.
+    # charset=utf8mb4 ضروري عشان العربية والإيموجي تتخزّن صح.
+    database_url: str = (
+        "mysql+pymysql://students:students@127.0.0.1:3306/students_helper"
+        "?charset=utf8mb4"
+    )
 
     # Firebase بيتستخدم لتسجيل الدخول فقط؛ السيرفر بيتحقق من التوكن.
     firebase_project_id: str = ""
