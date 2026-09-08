@@ -4,6 +4,19 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// إعدادات Firebase بتتطبّق بس لو الملف موجود. من غيره التطبيق بيتبني
+// ويشتغل عادي، وتسجيل الدخول بس هو اللي بيتعطّل ويقول السبب — كده حد
+// يقدر يجرّب النسخة قبل ما حساب Firebase يتظبط.
+val googleServices = file("google-services.json")
+if (googleServices.exists()) {
+    apply(plugin = "com.google.gms.google-services")
+} else {
+    logger.lifecycle(
+        "google-services.json مش موجود — تسجيل الدخول هيبقى متعطّل في النسخة دي. " +
+        "الخطوات في docs/FIREBASE.md"
+    )
+}
+
 android {
     namespace = "com.studentshelper.students_helper"
     compileSdk = flutter.compileSdkVersion

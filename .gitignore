@@ -19,3 +19,4 @@ ios/.symlinks/
 # ملفات مؤقتة على السيرفر
 backend/.incoming/
 backend/catalog.txt
+google-services.json
