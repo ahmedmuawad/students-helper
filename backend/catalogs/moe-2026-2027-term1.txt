@@ -47,9 +47,9 @@ https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prim
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Arabic_language_prim2_t1.pdf
 اللغة الإنجليزية - الثاني الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/English_language_prim2_t1.pdf
-الرياضيات - الثاني الابتدائي - عربي
+الرياضيات - الثاني الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Math_Ar_prim2_t1.pdf
-الرياضيات - الثاني الابتدائي - لغات
+الرياضيات - الثاني الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Math_EN_P2_T1.pdf
 التربية الدينية المسيحية - الثاني الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary2/Term1/StudentBook/Cristian_religion_prim2_t1.pdf
@@ -61,9 +61,9 @@ https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prim
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Arabic_language_prim3_t1.pdf
 اللغة الإنجليزية - الثالث الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/English_language_prim3_t1.pdf
-الرياضيات - الثالث الابتدائي - عربي
+الرياضيات - الثالث الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Math_Ar_prim3_t1.pdf
-الرياضيات - الثالث الابتدائي - لغات
+الرياضيات - الثالث الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Math_EN_P3_T1.pdf
 التربية الدينية المسيحية - الثالث الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary3/Term1/StudentBook/Cristian_religion_prim3_t1.pdf
@@ -75,23 +75,23 @@ https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prim
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Arabic_language_prim4_t1.pdf
 اللغة الإنجليزية - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/English_language_prim4_t1.pdf
-تكنولوجيا المعلومات والاتصالات - الرابع الابتدائي - عربي
+تكنولوجيا المعلومات والاتصالات - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/ICT_ARABIC_Prim4_TR1.pdf
-الرياضيات - الرابع الابتدائي - عربي
+الرياضيات - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Math_Ar_prim4_t1.pdf
-الرياضيات - الرابع الابتدائي - لغات
+الرياضيات - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Math_EN_P4_T1.pdf
-الرياضيات - الرابع الابتدائي - لغات
+الرياضيات - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Math_FR_P4_T1.pdf
 التربية الدينية المسيحية - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Cristian_religion_prim4_t1.pdf
 التربية الدينية الإسلامية - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Islamic_religion_prim4_t1.pdf
-العلوم - الرابع الابتدائي - عربي
+العلوم - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Science_Ar_prim4_t1.pdf
-العلوم - الرابع الابتدائي - لغات
+العلوم - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Science_EN_PRIM4_Tr1.pdf
-العلوم - الرابع الابتدائي - لغات
+العلوم - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Science_FR_prim4_TR1.pdf
 الدراسات الاجتماعية - الرابع الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary4/Term1/StudentBook/Social_studies_prim4_t1.pdf
@@ -101,19 +101,19 @@ https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prim
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Arabic_langugae_prim5_t1.pdf
 اللغة الإنجليزية - الخامس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/English_language_prim5_t1.pdf
-تكنولوجيا المعلومات والاتصالات - الخامس الابتدائي - عربي
+تكنولوجيا المعلومات والاتصالات - الخامس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/ICT_ARABIC_Prim5_TR1.pdf
-الرياضيات - الخامس الابتدائي - عربي
+الرياضيات - الخامس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Math_Ar_prim5_t1.pdf
-الرياضيات - الخامس الابتدائي - لغات
+الرياضيات - الخامس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Math_FR_prim5_TR1.pdf
 التربية الدينية المسيحية - الخامس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Cristian_reliogion_prim5_t1.pdf
 التربية الدينية الإسلامية - الخامس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Islamic_prim5_tr1.pdf
-العلوم - الخامس الابتدائي - عربي
+العلوم - الخامس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Science_Ar_prim5_t1.pdf
-العلوم - الخامس الابتدائي - لغات
+العلوم - الخامس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Science_FR_prim5_TR1.pdf
 الدراسات الاجتماعية - الخامس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary5/Term1/StudentBook/Social_studies_prim5_t1.pdf
@@ -123,13 +123,13 @@ https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prim
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Arabic_Primary6_T1.pdf
 اللغة الإنجليزية - السادس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/English_Primary6_T1.pdf
-تكنولوجيا المعلومات والاتصالات - السادس الابتدائي - عربي
+تكنولوجيا المعلومات والاتصالات - السادس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/ICT_ARABIC_Prim6_TR1.pdf
 الرياضيات - السادس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Math_Primary6_T1.pdf
-الرياضيات - السادس الابتدائي - لغات
+الرياضيات - السادس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Math_EN_P6_T1.pdf
-الرياضيات - السادس الابتدائي - لغات
+الرياضيات - السادس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Math_FR_P6_T1.pdf
 التربية الدينية المسيحية - السادس الابتدائي
 https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Primary/Primary6/Term1/StudentBook/Christian_Education_Primary6_T1.pdf

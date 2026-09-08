@@ -38,6 +38,7 @@ class BookKind(str, enum.Enum):
 
     textbook = "textbook"        # كتاب الوزارة
     workbook = "workbook"        # كتاب الأنشطة
+    story = "story"              # القصة (كتاب مستقل في العربي والإنجليزي)
     booklet = "booklet"          # ملزمة
     revision = "revision"        # مراجعة نهائية
     exam = "exam"                # نماذج امتحانات

@@ -14,6 +14,7 @@
 #   sudo bash deploy/books.sh all                     # ← كل حاجة مرة واحدة
 #   sudo bash deploy/books.sh plan                    # معاينة من غير تنزيل
 #   sudo bash deploy/books.sh import                  # التنزيل والاستيراد
+#   sudo bash deploy/books.sh reimport                # إعادة استيراد وتصحيح
 #   sudo bash deploy/books.sh import '' 10            # تجربة على 10 كتب بس
 #
 # من غير ما تدّي ملف، بيستخدم الكتالوج الجاهز اللي جاي مع الكود:
@@ -145,6 +146,12 @@ case "$command" in
     printf '\033[1;36m▶ الكتالوج: %s\033[0m\n' "$source_file"
     run import --from "$source_file" ${3:+--limit "$3"}
     ;;
+  reimport)
+    # يعيد الاستيراد ويشيل أي تسجيل قديم للرابط — لإصلاح كتب اتسجّلت غلط
+    source_file="$(catalog_path "${2:-}")" || exit 1
+    printf '\033[1;36m▶ الكتالوج: %s (استبدال)\033[0m\n' "$source_file"
+    run import --from "$source_file" --replace ${3:+--limit "$3"}
+    ;;
   all)
     # التركيبة الكاملة: تظبيط الجداول ← المناهج والصفوف ← الكتب
     run migrate
@@ -156,6 +163,6 @@ case "$command" in
     ;;
   *)
     fail "أمر غير معروف: ${command}
-  المتاح: all / migrate / structure / status / html / crawl / probe / list / plan / import"
+  المتاح: all / migrate / structure / status / html / crawl / probe / list / plan / import / reimport"
     ;;
 esac

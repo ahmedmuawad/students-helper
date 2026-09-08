@@ -238,21 +238,27 @@ SUBJECTS: list[tuple[str, str, str, str, list[str]]] = [
 
 
 def detect_subject(text: str) -> tuple[str, str, str, str] | None:
-    """يرجّع (المعرّف، الاسم عربي، الاسم إنجليزي، اللون) أو None."""
+    """يرجّع (المعرّف، الاسم عربي، الاسم إنجليزي، اللون) أو None.
+
+    بنختار **أطول كلمة اتطابقت فعلاً**، مش أطول كلمة مسجّلة. الفرق مهم:
+    "الرياضيات - الثاني الابتدائي - عربي" فيه "الرياضيات" (٩ حروف) و"عربي"
+    (٤ حروف). لو رتّبنا بالطول المسجّل، مادة اللغة العربية بتتفحص الأول
+    (لأن عندها "اللغه العربيه" ١٣ حرف) وبتكسب بـ"عربي" — فكتاب الرياضيات
+    بيتسجّل لغة عربية. بالمطابقة الفعلية "الرياضيات" هي اللي بتكسب.
+    """
     # لاحقة "باللغة كذا" بتشوّش المطابقة، فبنشيلها الأول
     cleaned = strip_language_suffix(text)
 
-    # نجرّب الأطول الأول عشان "العلوم المتكاملة" ما تتطابقش كـ"العلوم"
-    ordered = sorted(
-        SUBJECTS,
-        key=lambda item: max(len(n) for n in item[4]),
-        reverse=True,
-    )
-    for slug, name_ar, name_en, color, needles in ordered:
+    best: tuple[int, tuple[str, str, str, str]] | None = None
+    for slug, name_ar, name_en, color, needles in SUBJECTS:
         for needle in needles:
-            if contains(cleaned, needle):
-                return slug, name_ar, name_en, color
-    return None
+            if not contains(cleaned, needle):
+                continue
+            score = len(normalize(needle))
+            if best is None or score > best[0]:
+                best = (score, (slug, name_ar, name_en, color))
+
+    return best[1] if best else None
 
 
 # ---------------------------------------------------------------- النوع
@@ -270,6 +276,9 @@ def detect_kind(text: str) -> str:
     if any(contains(text, n) for n in
            ["كراسه التدريبات", "كراسه تدريبات", "انشطه", "النشاط", "workbook"]):
         return "workbook"
+    # القصة كتاب مستقل جنب كتاب الطالب في العربي والإنجليزي
+    if any(contains(text, n) for n in ["القصه", "قصه", "story"]):
+        return "story"
     return "textbook"
 
 

@@ -1,170 +1,170 @@
 [
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/KG/KG1/Term1/StudentBook/Arabic_langugae_kg1_t1.pdf",
-  "title": "اللغة العربية - مستوى أول - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": -1,
-  "subject": "اللغة العربية",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/KG/KG2/Term1/StudentBook/English_language_kg2_t1.pdf",
-  "title": "اللغة الإنجليزية - مستوى ثان - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 0,
-  "subject": "اللغة الإنجليزية",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Thetar_prep1_Tr1.pdf",
-  "title": "التربية المسرحية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 7,
-  "subject": "التربية المسرحية",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Librarie_research_skills_prep1_Tr1.pdf",
-  "title": "المكتبات ومهارات البحث - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 7,
-  "subject": "المكتبات ومهارات البحث",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Educational_media_Pep1_Tr1.pdf",
-  "title": "الإعلام التربوي - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 7,
-  "subject": "الإعلام التربوي",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Science_EN_Prp1_TR1..pdf",
-  "title": "العلوم باللغة الإنجليزية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 7,
-  "subject": "العلوم",
-  "language": "languages",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Industry_Prep2_T1.pdf",
-  "title": "مهارات الصناعة وريادة الأعمال - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 8,
-  "subject": "مهارات الصناعة وريادة الأعمال",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Agriculture_2_Preparatory_TR1.pdf",
-  "title": "مهارات الزراعة وريادة الأعمال - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 8,
-  "subject": "مهارات الزراعة وريادة الأعمال",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/ICT_EN_Prp2_Tr1.pdf",
-  "title": "الكمبيوتر وتكنولوجيا المعلومات والاتصالات باللغة الإنجليزية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 8,
-  "subject": "تكنولوجيا المعلومات والاتصالات",
-  "language": "languages",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry1/Term1/StudentBook/integratedscience_FR_1_Secondary_TR1.pdf",
-  "title": "العلوم المتكاملة باللغة الفرنسية - الصف الأول الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 10,
-  "subject": "العلوم المتكاملة",
-  "language": "languages",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry1/Term1/StudentBook/Arabic_language_STORY_Sec1_Tr1.pdf",
-  "title": "اللغة العربية-القصة - الصف الأول الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 10,
-  "subject": "اللغة العربية",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry1/Term1/StudentBook/ICT_AR__Sec1_Tr1.pdf",
-  "title": "البرمجة والذكاء الاصطناعي باللغة العربية - الصف الأول الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 10,
-  "subject": "البرمجة والذكاء الاصطناعي",
-  "language": "arabic",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/pure_Mathematics_FR_Sec2_Tr1.pdf",
-  "title": "الرياضيات البحتة باللغة الفرنسية - الصف الثانى الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 11,
-  "subject": "الرياضيات البحتة",
-  "language": "languages",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/Premiere_langue_francaise_WB_Sec2_Tr1.pdf",
-  "title": "اللغة الفرنسية-لغة أجنبية أولى-كراسة التدريبات - الصف الثانى الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 11,
-  "subject": "اللغة الفرنسية",
-  "language": "both",
-  "kind": "workbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/Citizenship_and_Human_Rights_Sec2_Tr1.pdf",
-  "title": "المواطنة وحقوق الإنسان - الصف الثاني الثانوي - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 11,
-  "subject": "المواطنة وحقوق الإنسان",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/Geography_Sec2_Tr1.pdf",
-  "title": "جغرافيا التنمية - الصف الثانى الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 11,
-  "subject": "جغرافيا التنمية",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/Statistics_Fr_Sec3.pdf",
-  "title": "الإحصاء باللغة الفرنسية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 12,
-  "subject": "الإحصاء",
-  "language": "languages",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/applied_Mathematics_ENGLISH_Sec3.pdf",
-  "title": "الرياضيات التطبيقية باللغة الإنجليزية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 12,
-  "subject": "الرياضيات التطبيقية",
-  "language": "languages",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/National_Education_Sec3_tr1.pdf",
-  "title": "التربية الوطنية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 12,
-  "subject": "التربية الوطنية",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/Espanol_language_Sec3.pdf",
-  "title": "اللغة الإسبانية-لغة أجنبية ثانية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 12,
-  "subject": "اللغة الإسبانية",
-  "language": "both",
-  "kind": "textbook"
- },
- {
-  "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/Psychology_Sociology_Sec3.pdf",
-  "title": "علم النفس والاجتماع - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
-  "grade": 12,
-  "subject": "علم النفس والاجتماع",
-  "language": "both",
-  "kind": "textbook"
- }
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/KG/KG1/Term1/StudentBook/Arabic_langugae_kg1_t1.pdf",
+    "title": "اللغة العربية - مستوى أول - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": -1,
+    "subject": "اللغة العربية",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/KG/KG2/Term1/StudentBook/English_language_kg2_t1.pdf",
+    "title": "اللغة الإنجليزية - مستوى ثان - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 0,
+    "subject": "اللغة الإنجليزية",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Thetar_prep1_Tr1.pdf",
+    "title": "التربية المسرحية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 7,
+    "subject": "التربية المسرحية",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Librarie_research_skills_prep1_Tr1.pdf",
+    "title": "المكتبات ومهارات البحث - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 7,
+    "subject": "المكتبات ومهارات البحث",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Educational_media_Pep1_Tr1.pdf",
+    "title": "الإعلام التربوي - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 7,
+    "subject": "الإعلام التربوي",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory1/Term1/StudentBook/Science_EN_Prp1_TR1..pdf",
+    "title": "العلوم باللغة الإنجليزية - الصف الأول الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 7,
+    "subject": "العلوم",
+    "language": "languages",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Industry_Prep2_T1.pdf",
+    "title": "مهارات الصناعة وريادة الأعمال - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 8,
+    "subject": "مهارات الصناعة وريادة الأعمال",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/Agriculture_2_Preparatory_TR1.pdf",
+    "title": "مهارات الزراعة وريادة الأعمال - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 8,
+    "subject": "مهارات الزراعة وريادة الأعمال",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Prepratory/Prepratory2/Term1/StudentBook/ICT_EN_Prp2_Tr1.pdf",
+    "title": "الكمبيوتر وتكنولوجيا المعلومات والاتصالات باللغة الإنجليزية - الصف الثاني الإعدادى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 8,
+    "subject": "تكنولوجيا المعلومات والاتصالات",
+    "language": "languages",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry1/Term1/StudentBook/integratedscience_FR_1_Secondary_TR1.pdf",
+    "title": "العلوم المتكاملة باللغة الفرنسية - الصف الأول الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 10,
+    "subject": "العلوم المتكاملة",
+    "language": "languages",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry1/Term1/StudentBook/Arabic_language_STORY_Sec1_Tr1.pdf",
+    "title": "اللغة العربية-القصة - الصف الأول الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 10,
+    "subject": "اللغة العربية",
+    "language": "both",
+    "kind": "story"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry1/Term1/StudentBook/ICT_AR__Sec1_Tr1.pdf",
+    "title": "البرمجة والذكاء الاصطناعي باللغة العربية - الصف الأول الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 10,
+    "subject": "البرمجة والذكاء الاصطناعي",
+    "language": "arabic",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/pure_Mathematics_FR_Sec2_Tr1.pdf",
+    "title": "الرياضيات البحتة باللغة الفرنسية - الصف الثانى الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 11,
+    "subject": "الرياضيات البحتة",
+    "language": "languages",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/Premiere_langue_francaise_WB_Sec2_Tr1.pdf",
+    "title": "اللغة الفرنسية-لغة أجنبية أولى-كراسة التدريبات - الصف الثانى الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 11,
+    "subject": "اللغة الفرنسية",
+    "language": "both",
+    "kind": "workbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/Citizenship_and_Human_Rights_Sec2_Tr1.pdf",
+    "title": "المواطنة وحقوق الإنسان - الصف الثاني الثانوي - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 11,
+    "subject": "المواطنة وحقوق الإنسان",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry2/Term1/StudentBook/Geography_Sec2_Tr1.pdf",
+    "title": "جغرافيا التنمية - الصف الثانى الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 11,
+    "subject": "جغرافيا التنمية",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/Statistics_Fr_Sec3.pdf",
+    "title": "الإحصاء باللغة الفرنسية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 12,
+    "subject": "الإحصاء",
+    "language": "languages",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/applied_Mathematics_ENGLISH_Sec3.pdf",
+    "title": "الرياضيات التطبيقية باللغة الإنجليزية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 12,
+    "subject": "الرياضيات التطبيقية",
+    "language": "languages",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/National_Education_Sec3_tr1.pdf",
+    "title": "التربية الوطنية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 12,
+    "subject": "التربية الوطنية",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/Espanol_language_Sec3.pdf",
+    "title": "اللغة الإسبانية-لغة أجنبية ثانية - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 12,
+    "subject": "اللغة الإسبانية",
+    "language": "both",
+    "kind": "textbook"
+  },
+  {
+    "url": "https://elearnningcontent.blob.core.windows.net/elearnningcontent/2026_2027/Secondry/Secondry3/Term1/StudentBook/Psychology_Sociology_Sec3.pdf",
+    "title": "علم النفس والاجتماع - الصف الثالث الثانوى - الفصل الدراسى الأول - كتاب الطالب",
+    "grade": 12,
+    "subject": "علم النفس والاجتماع",
+    "language": "both",
+    "kind": "textbook"
+  }
 ]

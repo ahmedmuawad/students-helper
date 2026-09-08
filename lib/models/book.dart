@@ -6,6 +6,9 @@ enum BookKind {
   /// كتاب الأنشطة.
   workbook,
 
+  /// القصة — كتاب مستقل في العربي والإنجليزي.
+  story,
+
   /// ملزمة.
   booklet,
 
@@ -40,6 +43,8 @@ enum BookKind {
         return 'كتاب الوزارة';
       case BookKind.workbook:
         return 'كتاب الأنشطة';
+      case BookKind.story:
+        return 'القصة';
       case BookKind.booklet:
         return 'ملزمة';
       case BookKind.revision:
@@ -59,6 +64,8 @@ enum BookKind {
         return 'Textbook';
       case BookKind.workbook:
         return 'Workbook';
+      case BookKind.story:
+        return 'Story';
       case BookKind.booklet:
         return 'Booklet';
       case BookKind.revision:

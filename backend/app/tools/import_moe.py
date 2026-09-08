@@ -355,6 +355,7 @@ def import_entries(
     dry_run: bool = False,
     delay: float = 0.5,
     limit: int | None = None,
+    replace: bool = False,
 ) -> None:
     log_schema_changes(ensure_schema())
     db = SessionLocal()
@@ -392,7 +393,8 @@ def import_entries(
         db.close()
         return
 
-    counters = {"downloaded": 0, "reused": 0, "failed": 0, "lessons": 0}
+    counters = {"downloaded": 0, "reused": 0, "failed": 0, "lessons": 0,
+                "replaced": 0}
     broken: list[tuple[BookRef, Exception]] = []
 
     with httpx.Client(timeout=180, follow_redirects=True) as client:
@@ -414,7 +416,7 @@ def import_entries(
                 continue
 
             try:
-                _store_book(db, ref, content, counters)
+                _store_book(db, ref, content, counters, replace=replace)
                 db.commit()
             except SQLAlchemyError as error:
                 # كتاب واحد بايظ مايوقّفش الباقي
@@ -438,6 +440,8 @@ def import_entries(
         f"{counters['reused']} موجود قبل كده · {counters['failed']} فشل · "
         f"{counters['lessons']} درس من الفهارس"
     )
+    if counters["replaced"]:
+        log(f"  ({counters['replaced']} تسجيل قديم اتشال واتكتب من جديد)")
     if broken:
         log("")
         log(f"⚠ الكتب اللي اتخطّت ({len(broken)}):")
@@ -451,9 +455,21 @@ def _store_book(
     ref: BookRef,
     content: bytes,
     counters: dict[str, int],
+    *,
+    replace: bool = False,
 ) -> None:
     """يحفظ كتاب واحد. أي استثناء هنا بيترجع بـ rollback بره من غير ما
     يوقّف باقي الاستيراد."""
+    if replace:
+        # نمسح أي تسجيل قديم للرابط ده مهما كانت المادة اللي اتسجّل تحتها —
+        # ده اللي بيصلّح كتاب اتحطّ في مادة غلط في استيراد سابق.
+        removed = (
+            db.query(Book)
+            .filter(Book.source_url == ref.url)
+            .delete(synchronize_session=False)
+        )
+        counters["replaced"] += removed
+
     # المادة المشتركة بتتسجّل في المنهجين (عربي ولغات)
     languages = ["arabic", "languages"] if ref.is_shared else [ref.language]
 
@@ -630,6 +646,9 @@ def main() -> int:
     run.add_argument("--limit", type=int, help="عدد الكتب (للتجربة)")
     run.add_argument("--delay", type=float, default=0.5,
                      help="ثواني بين كل تحميل والتاني")
+    run.add_argument("--replace", action="store_true",
+                     help="يشيل التسجيل القديم لكل رابط ويكتبه من جديد "
+                          "(لإصلاح كتب اتسجّلت في مادة غلط)")
 
     args = parser.parse_args()
 
@@ -745,6 +764,7 @@ def main() -> int:
         dry_run=args.command == "plan",
         delay=getattr(args, "delay", 0.5),
         limit=args.limit,
+        replace=getattr(args, "replace", False),
     )
     return 0
 

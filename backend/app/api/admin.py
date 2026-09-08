@@ -46,6 +46,7 @@ templates = Jinja2Templates(directory="app/templates")
 KIND_LABELS = {
     BookKind.textbook: "كتاب الوزارة",
     BookKind.workbook: "كتاب الأنشطة",
+    BookKind.story: "القصة",
     BookKind.booklet: "ملزمة",
     BookKind.revision: "مراجعة نهائية",
     BookKind.exam: "نماذج امتحانات",
