@@ -264,8 +264,9 @@ class AppState extends ChangeNotifier {
   /// الاسم المعروض للدرس: من جهة الاتصال المحفوظة أو الاسم اليدوي.
   String lessonTeacherName(PrivateLesson lesson) {
     final instructor = instructorForLesson(lesson);
-    if (instructor != null && instructor.name.isNotEmpty)
+    if (instructor != null && instructor.name.isNotEmpty) {
       return instructor.name;
+    }
     return lesson.teacherName;
   }
 
