@@ -93,7 +93,35 @@ cp build/app/outputs/flutter-apk/app-release.apk "$OUT"
 chmod 644 "$OUT"
 
 SIZE=$(du -h "$OUT" | cut -f1)
+
+# ---------------------------------------------------------------- النشر
+#
+# بنحطه في مجلد media اللي السيرفر بيخدمه أصلاً، فينزل من المتصفح على
+# طول من غير scp ولا برامج. الاسم فيه جزء عشوائي عشان محدش يخمّنه —
+# دي نسخة تجربة مش مفروض تكون متاحة للناس.
+
+log "النشر للتحميل"
+DOWNLOADS="${APP_DIR}/media/downloads"
+mkdir -p "$DOWNLOADS"
+
+# نشيل أي نسخة قديمة عشان ما تتكدّسش على القرص
+rm -f "${DOWNLOADS}"/students-helper-*.apk
+
+STAMP="$(date +%Y%m%d-%H%M)"
+TOKEN="$(head -c 9 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9' | head -c 10)"
+NAME="students-helper-${STAMP}-${TOKEN}.apk"
+
+cp "$OUT" "${DOWNLOADS}/${NAME}"
+chown -R "${SITE_USER}:${SITE_USER}" "$DOWNLOADS"
+chmod 644 "${DOWNLOADS}/${NAME}"
+
+URL="https://${DOMAIN}/media/downloads/${NAME}"
+
 log "خلص"
-ok "الملف: ${OUT} (${SIZE})"
-printf '\n  نزّله على جهازك بالأمر ده من الكمبيوتر بتاعك:\n'
-printf '    scp root@%s:%s .\n\n' "${SERVER_IP:-<عنوان-السيرفر>}" "$OUT"
+ok "الملف على السيرفر: ${OUT} (${SIZE})"
+printf '\n\033[1;32m  رابط التحميل:\033[0m\n'
+printf '\033[1;36m  %s\033[0m\n\n' "$URL"
+printf '  افتحه من متصفح التليفون على طول وثبّت الـAPK.\n'
+printf '  (لازم تفعّل "تثبيت من مصادر غير معروفة" لما يسألك)\n\n'
+printf '  \033[1;33m⚠ الرابط ده مفتوح لأي حد يعرفه.\033[0m امسحه لما تخلص تجربة:\n'
+printf '    sudo rm %s/%s\n\n' "$DOWNLOADS" "$NAME"
