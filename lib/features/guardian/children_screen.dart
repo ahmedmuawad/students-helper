@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/time_utils.dart';
 import '../../services/api_client.dart';
+import '../../services/child_service.dart';
 import '../../services/guardian_service.dart';
 import '../common/ui_helpers.dart';
+import 'child_detail_screen.dart';
 import 'enter_code_screen.dart';
 
 /// الشاشة الرئيسية لولي الأمر: أبناؤه المرتبطين.
@@ -18,8 +20,17 @@ class ChildrenScreen extends StatefulWidget {
 
 class _ChildrenScreenState extends State<ChildrenScreen> {
   List<GuardianLinkSummary> _links = const [];
+  List<LinkedChild> _children = const [];
   bool _loading = true;
   String? _error;
+
+  /// بيانات المتابعة للطالب ده، لو السيرفر رجّعها.
+  LinkedChild? _childFor(GuardianLinkSummary link) {
+    for (final child in _children) {
+      if (child.name == link.studentName) return child;
+    }
+    return null;
+  }
 
   @override
   void initState() {
@@ -33,9 +44,14 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
       _error = null;
     });
     try {
-      final links = await GuardianService(context.read<ApiClient>()).myLinks();
+      final api = context.read<ApiClient>();
+      final links = await GuardianService(api).myLinks();
+      final children = await ChildService(api).children();
       if (!mounted) return;
-      setState(() => _links = links);
+      setState(() {
+        _links = links;
+        _children = children;
+      });
     } on ApiException catch (error) {
       if (!mounted) return;
       setState(() => _error = error.message);
@@ -127,7 +143,21 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
                   ],
                   if (active.isNotEmpty) ...[
                     SectionHeader('متابعة (${active.length})'),
-                    for (final link in active) _ChildCard(link: link),
+                    for (final link in active)
+                      _ChildCard(
+                        link: link,
+                        child: _childFor(link),
+                        onOpen: () {
+                          final child = _childFor(link);
+                          if (child == null) return;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (_) => ChildDetailScreen(child: child),
+                            ),
+                          );
+                        },
+                      ),
                   ],
                   if (_error == null && _links.isEmpty)
                     Padding(
@@ -157,8 +187,25 @@ class _ChildrenScreenState extends State<ChildrenScreen> {
 /// كارت الابن — ملخص سريع وبوابة لتفاصيله.
 class _ChildCard extends StatelessWidget {
   final GuardianLinkSummary link;
+  final LinkedChild? child;
+  final VoidCallback onOpen;
 
-  const _ChildCard({required this.link});
+  const _ChildCard({
+    required this.link,
+    required this.child,
+    required this.onOpen,
+  });
+
+  /// اللي الطالب سامح لولي أمره يشوفه — بيتعرض عشان يبقى واضح.
+  List<String> get _allowed {
+    final data = child;
+    if (data == null) return const [];
+    return [
+      if (data.canSeeTasks) 'المهام',
+      if (data.canSeeTimetable) 'الجدول',
+      if (data.canSeeLessons) 'الدروس',
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,11 +255,33 @@ class _ChildCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 14),
-              Text(
-                'الصلاحيات اللي وافق عليها بتحدد اللي بتشوفه هنا. '
-                'لو محتاج تشوف حاجة زيادة، اطلب منه يفعّلها من تطبيقه.',
-                style: TextStyle(fontSize: 12, color: scheme.outline),
-              ),
+              if (_allowed.isEmpty)
+                Text(
+                  'ما سمحش بمتابعة أي حاجة لسه. اطلب منه يفعّل الصلاحيات '
+                  'من إعدادات تطبيقه.',
+                  style: TextStyle(fontSize: 12, color: scheme.outline),
+                )
+              else ...[
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    for (final item in _allowed)
+                      Pill(item,
+                          color: Theme.of(context).colorScheme.primary,
+                          icon: Icons.visibility_outlined),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.tonalIcon(
+                    onPressed: onOpen,
+                    icon: const Icon(Icons.insights_outlined),
+                    label: const Text('افتح المتابعة'),
+                  ),
+                ),
+              ],
             ],
           ),
         ),
