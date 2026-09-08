@@ -220,8 +220,12 @@ def read_entries(path: str) -> list[Entry]:
 
 
 def _curriculum_for(db: Session, ref: BookRef, language: str) -> Curriculum:
-    """بيجيب أو ينشئ منهج للنسخة دي (عربي / لغات)."""
-    system_id = "egyptBaccalaureate" if ref.grade_level >= 10 else "egyptGeneral"
+    """بيجيب أو ينشئ منهج للنسخة دي (عربي / لغات).
+
+    كتب الوزارة كلها كتب **التعليم العام** — الثانوي كمان. البكالوريا
+    نظام اختياري ليه كتبه الخاصة، فمنحطّش فيه كتب مش بتاعته.
+    """
+    system_id = "egyptGeneral"
     year = ref.academic_year or "2026/2027"
 
     curriculum = (

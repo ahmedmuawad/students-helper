@@ -10,7 +10,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
-from app.api import admin, mobile
+from app.api import admin, mobile, sync
 from app.core.config import get_settings
 from app.core.database import Base, engine
 from app.core.schema_sync import sync_schema
@@ -45,6 +45,7 @@ app.add_middleware(
 
 app.include_router(admin.router)
 app.include_router(mobile.router)
+app.include_router(sync.router)
 
 # ملفات الكتب — في الإنتاج nginx بيخدمها مباشرة وأسرع.
 media_path = Path(settings.media_root)

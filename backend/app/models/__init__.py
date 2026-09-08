@@ -16,6 +16,7 @@ from app.models.billing import (
     SubscriptionStatus,
 )
 from app.models.people import Account, AccountRole, GuardianLink, LinkCode, LinkStatus
+from app.models.sync import RecordKind, StudentRecord
 
 __all__ = [
     "Account",
@@ -34,6 +35,8 @@ __all__ = [
     "Lesson",
     "LinkCode",
     "LinkStatus",
+    "RecordKind",
+    "StudentRecord",
     "Subject",
     "Unit",
 ]

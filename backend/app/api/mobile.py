@@ -435,16 +435,22 @@ async def my_links(
     ]
 
 
+class RespondIn(BaseModel):
+    accept: bool
+    permissions: dict | None = None
+
+
 @router.post("/links/{link_id}/respond", response_model=LinkOut)
 async def respond_to_link(
     link_id: int,
-    accept: bool,
-    permissions: dict | None = None,
+    body: RespondIn,
     account: Account = Depends(current_account),
     db: Session = Depends(get_db),
 ):
     """الطالب بيوافق أو يرفض طلب الربط ويحدد الصلاحيات."""
     import json
+
+    accept, permissions = body.accept, body.permissions
 
     link = db.get(GuardianLink, link_id)
     if link is None:

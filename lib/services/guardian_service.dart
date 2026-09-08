@@ -112,8 +112,11 @@ class GuardianService {
     GuardianPermissions? permissions,
   }) async {
     final data = await _api.post(
-      '/api/v1/links/$linkId/respond?accept=$accept',
-      body: permissions?.toJson(),
+      '/api/v1/links/$linkId/respond',
+      body: {
+        'accept': accept,
+        if (permissions != null) 'permissions': permissions.toJson(),
+      },
     );
     return GuardianLinkSummary.fromJson(Map<String, dynamic>.from(data as Map));
   }

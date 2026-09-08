@@ -6,6 +6,7 @@ import enum
 from datetime import datetime
 
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     DateTime,
     Enum,
@@ -62,6 +63,11 @@ class Account(Base):
     )
 
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    # عدّاد المزامنة — بيزيد مع كل كتابة على أي سجل من سجلات الحساب،
+    # والعميل بيحتفظ بآخر رقم شافه عشان يطلب اللي بعده بس.
+    sync_revision: Mapped[int] = mapped_column(BigInteger, default=0)
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
