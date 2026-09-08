@@ -1,61 +1,105 @@
 #!/usr/bin/env bash
 #
 # تركيب "مساعد الطالب" على سيرفر CloudPanel.
+# السيرفر بيسحب الكود من GitHub مباشرة — مفيش رفع ملفات يدوي.
 #
-#   sudo bash deploy/install.sh
-#
-# بيفترض إنك عملت Python Site من CloudPanel وقاعدة بيانات MySQL.
+#   sudo bash install.sh
 #
 set -euo pipefail
 
+# ---------------- إعدادات الموقع ----------------
 DOMAIN="${DOMAIN:-student-helper.stop4web.online}"
 SITE_USER="${SITE_USER:-stop4web-student-helper}"
 APP_PORT="${APP_PORT:-8090}"
 PYTHON_BIN="${PYTHON_BIN:-python3.10}"
+REPO_URL="${REPO_URL:-https://github.com/ahmedmuawad/students-helper.git}"
+BRANCH="${BRANCH:-claude/flutter-student-management-app-8bhzc6}"
 
 APP_DIR="/home/${SITE_USER}/htdocs/${DOMAIN}"
+BACKEND_DIR="${APP_DIR}/backend"
 VENV_DIR="${APP_DIR}/.venv"
 MEDIA_DIR="${APP_DIR}/media"
-ENV_FILE="${APP_DIR}/.env"
+ENV_FILE="${BACKEND_DIR}/.env"
 SERVICE_NAME="students-helper"
 
 log()  { printf '\n\033[1;36m▶ %s\033[0m\n' "$*"; }
 ok()   { printf '\033[1;32m  ✓ %s\033[0m\n' "$*"; }
+warn() { printf '\033[1;33m  ! %s\033[0m\n' "$*"; }
 fail() { printf '\033[1;31m  ✗ %s\033[0m\n' "$*" >&2; exit 1; }
 
+as_site() { sudo -u "$SITE_USER" "$@"; }
+
 [[ $EUID -eq 0 ]] || fail "شغّل السكربت بـ sudo"
+id "$SITE_USER" >/dev/null 2>&1 || fail "المستخدم ${SITE_USER} مش موجود — اعمل الـ Python Site من CloudPanel الأول"
 [[ -d "$APP_DIR" ]] || fail "مجلد الموقع مش موجود: ${APP_DIR}"
-[[ -f "${APP_DIR}/requirements.txt" ]] || fail "ارفع ملفات المشروع في ${APP_DIR} الأول"
 
 # ------------------------------------------------------------ حزم النظام
 log "تثبيت حزم النظام"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
-# MySQL موجود أصلاً مع CloudPanel، فمحتاجين بايثون وأدوات البناء بس.
-apt-get install -y -qq \
+# MySQL موجود أصلاً مع CloudPanel، فمحتاجين بايثون وgit وأدوات البناء بس.
+apt-get install -y -qq git \
   "${PYTHON_BIN}" "${PYTHON_BIN}-venv" "${PYTHON_BIN}-dev" build-essential >/dev/null
 ok "تم"
+
+# ------------------------------------------------------------ سحب الكود
+log "سحب الكود من GitHub"
+# git بيرفض يشتغل على مجلد مملوك لمستخدم تاني، فبنسمح بالمسار ده صراحة.
+as_site git config --global --add safe.directory "$APP_DIR" 2>/dev/null || true
+
+if [[ -d "${APP_DIR}/.git" ]]; then
+  as_site git -C "$APP_DIR" fetch --depth 1 origin "$BRANCH"
+  as_site git -C "$APP_DIR" checkout -f -B "$BRANCH" "origin/${BRANCH}"
+  ok "تم التحديث لآخر نسخة"
+else
+  # المجلد ممكن يكون فيه ملفات افتراضية من CloudPanel، فبنهيّئ مستودع
+  # جوّاه بدل clone (اللي بيرفض المجلدات غير الفاضية).
+  as_site git -C "$APP_DIR" init -q
+  as_site git -C "$APP_DIR" remote add origin "$REPO_URL" 2>/dev/null || \
+    as_site git -C "$APP_DIR" remote set-url origin "$REPO_URL"
+
+  if ! as_site git -C "$APP_DIR" fetch --depth 1 origin "$BRANCH"; then
+    fail "فشل السحب من GitHub.
+  لو المستودع خاص، جهّز الوصول الأول (اختار واحدة):
+
+  (أ) مفتاح نشر SSH — الأأمن، للقراءة فقط:
+      sudo -u ${SITE_USER} ssh-keygen -t ed25519 -N '' -f /home/${SITE_USER}/.ssh/id_ed25519
+      sudo cat /home/${SITE_USER}/.ssh/id_ed25519.pub
+      ضيف المفتاح ده في: GitHub ← المستودع ← Settings ← Deploy keys
+      وبعدين شغّل السكربت تاني بـ:
+      sudo REPO_URL=git@github.com:ahmedmuawad/students-helper.git bash install.sh
+
+  (ب) توكن وصول شخصي بصلاحية قراءة المحتوى:
+      sudo REPO_URL=https://TOKEN@github.com/ahmedmuawad/students-helper.git bash install.sh"
+  fi
+
+  as_site git -C "$APP_DIR" checkout -f -B "$BRANCH" "origin/${BRANCH}"
+  ok "تم سحب الكود"
+fi
+
+[[ -f "${BACKEND_DIR}/requirements.txt" ]] || fail "مش لاقي backend/requirements.txt بعد السحب"
 
 # ------------------------------------------------------------ بيئة بايثون
 log "تجهيز بيئة بايثون"
 if [[ ! -x "${VENV_DIR}/bin/python" ]]; then
-  sudo -u "$SITE_USER" "$PYTHON_BIN" -m venv "$VENV_DIR"
+  as_site "$PYTHON_BIN" -m venv "$VENV_DIR"
 fi
-sudo -u "$SITE_USER" "${VENV_DIR}/bin/pip" install --quiet --upgrade pip wheel
-sudo -u "$SITE_USER" "${VENV_DIR}/bin/pip" install --quiet -r "${APP_DIR}/requirements.txt"
+as_site "${VENV_DIR}/bin/pip" install --quiet --upgrade pip wheel
+as_site "${VENV_DIR}/bin/pip" install --quiet -r "${BACKEND_DIR}/requirements.txt"
 ok "الحزم اتثبتت"
 
 # ------------------------------------------------------------ ملف الإعدادات
 if [[ -f "$ENV_FILE" ]]; then
   log "ملف .env موجود — مش هيتغيّر"
+  ok "لو عايز تعدّله: ${ENV_FILE}"
 else
   log "إعداد الاتصال بقاعدة البيانات"
-  echo "  (البيانات دي من CloudPanel → Databases)"
+  echo "  (البيانات من CloudPanel ← Databases)"
   read -rp  "  اسم قاعدة البيانات: " DB_NAME
   read -rp  "  اسم المستخدم: " DB_USER
   read -rsp "  كلمة المرور: " DB_PASS; echo
 
-  # نتأكد من الاتصال قبل ما نكمّل بدل ما نكتشف الغلط بعد التركيب.
+  # نتأكد من الاتصال قبل ما نكمّل، بدل ما نكتشف الغلط بعد التركيب.
   if command -v mysql >/dev/null 2>&1; then
     if mysql -h 127.0.0.1 -u "$DB_USER" -p"$DB_PASS" \
          -e "USE \`${DB_NAME}\`;" >/dev/null 2>&1; then
@@ -63,6 +107,8 @@ else
     else
       fail "مش قادر أتصل بقاعدة البيانات — راجع البيانات"
     fi
+  else
+    warn "أداة mysql مش متاحة — هنكمّل من غير اختبار الاتصال"
   fi
 
   log "إعداد لوحة التحكم"
@@ -70,12 +116,12 @@ else
   read -rsp "  كلمة مرور لوحة التحكم: " ADMIN_PW; echo
 
   # الباسورد ممكن يكون فيه رموز (@ أو /) تكسر رابط الاتصال، فبنرمّزها.
-  ENCODED="$("${VENV_DIR}/bin/python" "${APP_DIR}/deploy/make_env.py" \
+  ENCODED="$("${VENV_DIR}/bin/python" "${BACKEND_DIR}/deploy/make_env.py" \
     "$DB_USER" "$DB_PASS" "$DB_NAME" "$ADMIN_PW")"
-  DB_USER_ENC="$(echo "$ENCODED" | sed -n 1p)"
-  DB_PASS_ENC="$(echo "$ENCODED" | sed -n 2p)"
-  DB_NAME_ENC="$(echo "$ENCODED" | sed -n 3p)"
-  ADMIN_HASH="$(echo "$ENCODED" | sed -n 4p)"
+  DB_USER_ENC="$(sed -n 1p <<<"$ENCODED")"
+  DB_PASS_ENC="$(sed -n 2p <<<"$ENCODED")"
+  DB_NAME_ENC="$(sed -n 3p <<<"$ENCODED")"
+  ADMIN_HASH="$(sed -n 4p <<<"$ENCODED")"
 
   SESSION_SECRET="$(openssl rand -hex 32)"
 
@@ -123,7 +169,7 @@ Wants=mysql.service
 Type=simple
 User=${SITE_USER}
 Group=${SITE_USER}
-WorkingDirectory=${APP_DIR}
+WorkingDirectory=${BACKEND_DIR}
 EnvironmentFile=${ENV_FILE}
 ExecStart=${VENV_DIR}/bin/uvicorn app.main:app --host 127.0.0.1 --port ${APP_PORT} --workers 2 --proxy-headers --forwarded-allow-ips=127.0.0.1
 Restart=always
@@ -170,14 +216,16 @@ cat <<DONE
  توثيق الـAPI: https://${DOMAIN}/api/docs
 
  الخطوات الجاية:
-  1. فعّل SSL من CloudPanel (Sites → SSL/TLS → Let's Encrypt)
+  1. فعّل SSL من CloudPanel (Sites ← SSL/TLS ← Let's Encrypt)
   2. من لوحة التحكم ← إعدادات التكامل: حط مفاتيح
      Firebase و AdMob و Google Play
   3. غيّر باسورد Site User وقاعدة البيانات من CloudPanel
 
- أوامر مفيدة:
+ للتحديث بعد أي تعديل على الكود:
+  sudo bash ${BACKEND_DIR}/deploy/update.sh
+
+ متابعة الخدمة:
   systemctl status ${SERVICE_NAME}
   journalctl -u ${SERVICE_NAME} -f
-  sudo bash deploy/update.sh
 ────────────────────────────────────────────────
 DONE
